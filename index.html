@@ -11,20 +11,15 @@
     <script src="./script.js" defer></script>
 </head>
 <body>
-   
     <header class="fixed w-full bg-white z-50 shadow-lg">
-        <div class="container relative mx-auto">
-
-            <div class="flex items-center justify-center">
-                <a href="#home"> <img src="./assets/logo-header.png" alt="Logo" class="h-12 w-auto hidden md:block absolute left-4 top-4"></a>
-                <nav class="hidden md:flex relative text-sm">
-                    <a href="#home" class="text-gray-600 py-8 px-8">HOME</a>
-                    <a href="#about" class="text-gray-600 py-8 px-8">ABOUT</a>
-                    <a href="#projects" class="text-gray-600 py-8 px-8">PROJECTS</a>
-                    <a href="#contact" class="text-gray-600 py-8 px-8">CONTACT</a>
-                </nav>
-            </div>
-            
+        <div class="container mx-auto relative flex justify-center">
+            <a href="#home"> <img src="./assets/logo-header.png" alt="Logo" class="h-12 w-auto hidden md:inline-block absolute left-4 top-4"></a>
+            <nav class="text-sm hidden md:flex">
+                <a href="#home" class="text-gray-600 py-8 px-8">HOME</a>
+                <a href="#about" class="text-gray-600 py-8 px-8">ABOUT</a>
+                <a href="#projects" class="text-gray-600 py-8 px-8">PROJECTS</a>
+                <a href="#contact" class="text-gray-600 py-8 px-8">CONTACT</a>
+            </nav>
         </div>
     </header>
     
@@ -34,7 +29,6 @@
                 <div class="mt-16 md:mt-28 text-center">
                     <p class="text-sm text-gray-400 mb-8 italic relative lg:right-80 md:text-xl">Hey there, I'm</p>
                     <h1 class="text-6xl font-bold text-gray-800 mb-4 md:space-x-16 md:text-9xl"><span>LUIS</span><span class="inline-block relative top-20 md:top-32">SUIZO</span></h1>  
-
                     <button class="bg-gray-800 text-gray-200 transition duration-300 text-xs font-medium tracking-widest border border-transparent px-6 py-3 mt-60 hover:bg-white hover:text-gray-800 hover:border hover:border-gray-800 md:px-16 md:text-xl">
                     CONTACT LUIS
                     </button>
@@ -50,18 +44,16 @@
 
                 <div class="mt-16 lg:my-auto lg:flex-1">
                     <h2 class="text-gray-600 text-center font-semibold mb-12 text-2xl md:text-4xl lg:text-left">I’m  a Full-Stack Web Developer</h2>
-                    
                     <div class="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-y-4 w-64 md:w-96 mx-auto lg:mx-0">
                         <img src="./assets/laravel.png" alt="Icon 1" class="w-16 object-contain mx-auto md:mx-0">
                         <img src="./assets/git.png" alt="Icon 3" class="w-16 object-contain mx-auto md:mx-0">
                         <img src="./assets/python.png" alt="Icon 5" class="w-16 object-contain mx-auto md:mx-0">
                         <img src="./assets/javascript.png" alt="Icon 4" class="w-16 object-contain mx-auto md:mx-0">
-                        <img src="./assets/nuxtjs.png" alt="Icon 6" class="w-16 object-contain mx-auto md:mx-0">
                         <img src="./assets/tailwindcss.png" alt="Icon 7" class="w-16 object-contain mx-auto md:mx-0">
+                        <img src="./assets/nuxtjs.png" alt="Icon 6" class="w-16 object-contain mx-auto md:mx-0">
                         <img src="./assets/mysql.png" alt="Icon 8" class="w-16 object-contain mx-auto md:mx-0">
                         <img src="./assets/figma.png" alt="Icon 9" class="w-16 object-contain mx-auto md:mx-0">
                     </div>
-
                     <div class="flex flex-col-reverse xl:block xl:space-x-4">
                         <a href="./assets/CV - Suizo.pdf" download class="bg-gray-800 text-gray-200 transition duration-300 text-xs font-medium tracking-widest border border-transparent px-6 py-3 mt-4 xl:mt-28 hover:bg-white hover:text-gray-800 hover:border hover:border-gray-800 md:px-12 md:text-sm">
                             VIEW / DOWNLOAD CV
@@ -109,7 +101,7 @@
             </div>
         </div>
     </section>
-
+    
     <!-- <section id="projects" class="py-20">
         <div class="container mx-auto px-6">
             <h2 class="text-3xl font-bold text-center mb-12">My Projects</h2>
