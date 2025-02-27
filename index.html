@@ -11,7 +11,7 @@
     <script src="./script.js" defer></script>
 </head>
 <body>
-    <header class="fixed w-full bg-white z-50 shadow-lg">
+    <header class="fixed w-full bg-white z-50">
         <div class="container mx-auto relative flex justify-center">
             <a href="#home"> <img src="./assets/logo-header.png" alt="Logo" class="h-12 w-auto hidden md:inline-block absolute left-4 top-4"></a>
             <nav class="text-sm hidden md:flex">
@@ -23,16 +23,14 @@
         </div>
     </header>
     
-    <section id="home" class="min-h-screen pt-0 md:pt-20 ">
-        <div class="container mx-auto px-6 py-20">
-            <div>
-                <div class="mt-16 md:mt-28 text-center">
-                    <p class="text-sm text-gray-400 mb-8 italic relative lg:right-80 md:text-xl">Hey there, I'm</p>
-                    <h1 class="text-6xl font-bold text-gray-800 mb-4 md:space-x-16 md:text-9xl"><span>LUIS</span><span class="inline-block relative top-20 md:top-32">SUIZO</span></h1>  
-                    <button class="bg-gray-800 text-gray-200 transition duration-300 text-xs font-medium tracking-widest border border-transparent px-6 py-3 mt-60 hover:bg-white hover:text-gray-800 hover:border hover:border-gray-800 md:px-16 md:text-xl">
-                    CONTACT LUIS
-                    </button>
-                </div>
+    <section id="home" class="min-h-screen flex flex-col-reverse justify-center">
+        <div class="container px-6 mx-auto">
+            <div class="text-center">
+                <p class="text-sm text-gray-400 mb-8 italic relative lg:right-80 md:text-xl">Hey there, I'm</p>
+                <h1 class="text-6xl font-bold text-gray-800 mb-4 md:space-x-16 md:text-9xl"><span>LUIS</span><span class="inline-block relative top-20 md:top-32">SUIZO</span></h1>  
+                <button class="bg-gray-800 text-gray-200 transition duration-300 text-xs font-medium tracking-widest border border-transparent px-6 py-3 mt-60 hover:bg-white hover:text-gray-800 hover:border hover:border-gray-800 md:px-16 md:text-xl">
+                CONTACT LUIS
+                </button>
             </div>
         </div>
     </section>
@@ -69,9 +67,9 @@
             
             <div class="lg:flex lg:space-x-12 items-stretch ">
                 <div class="lg:flex-1">
-                    <div class="flex space-x-4 mb-8">
+                    <div class="flex space-x-4 mb-8 items-center">
                         <img src="./assets/backend.svg" alt="backend" class="w-12">
-                        <h3 class="text-gray-600 font-semibold my-auto">Backend Development</h3>
+                        <h3 class="text-gray-600 font-semibold">Backend Development</h3>
                     </div>
                     
                     <p class="text-gray-600 leading-relaxed">
@@ -79,9 +77,9 @@
                     </p>
                 </div>
                 <div class="mt-12 lg:mt-0 lg:flex-1">
-                    <div class="flex space-x-4 mb-8">
+                    <div class="flex space-x-4 mb-8 items-center">
                         <img src="./assets/client.svg" alt="frontend" class="w-12">
-                        <h3 class="text-gray-600 font-semibold my-auto">Client-Side Development</h3>
+                        <h3 class="text-gray-600 font-semibold">Client-Side Development</h3>
                     </div>
 
                     <p class="text-gray-600 leading-relaxed">
@@ -89,9 +87,9 @@
                     </p>
                 </div>
                 <div class="mt-12 lg:mt-0 lg:flex-1">
-                    <div class="flex space-x-4 mb-8">
+                    <div class="flex space-x-4 mb-8 items-center">
                         <img src="./assets/others.svg" alt="others" class="w-12">
-                        <h3 class="text-gray-600 font-semibold my-auto">Creative & Collaborative</h3>
+                        <h3 class="text-gray-600 font-semibold">Creative & Collaborative</h3>
                     </div>
 
                     <p class="text-gray-600 leading-relaxed">
@@ -102,7 +100,7 @@
         </div>
     </section>
     
-    <!-- <section id="projects" class="py-20">
+    <section id="projects" class="py-20">
         <div class="container mx-auto px-6">
             <h2 class="text-3xl font-bold text-center mb-12">My Projects</h2>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -117,7 +115,7 @@
 
             </div>
         </div>
-    </section> -->
+    </section>
 
     <!-- <section id="contact" class="py-20 py-20 bg-white">
 
