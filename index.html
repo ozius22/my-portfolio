@@ -8,14 +8,15 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./main.css">
-    <script src="./script.js"></script>
+    <script src="./script.js" defer></script>
 </head>
 <body>
    
     <header class="fixed w-full bg-white z-50 shadow-lg">
         <div class="container relative mx-auto">
+
             <div class="flex items-center justify-center">
-                <a href="#home"> <img src="./assets/logo-header.png" alt="Logo" class="h-12 w-auto absolute left-4 top-4"></a>
+                <a href="#home"> <img src="./assets/logo-header.png" alt="Logo" class="h-12 w-auto hidden md:block absolute left-4 top-4"></a>
                 <nav class="hidden md:flex relative text-sm">
                     <a href="#home" class="text-gray-600 py-8 px-8">HOME</a>
                     <a href="#about" class="text-gray-600 py-8 px-8">ABOUT</a>
@@ -23,14 +24,15 @@
                     <a href="#contact" class="text-gray-600 py-8 px-8">CONTACT</a>
                 </nav>
             </div>
+            
         </div>
     </header>
     
-    <section id="home" class="min-h-screen pt-0 fade-in md:pt-20 ">
+    <section id="home" class="min-h-screen pt-0 md:pt-20 ">
         <div class="container mx-auto px-6 py-20">
             <div>
                 <div class="mt-16 md:mt-28 text-center">
-                    <p class="text-sm text-gray-400 mb-8 italic relative md:right-80 md:text-xl">Nice to meet you, I'm</p>
+                    <p class="text-sm text-gray-400 mb-8 italic relative lg:right-80 md:text-xl">Hey there, I'm</p>
                     <h1 class="text-6xl font-bold text-gray-800 mb-4 md:space-x-16 md:text-9xl"><span>LUIS</span><span class="inline-block relative top-20 md:top-32">SUIZO</span></h1>  
 
                     <button class="bg-gray-800 text-gray-200 transition duration-300 text-xs font-medium tracking-widest border border-transparent px-6 py-3 mt-60 hover:bg-white hover:text-gray-800 hover:border hover:border-gray-800 md:px-16 md:text-xl">
@@ -41,14 +43,72 @@
         </div>
     </section>
     
-    <!-- <section id="about" class="py-20 bg-white">
+    <section id="about" class="py-20 bg-white">
         <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-12">About Me</h2>
-            <p class="text-gray-600 max-w-2xl mx-auto text-center">
+            <div class="items-stretch lg:flex lg:space-x-24 lg:justify-center mb-20">
+                <img src="./assets/my-portrait.png" alt="a portrait" class="object-contain mx-auto lg:mx-0 md:max-h-[500px]">
 
-            </p>
+                <div class="mt-16 lg:my-auto lg:flex-1">
+                    <h2 class="text-gray-600 text-center font-semibold mb-12 text-2xl md:text-4xl lg:text-left">I’m  a Full-Stack Web Developer</h2>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-y-4 w-64 md:w-96 mx-auto lg:mx-0">
+                        <img src="./assets/laravel.png" alt="Icon 1" class="w-16 object-contain mx-auto md:mx-0">
+                        <img src="./assets/git.png" alt="Icon 3" class="w-16 object-contain mx-auto md:mx-0">
+                        <img src="./assets/python.png" alt="Icon 5" class="w-16 object-contain mx-auto md:mx-0">
+                        <img src="./assets/javascript.png" alt="Icon 4" class="w-16 object-contain mx-auto md:mx-0">
+                        <img src="./assets/nuxtjs.png" alt="Icon 6" class="w-16 object-contain mx-auto md:mx-0">
+                        <img src="./assets/tailwindcss.png" alt="Icon 7" class="w-16 object-contain mx-auto md:mx-0">
+                        <img src="./assets/mysql.png" alt="Icon 8" class="w-16 object-contain mx-auto md:mx-0">
+                        <img src="./assets/figma.png" alt="Icon 9" class="w-16 object-contain mx-auto md:mx-0">
+                    </div>
+
+                    <div class="flex flex-col-reverse xl:block xl:space-x-4">
+                        <a href="./assets/CV - Suizo.pdf" download class="bg-gray-800 text-gray-200 transition duration-300 text-xs font-medium tracking-widest border border-transparent px-6 py-3 mt-4 xl:mt-28 hover:bg-white hover:text-gray-800 hover:border hover:border-gray-800 md:px-12 md:text-sm">
+                            VIEW / DOWNLOAD CV
+                        </a>
+                        <button class="bg-white text-gray-800 transition duration-300 text-xs font-medium tracking-widest border border-gray-800 px-6 py-3 mt-28 hover:bg-gray-800 hover:text-gray-200 hover:border hover:border-transparent md:px-12 md:text-sm">
+                            SCHEDULE A MEETING?
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-3xl text-gray-800 font-bold text-center md:text-left mb-12">Services</h2>
+            
+            <div class="lg:flex lg:space-x-12 items-stretch ">
+                <div class="lg:flex-1">
+                    <div class="flex space-x-4 mb-8">
+                        <img src="./assets/backend.svg" alt="backend" class="w-12">
+                        <h3 class="text-gray-600 font-semibold my-auto">Backend Development</h3>
+                    </div>
+                    
+                    <p class="text-gray-600 leading-relaxed">
+                        I architect scalable systems, design efficient APIs, and manage databases using languages like PHP with Laravel and Python. My focus is on security, clean code, and performance optimization to ensure robust functionality that powers seamless interactions behind the scenes.
+                    </p>
+                </div>
+                <div class="mt-12 lg:mt-0 lg:flex-1">
+                    <div class="flex space-x-4 mb-8">
+                        <img src="./assets/client.svg" alt="frontend" class="w-12">
+                        <h3 class="text-gray-600 font-semibold my-auto">Client-Side Development</h3>
+                    </div>
+
+                    <p class="text-gray-600 leading-relaxed">
+                        I craft intuitive, visually engaging user interfaces using modern tools like Vue with Nuxt.js, Tailwind CSS, and JavaScript, while designing pixel-perfect prototypes and mockups in Figma or Photoshop. I prioritize responsive design and seamless UX/UI, transforming complex ideas into user-friendly experiences and optimizing performance for fast, accessible, and cross-device compatibility.
+                    </p>
+                </div>
+                <div class="mt-12 lg:mt-0 lg:flex-1">
+                    <div class="flex space-x-4 mb-8">
+                        <img src="./assets/others.svg" alt="others" class="w-12">
+                        <h3 class="text-gray-600 font-semibold my-auto">Creative & Collaborative</h3>
+                    </div>
+
+                    <p class="text-gray-600 leading-relaxed">
+                        Beyond coding, I bring strong layout design and editing skills to polish visuals and content, paired with the ability to write cohesive and coherent materials. I thrive in team environments, using GitHub for version control, code reviews, and collaborative workflows – ensuring alignment with project goals from concept to deployment.
+                    </p>
+                </div>
+            </div>
         </div>
-    </section> -->
+    </section>
 
     <!-- <section id="projects" class="py-20">
         <div class="container mx-auto px-6">
