@@ -23,7 +23,7 @@
         </div>
     </header>
     
-    <section id="home" class="min-h-screen flex flex-col-reverse justify-center">
+    <section id="home" class="min-h-screen flex flex-col justify-center">
         <div class="container px-6 mx-auto">
             <div class="text-center">
                 <p class="text-sm text-gray-400 mb-8 italic relative lg:right-80 md:text-xl">Hey there, I'm</p>
@@ -37,7 +37,7 @@
     
     <section id="about" class="pt-20 pb-12 bg-white">
         <div class="container mx-auto px-6">
-            <div class="items-stretch lg:flex lg:space-x-24 mb-12">
+            <div class="mb-24 lg:items-stretch md:mb-12 lg:flex lg:space-x-24">
                 <img src="./assets/my-portrait.png" alt="a portrait" class="object-contain mx-auto lg:mx-0 md:max-h-[500px] fade-bottom">
 
                 <div class="mt-8 lg:my-auto lg:flex-1">
@@ -125,7 +125,7 @@
         </div>
     </section>
 
-    <section id="contact" class="py-20 py-20 bg-white container mx-auto px-6">
+    <section id="contact" class="mb-20 py-20 bg-white container mx-auto px-6">
         <h2 class="text-3xl text-gray-800 font-bold text-center mb-12">Contact Me</h2>
 
         <form netlify name="contact" method="POST" class="max-w-lg mx-auto">
@@ -163,15 +163,41 @@
     </section>
 
     <footer class="bg-black">
-        <div class="py-12 px-6 container mx-auto md:flex md:justify-between items-center text-gray-400">
-            <p>© LUIS SUIZO 2025</p>
-            <div class="flex space-x-4">
+        <div class="py-12 px-6 container mx-auto text-gray-400">
+
+            <div class="mb-12">
                 <p>Lsuizo72@gmail.com</p>
-                <p>+63 9566401574 </p>
-                <a href="https://github.com/ozius22" target="_blank"><img src="./assets/github.svg" alt="git"></a>
-                <a href="https://www.linkedin.com/in/luis-suizo-4b3247130/" target="_blank"><img src="./assets/linkedin.svg" alt="linkedin"></a>
-                <a href="https://www.instagram.com/__ozius__/" target="_blank"><img src="./assets/instagram.svg" alt="instagram"></a>
+                <p>+63 9566401574</p>
             </div>
+
+            <div class="flex mb-12">
+                <div class="md:flex md:space-x-24">
+
+                    <div class="mb-12 md:mb-0">
+                        <h4 class="font-semibold mb-2">A Creative Developer</h4>
+                        <p>Based in Davao City,</p>
+                        <p>Philippines</p>
+                    </div>
+    
+                    <div class="flex flex-col items-start space-y-4 mb-12 md:mb-0">
+                        <h4 class="font-semibold">Follow Me</h4>
+                        <a href="https://github.com/ozius22" target="_blank"><img src="./assets/github.svg" alt="git"></a>
+                        <a href="https://www.linkedin.com/in/luis-suizo-4b3247130/" target="_blank"><img src="./assets/linkedin.svg" alt="linkedin"></a>
+                        <a href="https://www.instagram.com/__ozius__/" target="_blank"><img src="./assets/instagram.svg" alt="instagram"></a>
+                    </div>
+
+                    <img class="h-48" src="./assets/logo-footer.svg" alt="logo">
+
+                </div>
+                
+            </div>
+
+            <div class="lg:flex justify-between tracking-widest">
+                <p>© 2025. All Rights Reserved.</p>
+                <p>PORTFOLIO | Crafting Experiences | <span class="font-semibold text-white">2023 - 2025</span>
+                </p>
+            </div>
+
         </div>
     </footer>
 </body>
