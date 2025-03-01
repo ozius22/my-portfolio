@@ -39,8 +39,16 @@ body {
   }
 
 .fade-bottom {
-  /* For most browsers */
   mask-image: linear-gradient(to top, transparent, black 50%);
-  /* For WebKit browsers (Safari) */
   -webkit-mask-image: linear-gradient(to top, transparent, black 50%);
+}
+
+.footer-slope {
+  clip-path: none;
+}
+
+@media (min-width: 768px) {
+  .footer-slope {
+    clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 100%);
+  }
 }

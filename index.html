@@ -23,7 +23,7 @@
         </div>
     </header>
     
-    <section id="home" class="min-h-screen flex flex-col-reverse justify-center">
+    <section id="home" class="min-h-screen flex flex-col justify-center">
         <div class="container px-6 mx-auto">
             <div class="text-center">
                 <p class="text-sm text-gray-400 mb-8 italic relative lg:right-80 md:text-xl">Hey there, I'm</p>
@@ -125,7 +125,7 @@
         </div>
     </section>
 
-    <section id="contact" class="py-20 py-20 bg-white container mx-auto px-6">
+    <section id="contact" class="mb-20 py-20 bg-white container mx-auto px-6">
         <h2 class="text-3xl text-gray-800 font-bold text-center mb-12">Contact Me</h2>
 
         <form netlify name="contact" method="POST" class="max-w-lg mx-auto">
@@ -162,16 +162,21 @@
             </form>
     </section>
 
-    <footer class="bg-black">
-        <div class="py-12 px-6 container mx-auto md:flex md:justify-between items-center text-gray-400">
-            <p>© LUIS SUIZO 2025</p>
-            <div class="flex space-x-4">
+    <footer class="bg-black footer-slope">
+        <div class="py-12 px-6 container mx-auto flex flex-col justify-center items-center text-gray-400 md:flex-row md:justify-between">
+
+            <p class="font-semibold mb-4 md:mb-0">© LUIS SUIZO 2025</p>
+
+            <div class="flex space-x-0 space-y-2 flex-col items-center justify-center md:items-end md:space-x-4">
                 <p>Lsuizo72@gmail.com</p>
                 <p>+63 9566401574 </p>
-                <a href="https://github.com/ozius22" target="_blank"><img src="./assets/github.svg" alt="git"></a>
-                <a href="https://www.linkedin.com/in/luis-suizo-4b3247130/" target="_blank"><img src="./assets/linkedin.svg" alt="linkedin"></a>
-                <a href="https://www.instagram.com/__ozius__/" target="_blank"><img src="./assets/instagram.svg" alt="instagram"></a>
+                <div class="flex space-x-4 justify-center">
+                    <a href="https://github.com/ozius22" target="_blank"><img src="./assets/github.svg" alt="git"></a>
+                    <a href="https://www.linkedin.com/in/luis-suizo-4b3247130/" target="_blank"><img src="./assets/linkedin.svg" alt="linkedin"></a>
+                    <a href="https://www.instagram.com/__ozius__/" target="_blank"><img src="./assets/instagram.svg" alt="instagram"></a>
+                </div>
             </div>
+
         </div>
     </footer>
 </body>
