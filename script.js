@@ -1,4 +1,4 @@
-// Smooth scrolling for internal links
+// smooth scrolling
 const internalLinks = document.querySelectorAll('a[href^="#"]');
 
 internalLinks.forEach(anchor => {
@@ -14,7 +14,6 @@ internalLinks.forEach(anchor => {
   });
 });
 
-// Cache frequently used elements
 const loader = document.querySelector('#loader-container');
 const greeting = document.querySelector('#greeting');
 const header = document.querySelector('#header');
@@ -24,7 +23,6 @@ const menu = document.getElementById('menu');
 const closeMenu = document.getElementById('close-menu');
 const openMenu = document.getElementById('open-menu');
 
-// Animation and element reveal for wider screens
 if (window.matchMedia('(min-width: 1024px)').matches) {
   setTimeout(() => {
     loader.remove();
@@ -42,10 +40,10 @@ if (window.matchMedia('(min-width: 1024px)').matches) {
     setTimeout(() => cta.classList.add('fade-in'), 3500);
 }
 
-// Toggle menu function for reusability
+// toggle menu function 
 const toggleMenu = () => menu.classList.toggle('hidden-menu');
 
-// Add event listeners for menu toggling
+// listeners for menu toggling
 closeMenu.addEventListener('click', toggleMenu);
 openMenu.addEventListener('click', toggleMenu);
 document.querySelectorAll('#menu a').forEach(navLink => {
