@@ -13,19 +13,35 @@ const header = document.querySelector('#header');
 const pangalan = document.querySelector('#pangalan');
 const cta = document.querySelector('#cta');
 
-setTimeout(() => {
-    loader.remove();
-    header.classList.remove('invisible')
-}, 3600); 
+if (window.matchMedia("(min-width: 1024px)").matches) {
+    setTimeout(() => {
+        loader.remove();
+        header.classList.remove('invisible');
+    }, 3600); 
+  
+    setTimeout(() => {
+        greeting.classList.add('fade-in');
+    }, 4000);
+  
+    setTimeout(() => {
+        pangalan.classList.add('fade-in');
+    }, 5000);
+  
+    setTimeout(() => {
+        cta.classList.add('fade-in');
+    }, 6500);
+}
 
-setTimeout(() => {
-    greeting.classList.add('fade-in')
-}, 4000)
+document.getElementById("close-menu").addEventListener("click", function () {
+    document.getElementById("menu").classList.toggle("hidden-menu");
+});
 
-setTimeout(() => {
-    pangalan.classList.add('fade-in')
-}, 5000)
+document.getElementById("open-menu").addEventListener("click", function () {
+    document.getElementById("menu").classList.toggle("hidden-menu");
+});
 
-setTimeout(() => {
-    cta.classList.add('fade-in')
-}, 6500)
+document.querySelectorAll('#menu a').forEach(navLink => {
+    navLink.addEventListener('click', function() {
+        document.getElementById('menu').classList.toggle('hidden-menu');
+    });
+});

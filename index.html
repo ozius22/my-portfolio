@@ -11,7 +11,7 @@
     <script src="./script.js" defer></script>
 </head>
 <body>
-    <header id="header" class="invisible fixed w-full bg-white z-50">
+    <header id="header" class="invisible fixed w-full bg-white z-50 h-24 md:h-auto">
         <div class="container mx-auto relative flex justify-center">
             <a href="#home"> <img src="./assets/logo-header.png" alt="Logo" class="h-12 w-auto hidden md:inline-block absolute left-4 top-4"></a>
             <nav class="text-sm hidden md:flex">
@@ -20,8 +20,30 @@
                 <a href="#projects" class="text-gray-600 py-8 px-8">PROJECTS</a>
                 <a href="#contact" class="text-gray-600 py-8 px-8">CONTACT</a>
             </nav>
+
+            <button id="open-menu" class="md:hidden">
+                <img src="./assets/menu.svg" alt="button" class="h-8 w-auto absolute right-4 top-8">
+            </button>
         </div>
     </header>
+
+    <div id="menu" class="md:hidden fixed z-50 bg-white w-full h-full top-0 left-0 transition-transform duration-300 ease-in-out hidden-menu">
+        <button id="close-menu">
+            <img src="./assets/close-menu.svg" alt="button" class="h-8 w-auto absolute right-4 top-8">
+        </button>
+        <nav class="flex flex-col mt-16 text-3xl font-medium">
+            <a href="#home" class="text-gray-600 py-8 px-8 border-b border-gray-200">HOME</a>
+            <a href="#about" class="text-gray-600 py-8 px-8 border-b border-gray-200">ABOUT</a>
+            <a href="#projects1" class="text-gray-600 py-8 px-8 border-b border-gray-200">PROJECTS</a>
+            <a href="#contact" class="text-gray-600 py-8 px-8 border-b border-gray-200">CONTACT</a>
+
+            <div class="mt-72 flex space-x-16 ml-8">
+                <a href="https://www.linkedin.com/in/luis-suizo-4b3247130/" target="_blank"><img class="h-16 w-auto" src="./assets/LinkedIn - Negative.svg" alt="linkedin"></a>
+                <a href="https://github.com/ozius22" target="_blank"><img class="h-16 w-auto" src="./assets/Github - Negative.svg" alt="git"></a>
+                <a href="https://www.instagram.com/__ozius__/" target="_blank"><img class="h-16 w-auto" src="./assets/Instagram - Negative.svg" alt="instagram"></a>
+            </div>
+        </nav>
+    </div>
 
     <div id="loader-container" class="fixed hidden lg:flex flex-col justify-center items-center z-50 top-0 left-0 w-full h-full bg-white">
 
@@ -80,7 +102,7 @@
             </div>
         </div>
 
-        <svg id="shapes" class="hidden lg:block absolute inset-0 w-full h-full z-0" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+        <svg class="hidden lg:block absolute inset-0 w-full h-full z-0" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
             <polygon points="400,100 500,300 300,300" fill="black" opacity="0.1"/>
             <path d="M675,600 L875,700 L775,900 Z" fill="black" opacity="0.1"/>
         </svg>
@@ -143,7 +165,7 @@
                         <h3 class="text-gray-600 font-semibold text-lg">Creative & Collaborative</h3>
                     </div>
 
-                    <p class="text-gray-600 leading-relaxed">
+                    <p id="projects1" class="text-gray-600 leading-relaxed">
                         Beyond coding, I bring strong layout design and editing skills to polish visuals and content, paired with the ability to write cohesive and coherent materials. I thrive in team environments, using GitHub for version control, code reviews, and collaborative workflows – ensuring alignment with project goals from concept to deployment.
                     </p>
                 </div>

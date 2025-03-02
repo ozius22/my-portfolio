@@ -26,6 +26,10 @@ body {
   opacity: 0;
 }
 
+.hidden-menu {
+  transform: translateX(100vw);
+}
+
 .pulse {
     display: inline-block;
     animation: pulse 3s ease-in-out infinite;
