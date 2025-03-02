@@ -24,7 +24,7 @@
     </header>
     
     <section id="home" class="min-h-screen flex flex-col justify-center">
-        <div class="container px-6 mx-auto">
+        <div class="container px-6 mx-auto z-10">
             <div class="text-center">
                 <p class="text-sm text-gray-400 mb-8 italic relative lg:right-80 md:text-xl">Hey there, I'm</p>
                 <h1 class="text-6xl font-bold text-gray-800 mb-4 md:space-x-16 md:text-9xl"><span>LUIS</span><span class="inline-block relative top-20 md:top-32">SUIZO</span></h1>  
@@ -33,6 +33,11 @@
                 </a>
             </div>
         </div>
+
+        <svg class="absolute inset-0 w-full h-full z-0 opacity-10" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="400,100 500,300 300,300" fill="black" />
+            <path d="M675,600 L875,700 L775,900 Z" fill="black" />
+        </svg>
     </section>
     
     <section id="about" class="pt-20 pb-12 bg-white">
@@ -125,7 +130,7 @@
         </div>
     </section>
 
-    <section class="bg-white py-72">
+    <section class="min-h-screen flex flex-col justify-center relative">
         <div class="container mx-auto px-6">
             <div class="pb-12 text-center">
                 <button class="text-xl font-semibold text-gray-800 border rounded-full border-gray-400 px-4 py-2">Philosopy</button>
@@ -139,9 +144,19 @@
                 <hr class="w-20 border-t-2 border-gray-600 mx-auto">
             </div>
         </div>
+
+        <svg class="absolute inset-0 w-full h-full z-0" viewBox="0 0 1440 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g class="opacity-25 stroke-gray-400" stroke-width="1">
+                <line x1="85%" y1="100%" x2="100%" y2="85%" class="stroke-current"/>
+                <line x1="80%" y1="100%" x2="95%" y2="85%" class="stroke-current"/>
+                <line x1="75%" y1="100%" x2="90%" y2="85%" class="stroke-current"/>
+            </g>
+        </svg>
+
+        <div></div>
     </section>
 
-    <section id="contact" class="mb-20 py-20 bg-white container mx-auto px-6">
+    <section id="contact" class="mb-20 py-20 container mx-auto px-6 min-h-screen flex flex-col justify-center">
         <h2 class="text-3xl text-gray-800 font-bold text-center mb-12">Contact Me</h2>
 
         <form netlify name="contact" method="POST" class="max-w-lg mx-auto">
@@ -213,7 +228,7 @@
 
             <div class="border-b border-gray-400 my-8"></div>
 
-            <div class="lg:flex justify-between tracking-widest">
+            <div class="lg:flex justify-between tracking-wider">
                 <p>© 2025 Luis Suizo. All Rights Reserved.</p>
                 <p>PORTFOLIO | Crafting Experiences | <span class="font-semibold">2023 - 2025</span>
                 </p>
