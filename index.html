@@ -12,19 +12,23 @@
 </head>
 <body>
     <header id="header" class="invisible fixed w-full bg-white z-50 h-24 md:h-auto">
+
         <div class="container mx-auto relative flex justify-center">
             <a href="#home"> <img src="./assets/logo-header.png" alt="Logo" class="h-12 w-auto hidden md:inline-block absolute left-4 top-4"></a>
-            <nav class="text-sm hidden md:flex">
-                <a href="#home" class="text-gray-600 py-8 px-8">HOME</a>
-                <a href="#about" class="text-gray-600 py-8 px-8">ABOUT</a>
-                <a href="#projects" class="text-gray-600 py-8 px-8">PROJECTS</a>
-                <a href="#contact" class="text-gray-600 py-8 px-8">CONTACT</a>
+
+            <nav class="text-sm hidden md:flex relative nav-container">
+                <p class="py-8 px-8"><a href="#home" class="text-gray-600 nav-link">HOME</a></p>
+                <p class="py-8 px-8"><a href="#about" class="text-gray-600 nav-link">ABOUT</a></p>
+                <p class="py-8 px-8"><a href="#projects" class="text-gray-600 nav-link">PROJECTS</a></p>
+                <p class="py-8 px-8"><a href="#contact" class="text-gray-600 nav-link">CONTACT</a></p>
+                <div class="traveling-underline"></div>
             </nav>
 
             <button id="open-menu" class="md:hidden">
                 <img src="./assets/menu.svg" alt="button" class="h-8 w-auto absolute right-4 top-8">
             </button>
         </div>
+
     </header>
 
     <div id="menu" class="md:hidden fixed z-50 bg-white w-full h-full top-0 left-0 transition-transform duration-300 ease-in-out hidden-menu">
@@ -32,10 +36,10 @@
             <img src="./assets/close-menu.svg" alt="button" class="h-8 w-auto absolute right-4 top-8">
         </button>
         <nav class="flex flex-col mt-16 text-3xl font-medium">
-            <a href="#home" class="text-gray-600 py-8 px-8 border-b border-gray-200">HOME</a>
-            <a href="#about" class="text-gray-600 py-8 px-8 border-b border-gray-200">ABOUT</a>
-            <a href="#projects1" class="text-gray-600 py-8 px-8 border-b border-gray-200">PROJECTS</a>
-            <a href="#contact" class="text-gray-600 py-8 px-8 border-b border-gray-200">CONTACT</a>
+            <a href="#home" class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300">HOME</a>
+            <a href="#about" class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300">ABOUT</a>
+            <a href="#projects" class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300">PROJECTS</a>
+            <a href="#contact" class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300">CONTACT</a>
 
             <div class="mt-24 flex space-x-12 ml-8">
                 <a href="https://www.linkedin.com/in/luis-suizo-4b3247130/" target="_blank"><img class="h-12 w-auto" src="./assets/LinkedIn - Negative.svg" alt="linkedin"></a>
@@ -135,7 +139,7 @@
                 </div>
             </div>
 
-            <h2 id="projects" class="text-3xl text-gray-800 font-bold text-center md:text-left mb-12">Services</h2>
+            <h2 class="text-3xl text-gray-800 font-bold text-center md:text-left mb-12">Services</h2>
             
             <div class="lg:flex lg:space-x-12 items-stretch ">
                 <div class="lg:flex-1">
@@ -164,7 +168,7 @@
                         <h3 class="text-gray-600 font-semibold text-lg">Creative & Collaborative</h3>
                     </div>
 
-                    <p id="projects1" class="text-gray-600 leading-relaxed">
+                    <p class="text-gray-600 leading-relaxed">
                         Beyond coding, I bring strong layout design and editing skills to polish visuals and content, paired with the ability to write cohesive and coherent materials. I thrive in team environments, using GitHub for version control, code reviews, and collaborative workflows – ensuring alignment with project goals from concept to deployment.
                     </p>
                 </div>
@@ -172,7 +176,7 @@
         </div>
     </section>
 
-    <section class="pb-20 container mx-auto px-6">
+    <section id="projects" class="pb-20 py-20 container mx-auto px-6">
         <h2 class="text-3xl text-gray-800 font-bold text-center md:text-left mb-12">Projects</h2>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <a href="https://citizenone.dk/book-gratis-demo-af-journalsystemet/" target="_blank">
