@@ -34,6 +34,12 @@ if (window.matchMedia('(min-width: 1024px)').matches) {
   setTimeout(() => greeting.classList.add('fade-in'), 4000);
   setTimeout(() => pangalan.classList.add('fade-in'), 5000);
   setTimeout(() => cta.classList.add('fade-in'), 6500);
+} else {
+    loader.remove();
+    header.classList.remove('invisible');
+    setTimeout(() => greeting.classList.add('fade-in'), 1000);
+    setTimeout(() => pangalan.classList.add('fade-in'), 2000);
+    setTimeout(() => cta.classList.add('fade-in'), 3500);
 }
 
 // Toggle menu function for reusability
