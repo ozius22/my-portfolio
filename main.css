@@ -56,3 +56,16 @@ body {
   stroke-dashoffset: 300;
   animation: draw 1s linear infinite;
 }
+
+.fade-out {
+  animation: fadeOut 1s forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

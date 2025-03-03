@@ -1,3 +1,62 @@
+const opening = document.createElement("div");
+opening.id = "opening";
+opening.className =
+  "fixed hidden lg:flex flex-col justify-center items-center z-10 top-0 left-0 w-full h-full bg-white";
+
+opening.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
+        <g>
+            <polygon id="triangle1" points="500,50 950,500 50,500" fill="white">
+                <animate 
+                attributeName="points" 
+                dur="3s"
+                begin="1.5s"
+                fill="freeze"
+                from="500,50 950,500 50,500" 
+                to="400,100 500,300 300,300" />
+                <animate
+                attributeName="opacity"
+                dur="3s"
+                begin="0.75s"
+                from="1"
+                to="0.1"
+                fill="freeze" />
+                <animate
+                attributeName="fill"
+                dur="1s"
+                begin="0.1s"
+                from="white"
+                to="black"
+                fill="freeze" />
+            </polygon>
+            
+            <polygon id="triangle2" points="500,950 950,500 50,500" fill="white">
+                <animate 
+                attributeName="points" 
+                dur="3s"
+                begin="1.5s"
+                fill="freeze"
+                from="500,950 950,500 50,500" 
+                to="675,600 875,700 775,900" />
+                <animate
+                attributeName="opacity"
+                dur="3s"
+                begin="0.75s"
+                from="1"
+                to="0.1"
+                fill="freeze" />
+                <animate
+                attributeName="fill"
+                dur="1s"
+                begin="0.1s"
+                from="white"
+                to="black"
+                fill="freeze" />
+            </polygon>
+        </g>
+    </svg>
+`;
+
 // smooth scrolling
 const internalLinks = document.querySelectorAll('a[href^="#"]');
 
@@ -14,31 +73,9 @@ internalLinks.forEach(anchor => {
     });
 });
 
-const loader = document.querySelector('#loader-container');
-const greeting = document.querySelector('#greeting');
-const header = document.querySelector('#header');
-const pangalan = document.querySelector('#pangalan');
-const cta = document.querySelector('#cta');
 const menu = document.getElementById('menu');
 const closeMenu = document.getElementById('close-menu');
 const openMenu = document.getElementById('open-menu');
-
-if (window.matchMedia('(min-width: 1024px)').matches) {
-    setTimeout(() => {
-        // loader.remove();
-        header.classList.remove('invisible');
-    }, 3600);
-
-    setTimeout(() => greeting.classList.add('fade-in'), 4000);
-    setTimeout(() => pangalan.classList.add('fade-in'), 5000);
-    setTimeout(() => cta.classList.add('fade-in'), 6500);
-} else {
-    loader.remove();
-    header.classList.remove('invisible');
-    setTimeout(() => greeting.classList.add('fade-in'), 1000);
-    setTimeout(() => pangalan.classList.add('fade-in'), 2000);
-    setTimeout(() => cta.classList.add('fade-in'), 3500);
-}
 
 function isMenuVisible() {
     return !menu.classList.contains('hidden-menu');
@@ -69,6 +106,38 @@ document.querySelectorAll('#menu a').forEach(navLink => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+    // FOR LOADING SCREEN AND ANIMATION
+    const loader = document.querySelector('#loader-container');
+    const greeting = document.querySelector('#greeting');
+    const header = document.querySelector('#header');
+    const pangalan = document.querySelector('#pangalan');
+    const cta = document.querySelector('#cta');
+    
+    loader.classList.add('fade-out');
+    
+    document.body.appendChild(opening)
+    
+    const diamond =  document.querySelector('#opening');
+
+    setTimeout(() => loader.remove(), 1000);
+
+    if (window.matchMedia('(min-width: 1024px)').matches) {
+        setTimeout(() => {
+            diamond.remove();
+            header.classList.remove('invisible');
+        }, 4600);
+
+        setTimeout(() => greeting.classList.add('fade-in'), 5000);
+        setTimeout(() => pangalan.classList.add('fade-in'), 6000);
+        setTimeout(() => cta.classList.add('fade-in'), 7500);
+    } else {
+        diamond.remove();
+        setTimeout(() => header.classList.remove('invisible'), 1000);
+        setTimeout(() => greeting.classList.add('fade-in'), 1000);
+        setTimeout(() => pangalan.classList.add('fade-in'), 2000);
+        setTimeout(() => cta.classList.add('fade-in'), 3500);
+    }
+
     // FOR UNDERLINE NAVIGATION
     const navLinks = document.querySelectorAll('.nav-link');
     const navContainer = document.querySelector('.nav-container');
@@ -176,4 +245,3 @@ document.addEventListener('DOMContentLoaded', () => {
     // prevent scroll in mobile-menu
     toggleBodyScroll(isMenuVisible());
 });
-
