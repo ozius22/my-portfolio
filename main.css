@@ -54,11 +54,11 @@ body {
 .loader-svg path {
   stroke-dasharray: 300;
   stroke-dashoffset: 300;
-  animation: draw 0.7s linear infinite;
+  animation: draw 0.5s linear infinite;
 }
 
 .fade-out {
-  animation: fadeOut 1s forwards;
+  animation: fadeOut 1.5s forwards;
 }
 
 @keyframes fadeOut {

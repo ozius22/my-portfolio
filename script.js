@@ -10,22 +10,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 <polygon id="triangle1" points="500,50 950,500 50,500" fill="white">
                     <animate 
                     attributeName="points" 
-                    dur="2s"
-                    begin="1s"
+                    dur="1.5s"
+                    begin="1.7s"
                     fill="freeze"
                     from="500,50 950,500 50,500" 
                     to="400,100 500,300 300,300" />
                     <animate
                     attributeName="opacity"
-                    dur="2s"
-                    begin="1s"
+                    dur="1.5s"
+                    begin="1.7s"
                     from="1"
                     to="0.1"
                     fill="freeze" />
                     <animate
                     attributeName="opacity"
-                    dur="2s"
-                    begin="1s"
+                    dur="1.5s"
+                    begin="1.7s"
                     from="1"
                     to="0.1"
                     fill="freeze" />
@@ -33,8 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     attributeName="fill" 
                     from="white" 
                     to="black" 
-                    dur="2s" 
-                    begin="1s"
+                    dur="1.5s" 
+                    begin="0.7s"
                     fill="freeze" 
                     />
                 </polygon>
@@ -42,15 +42,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 <polygon id="triangle2" points="500,950 950,500 50,500" fill="black">
                     <animate 
                     attributeName="points" 
-                    dur="2s"
-                    begin="1s"
+                    dur="1.5s"
+                    begin="1.7s"
                     fill="freeze"
                     from="500,950 950,500 50,500" 
                     to="675,600 875,700 775,900" />
                     <animate
                     attributeName="opacity"
-                    dur="2s"
-                    begin="1s"
+                    dur="1.5s"
+                    begin="1.7s"
                     from="1"
                     to="0.1"
                     fill="freeze" />
@@ -66,21 +66,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const pangalan = document.querySelector('#pangalan');
     const cta = document.querySelector('#cta');
     
-    loader.classList.add('fade-out');
-    
     document.body.appendChild(opening)
     
     const diamond =  document.querySelector('#opening');
 
-    setTimeout(() => loader.remove(), 1000);
+    setTimeout(() => loader.remove(), 1500);
 
     if (window.matchMedia('(min-width: 1024px)').matches) {
         setTimeout(() => {
             diamond.remove();
             header.classList.remove('invisible');
-        }, 4600);
+        }, 4000);
 
-        setTimeout(() => greeting.classList.add('fade-in'), 5000);
+        setTimeout(() => greeting.classList.add('fade-in'), 4500);
         setTimeout(() => pangalan.classList.add('fade-in'), 6000);
         setTimeout(() => cta.classList.add('fade-in'), 6700);
     } else {
