@@ -28,12 +28,6 @@ body {
   transform: translateX(100vw);
 }
 
-/* .loader-svg path {
-  stroke-dasharray: 200;
-  stroke-dashoffset: 200;
-  animation: draw 2s ease-in-out infinite;
-} */
-
 @keyframes draw {
   to { stroke-dashoffset: 0; }
 }
@@ -55,4 +49,10 @@ body {
   font-size: 3rem; 
   color: #000;
   font-weight: bold;
+}
+
+.loader-svg path {
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
+  animation: draw 1s linear infinite;
 }

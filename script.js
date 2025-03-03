@@ -25,7 +25,7 @@ const openMenu = document.getElementById('open-menu');
 
 if (window.matchMedia('(min-width: 1024px)').matches) {
     setTimeout(() => {
-        loader.remove();
+        // loader.remove();
         header.classList.remove('invisible');
     }, 3600);
 
@@ -68,8 +68,8 @@ document.querySelectorAll('#menu a').forEach(navLink => {
     navLink.addEventListener('click', () => toggleMenu(false));
 });
 
-// for menus or waiting document to be loaded  
 document.addEventListener('DOMContentLoaded', () => {
+    // FOR UNDERLINE NAVIGATION
     const navLinks = document.querySelectorAll('.nav-link');
     const navContainer = document.querySelector('.nav-container');
     let underline = document.querySelector('.traveling-underline');

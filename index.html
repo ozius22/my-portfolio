@@ -50,11 +50,13 @@
     </div>
 
     <div id="loader-container" class="fixed hidden lg:flex flex-col justify-center items-center z-50 top-0 left-0 w-full h-full bg-white">
+        <svg class="loader-svg" viewBox="0 0 100 100">
+            <path d="M5,50 L50,5 L95,50 L50,95 L5,50" fill="none" stroke="black" stroke-width="6"/>
+        </svg>
+        <img src="./assets/loader-logo.svg" alt="Logo" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-auto h-90 object-contain">
+    </div>
 
-        <!-- <svg class="loader-svg" viewBox="0 0 100 100">
-            <path d="M10,50 L50,10 L90,50 L50,90 L10,50" fill="none" stroke="#4B5563" stroke-width="4"/>
-        </svg> -->
-
+    <!-- <div id="loader-container" class="fixed hidden lg:flex flex-col justify-center items-center z-50 top-0 left-0 w-full h-full bg-white">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
             <g>
               <polygon id="triangle1" points="500,0 1000,500 0,500" fill="black">
@@ -92,7 +94,7 @@
               </polygon>
             </g>
         </svg>
-    </div>
+    </div> -->
     
     <section id="home" class="min-h-screen flex flex-col justify-center">
         <div class="container px-6 mx-auto z-10">
