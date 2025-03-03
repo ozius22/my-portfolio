@@ -34,12 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     from="white" 
                     to="black" 
                     dur="1.5s" 
-                    begin="0.7s"
+                    begin="1s"
                     fill="freeze" 
                     />
                 </polygon>
                 
-                <polygon id="triangle2" points="500,950 950,500 50,500" fill="black">
+                <polygon id="triangle2" points="500,950 950,500 50,500" fill="white">
                     <animate 
                     attributeName="points" 
                     dur="1.5s"
@@ -54,6 +54,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     from="1"
                     to="0.1"
                     fill="freeze" />
+                    <animate 
+                    attributeName="fill" 
+                    from="white" 
+                    to="black" 
+                    dur="1.5s" 
+                    begin="1s"
+                    fill="freeze" 
+                    />
                 </polygon>
             </g>
         </svg>
@@ -70,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const diamond =  document.querySelector('#opening');
 
-    setTimeout(() => loader.remove(), 1500);
+    setTimeout(() => loader.remove(), 1200);
 
     if (window.matchMedia('(min-width: 1024px)').matches) {
         setTimeout(() => {
