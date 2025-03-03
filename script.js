@@ -1,111 +1,49 @@
-const opening = document.createElement("div");
-opening.id = "opening";
-opening.className =
-  "fixed hidden lg:flex flex-col justify-center items-center z-10 top-0 left-0 w-full h-full bg-white";
-
-opening.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
-        <g>
-            <polygon id="triangle1" points="500,50 950,500 50,500" fill="white">
-                <animate 
-                attributeName="points" 
-                dur="3s"
-                begin="1.5s"
-                fill="freeze"
-                from="500,50 950,500 50,500" 
-                to="400,100 500,300 300,300" />
-                <animate
-                attributeName="opacity"
-                dur="3s"
-                begin="0.75s"
-                from="1"
-                to="0.1"
-                fill="freeze" />
-                <animate
-                attributeName="fill"
-                dur="1s"
-                begin="0.1s"
-                from="white"
-                to="black"
-                fill="freeze" />
-            </polygon>
-            
-            <polygon id="triangle2" points="500,950 950,500 50,500" fill="white">
-                <animate 
-                attributeName="points" 
-                dur="3s"
-                begin="1.5s"
-                fill="freeze"
-                from="500,950 950,500 50,500" 
-                to="675,600 875,700 775,900" />
-                <animate
-                attributeName="opacity"
-                dur="3s"
-                begin="0.75s"
-                from="1"
-                to="0.1"
-                fill="freeze" />
-                <animate
-                attributeName="fill"
-                dur="1s"
-                begin="0.1s"
-                from="white"
-                to="black"
-                fill="freeze" />
-            </polygon>
-        </g>
-    </svg>
-`;
-
-// smooth scrolling
-const internalLinks = document.querySelectorAll('a[href^="#"]');
-
-internalLinks.forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href');
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-            targetElement.scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
-    });
-});
-
-const menu = document.getElementById('menu');
-const closeMenu = document.getElementById('close-menu');
-const openMenu = document.getElementById('open-menu');
-
-function isMenuVisible() {
-    return !menu.classList.contains('hidden-menu');
-}
-
-function toggleBodyScroll(preventScroll) {
-    if (preventScroll) {
-        document.body.style.overflow = 'hidden';
-        document.body.style.height = '100%';
-    } else {
-        document.body.style.overflow = '';
-        document.body.style.height = '';
-}
-}
-
-// toggle menu function 
-const toggleMenu = (preventScroll) => {
-    menu.classList.toggle('hidden-menu');
-
-    toggleBodyScroll(preventScroll);
-} 
-
-// listeners for menu toggling
-closeMenu.addEventListener('click', () => toggleMenu(false));
-openMenu.addEventListener('click', () => toggleMenu(true));
-document.querySelectorAll('#menu a').forEach(navLink => {
-    navLink.addEventListener('click', () => toggleMenu(false));
-});
-
 document.addEventListener('DOMContentLoaded', () => {
+    const opening = document.createElement("div");
+    opening.id = "opening";
+    opening.className =
+      "fixed hidden lg:flex flex-col justify-center items-center z-10 top-0 left-0 w-full h-full bg-white";
+    
+    opening.innerHTML = `
+        <svg viewBox="0 0 1000 1000">
+            <g>
+                <polygon id="triangle1" points="500,50 950,500 50,500" fill="black">
+                    <animate 
+                    attributeName="points" 
+                    dur="3s"
+                    begin="1.5s"
+                    fill="freeze"
+                    from="500,50 950,500 50,500" 
+                    to="400,100 500,300 300,300" />
+                    <animate
+                    attributeName="opacity"
+                    dur="3s"
+                    begin="0.75s"
+                    from="1"
+                    to="0.1"
+                    fill="freeze" />
+                </polygon>
+                
+                <polygon id="triangle2" points="500,950 950,500 50,500" fill="black">
+                    <animate 
+                    attributeName="points" 
+                    dur="3s"
+                    begin="1.5s"
+                    fill="freeze"
+                    from="500,950 950,500 50,500" 
+                    to="675,600 875,700 775,900" />
+                    <animate
+                    attributeName="opacity"
+                    dur="3s"
+                    begin="0.75s"
+                    from="1"
+                    to="0.1"
+                    fill="freeze" />
+                </polygon>
+            </g>
+        </svg>
+    `;
+
     // FOR LOADING SCREEN AND ANIMATION
     const loader = document.querySelector('#loader-container');
     const greeting = document.querySelector('#greeting');
@@ -129,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => greeting.classList.add('fade-in'), 5000);
         setTimeout(() => pangalan.classList.add('fade-in'), 6000);
-        setTimeout(() => cta.classList.add('fade-in'), 7500);
+        setTimeout(() => cta.classList.add('fade-in'), 6700);
     } else {
         diamond.remove();
         setTimeout(() => header.classList.remove('invisible'), 1000);
@@ -214,6 +152,38 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(checkSectionInView, 500); 
 
     // MOBILE MENU
+    const menu = document.getElementById('menu');
+    const closeMenu = document.getElementById('close-menu');
+    const openMenu = document.getElementById('open-menu');
+
+    function isMenuVisible() {
+        return !menu.classList.contains('hidden-menu');
+    }
+
+    function toggleBodyScroll(preventScroll) {
+        if (preventScroll) {
+            document.body.style.overflow = 'hidden';
+            document.body.style.height = '100%';
+        } else {
+            document.body.style.overflow = '';
+            document.body.style.height = '';
+    }
+    }
+
+    // toggle menu function 
+        const toggleMenu = (preventScroll) => {
+        menu.classList.toggle('hidden-menu');
+
+        toggleBodyScroll(preventScroll);
+    } 
+
+    // listeners for menu toggling
+    closeMenu.addEventListener('click', () => toggleMenu(false));
+    openMenu.addEventListener('click', () => toggleMenu(true));
+    document.querySelectorAll('#menu a').forEach(navLink => {
+        navLink.addEventListener('click', () => toggleMenu(false));
+    });
+
     function updateMobileMenuActiveState() {
         const sections = document.querySelectorAll('section');
         const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
@@ -244,4 +214,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // prevent scroll in mobile-menu
     toggleBodyScroll(isMenuVisible());
+
+    // smooth scrolling
+    const internalLinks = document.querySelectorAll('a[href^="#"]');
+
+    internalLinks.forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
 });
