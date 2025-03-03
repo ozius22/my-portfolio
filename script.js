@@ -7,35 +7,50 @@ document.addEventListener('DOMContentLoaded', () => {
     opening.innerHTML = `
         <svg viewBox="0 0 1000 1000">
             <g>
-                <polygon id="triangle1" points="500,50 950,500 50,500" fill="black">
+                <polygon id="triangle1" points="500,50 950,500 50,500" fill="white">
                     <animate 
                     attributeName="points" 
-                    dur="3s"
-                    begin="1.5s"
+                    dur="2s"
+                    begin="1s"
                     fill="freeze"
                     from="500,50 950,500 50,500" 
                     to="400,100 500,300 300,300" />
                     <animate
                     attributeName="opacity"
-                    dur="3s"
-                    begin="0.75s"
+                    dur="2s"
+                    begin="1s"
                     from="1"
                     to="0.1"
                     fill="freeze" />
+                    <animate
+                    attributeName="opacity"
+                    dur="2s"
+                    begin="1s"
+                    from="1"
+                    to="0.1"
+                    fill="freeze" />
+                    <animate 
+                    attributeName="fill" 
+                    from="white" 
+                    to="black" 
+                    dur="2s" 
+                    begin="1s"
+                    fill="freeze" 
+                    />
                 </polygon>
                 
                 <polygon id="triangle2" points="500,950 950,500 50,500" fill="black">
                     <animate 
                     attributeName="points" 
-                    dur="3s"
-                    begin="1.5s"
+                    dur="2s"
+                    begin="1s"
                     fill="freeze"
                     from="500,950 950,500 50,500" 
                     to="675,600 875,700 775,900" />
                     <animate
                     attributeName="opacity"
-                    dur="3s"
-                    begin="0.75s"
+                    dur="2s"
+                    begin="1s"
                     from="1"
                     to="0.1"
                     fill="freeze" />
