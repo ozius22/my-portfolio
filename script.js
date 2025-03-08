@@ -85,18 +85,18 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             homeElement.scrollIntoView();
             diamond.remove();
-            header.classList.remove('invisible');
         }, 4000);
 
-        setTimeout(() => greeting.classList.add('fade-in'), 4500);
-        setTimeout(() => pangalan.classList.add('fade-in'), 6000);
-        setTimeout(() => cta.classList.add('fade-in'), 6700);
+        setTimeout(() => greeting.classList.add('fade-in'), 3500);
+        setTimeout(() => pangalan.classList.add('fade-in'), 5000);
+        setTimeout(() => cta.classList.add('fade-in'), 5700);
+        setTimeout(() => header.classList.remove('hidden-main-menu'), 7000);
     } else {
         diamond.remove();
-        setTimeout(() => header.classList.remove('invisible'), 1000);
-        setTimeout(() => greeting.classList.add('fade-in'), 1000);
+        setTimeout(() => greeting.classList.add('fade-in'), 1200);
         setTimeout(() => pangalan.classList.add('fade-in'), 2000);
-        setTimeout(() => cta.classList.add('fade-in'), 3500);
+        setTimeout(() => cta.classList.add('fade-in'), 3000);
+        setTimeout(() => header.classList.remove('hidden-main-menu'), 4500);
     }
 
     // FOR UNDERLINE NAVIGATION
