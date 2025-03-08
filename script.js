@@ -67,23 +67,41 @@ document.addEventListener('DOMContentLoaded', () => {
         </svg>
     `;
 
+    const trianglesDark = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    trianglesDark.setAttribute("id", "triangles-Dark");
+    trianglesDark.setAttribute("class", "hidden show-3xl absolute inset-0 w-full h-full z-0");
+    trianglesDark.setAttribute("viewBox", "0 0 1000 1000");
+    trianglesDark.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+
+    const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+    polygon.setAttribute("points", "400,100 500,300 300,300");
+    polygon.setAttribute("fill", "#a5b4b8");
+    polygon.setAttribute("opacity", "0.3");
+
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", "M675,600 L875,700 L775,900 Z");
+    path.setAttribute("fill", "#a5b4b8");
+    path.setAttribute("opacity", "0.3");
+
+    trianglesDark.appendChild(polygon);
+    trianglesDark.appendChild(path);
+
     // FOR LOADING SCREEN AND ANIMATION
     const loader = document.querySelector('#loader-container');
     const greeting = document.querySelector('#greeting');
     const header = document.querySelector('#header');
     const pangalan = document.querySelector('#pangalan');
     const cta = document.querySelector('#cta');
-    const homeElement = document.querySelector('#home');
+    const home = document.querySelector('#home');
     
     document.body.appendChild(opening)
     
-    const diamond =  document.querySelector('#opening');
-
     setTimeout(() => loader.remove(), 1200);
 
     if (window.matchMedia('(min-width: 1800px)').matches) {
         setTimeout(() => {
-            homeElement.scrollIntoView();
+            home.scrollIntoView();
+            document.body.removeChild(opening)
             diamond.remove();
         }, 4000);
 
@@ -92,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => cta.classList.add('fade-in'), 5700);
         setTimeout(() => header.classList.remove('hidden-main-menu'), 7000);
     } else {
-        diamond.remove();
+        document.body.removeChild(opening)
         setTimeout(() => greeting.classList.add('fade-in'), 1200);
         setTimeout(() => pangalan.classList.add('fade-in'), 2000);
         setTimeout(() => cta.classList.add('fade-in'), 3000);
@@ -174,6 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // initial check
     setTimeout(checkSectionInView, 500); 
 
+    
     // MOBILE MENU
     const menu = document.getElementById('menu');
     const closeMenu = document.getElementById('close-menu');
@@ -253,4 +272,45 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // DARK MODE
+    const darkMode = document.getElementById('switch-dark');
+    const lightMode = document.getElementById('switch-light');
+
+    const logoLight = document.getElementById('logo-light');
+    const logoDark = document.getElementById('logo-dark');
+    const darkButtons = document.querySelectorAll('.cta-dark');
+    const trianglesLight = document.getElementById('triangles-light');
+
+    function setDarkMode(enabled) {
+        // toggle the 'dark-mode' class on each element
+        header.classList.toggle('dark-mode');
+        home.classList.toggle('dark-mode');
+        navLinks.forEach(link => link.classList.toggle('dark-mode'));
+        pangalan.classList.toggle('dark-mode');
+        darkButtons.forEach(link => link.classList.toggle('dark-mode'));
+
+        // switch visibility
+        if (enabled) {
+        darkMode.classList.remove('md:block');
+        lightMode.classList.add('md:block');
+
+        logoLight.classList.remove('md:block');
+        logoDark.classList.add('md:block');
+        trianglesLight.classList.remove('show-3xl');
+        home.appendChild(trianglesDark);
+
+        } else {
+        lightMode.classList.remove('md:block');
+        darkMode.classList.add('md:block');
+
+        logoDark.classList.remove('md:block');
+        logoLight.classList.add('md:block');
+        trianglesLight.classList.add('show-3xl');
+        home.removeChild(trianglesDark);
+        }
+    }
+  
+    darkMode.addEventListener('click', () => setDarkMode(true));
+    lightMode.addEventListener('click', () => setDarkMode(false));
 });

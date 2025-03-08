@@ -40,7 +40,7 @@ body {
   position: absolute;
   bottom: 24px;
   height: 2px;
-  background-color: #bfbfc5;
+  background-color: #bfbfc5; /* gray-400 */
   transition: left 0.3s ease, width 0.3s ease, opacity 0.3s ease;
   opacity: 0;
 }
@@ -79,3 +79,28 @@ body {
     display: block !important;
   }
 }
+
+/* dark mode properties */
+header.dark-mode, #home.dark-mode {
+  background-color: #111827; /* gray-900 */
+}
+
+.nav-link.dark-mode {
+  color: #bfbfc5; /* gray-400 */
+}
+
+#pangalan.dark-mode {
+  color: #e5e7eb; /* gray-200 */
+}
+
+.cta-dark.dark-mode {
+  background-color: #e5e7eb; /* gray-200 */
+  color: #111827; /* gray-900 */
+}
+
+.cta-dark.dark-mode:hover {
+  background-color: #111827; /* gray-900 */
+  color: #e5e7eb; /* gray-200 */
+  border-color: #e5e7eb; /* gray-200 */
+}
+
