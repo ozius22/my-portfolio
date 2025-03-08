@@ -73,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const header = document.querySelector('#header');
     const pangalan = document.querySelector('#pangalan');
     const cta = document.querySelector('#cta');
+    const homeElement = document.querySelector('#home');
     
     document.body.appendChild(opening)
     
@@ -82,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (window.matchMedia('(min-width: 1800px)').matches) {
         setTimeout(() => {
+            homeElement.scrollIntoView();
             diamond.remove();
             header.classList.remove('invisible');
         }, 4000);
