@@ -69,3 +69,9 @@ body {
     opacity: 0.5;
   }
 }
+
+@media (min-width: 1800px) {
+  .show-3xl {
+    display: block !important;
+  }
+}

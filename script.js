@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setTimeout(() => loader.remove(), 1200);
 
-    if (window.matchMedia('(min-width: 1024px)').matches) {
+    if (window.matchMedia('(min-width: 1800px)').matches) {
         setTimeout(() => {
             diamond.remove();
             header.classList.remove('invisible');
