@@ -81,26 +81,72 @@ body {
 }
 
 /* dark mode properties */
-header.dark-mode, #home.dark-mode {
+header.dark-mode, #home.dark-mode, #about.dark-mode, #projects.dark-mode, body.dark-mode, #contact.dark-mode, #philosopy.dark-mode, #menu.dark-mode {
   background-color: #111827; /* gray-900 */
 }
 
-.nav-link.dark-mode {
-  color: #bfbfc5; /* gray-400 */
+#project.dark-mode {
+  background-color: #111827; /* gray-900 */
+  box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.1), 
+              0 2px 4px -2px rgba(255, 255, 255, 0.1);
+  transition: box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 
-#pangalan.dark-mode {
-  color: #e5e7eb; /* gray-200 */
+#project.dark-mode:hover {
+  box-shadow: 0 20px 25px -5px rgba(255, 255, 255, 0.3), 
+              0 10px 10px -5px rgba(255, 255, 255, 0.15);
+}
+
+#pangalan.dark-mode, h2.dark-mode {
+  color: #f2f5f6; 
+}
+
+.nav-link.dark-mode, .mobile-nav-link.dark-mode, p.dark-mode, h3.dark-mode, h4.dark-mode {
+  color: #9ca2ae; 
+}
+
+.mobile-nav-link.dark-mode:hover {
+  color: white;
+}
+
+.mobile-nav-link.active-section.dark-mode {
+  color: white;
 }
 
 .cta-dark.dark-mode {
-  background-color: #e5e7eb; /* gray-200 */
+  background-color: #f2f5f6; 
   color: #111827; /* gray-900 */
 }
 
 .cta-dark.dark-mode:hover {
   background-color: #111827; /* gray-900 */
-  color: #e5e7eb; /* gray-200 */
-  border-color: #e5e7eb; /* gray-200 */
+  color: #f2f5f6; 
+  border-color: #f2f5f6;
 }
 
+#portrait.dark-mode {
+  display: none;
+}
+
+#portrait-dark.dark-mode {
+  display: block;
+}
+
+#cta-light.dark-mode, #form-field.dark-mode {
+  background-color: #111827; /* gray-900 */
+  color: #f2f5f6; 
+  border: 1px solid #f2f5f6; 
+}
+
+#cta-light.dark-mode:hover {
+  background-color: #f2f5f6; 
+  color: #111827; /* gray-900 */
+}
+
+#backend.dark-mode, #frontend.dark-mode, #others.dark-mode, #linkedIn.dark-mode, #git.dark-mode, #insta.dark-mode {
+  display: none;
+}
+
+#backend1.dark-mode, #frontend1.dark-mode, #others1.dark-mode, #linkedIn1.dark-mode, #git1.dark-mode, #insta1.dark-mode {
+  display: inline-block;
+}

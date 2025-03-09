@@ -75,13 +75,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
     polygon.setAttribute("points", "400,100 500,300 300,300");
-    polygon.setAttribute("fill", "#a5b4b8");
-    polygon.setAttribute("opacity", "0.3");
+    polygon.setAttribute("fill", "#313F5C");
+    polygon.setAttribute("opacity", "1");
 
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
     path.setAttribute("d", "M675,600 L875,700 L775,900 Z");
-    path.setAttribute("fill", "#a5b4b8");
-    path.setAttribute("opacity", "0.3");
+    path.setAttribute("fill", "#313F5C");
+    path.setAttribute("opacity", "1");
 
     trianglesDark.appendChild(polygon);
     trianglesDark.appendChild(path);
@@ -197,6 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const menu = document.getElementById('menu');
     const closeMenu = document.getElementById('close-menu');
     const openMenu = document.getElementById('open-menu');
+    const mobileLinks = document.querySelectorAll('#menu a');
 
     function isMenuVisible() {
         return !menu.classList.contains('hidden-menu');
@@ -222,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // listeners for menu toggling
     closeMenu.addEventListener('click', () => toggleMenu(false));
     openMenu.addEventListener('click', () => toggleMenu(true));
-    document.querySelectorAll('#menu a').forEach(navLink => {
+    mobileLinks.forEach(navLink => {
         navLink.addEventListener('click', () => toggleMenu(false));
     });
 
@@ -276,11 +277,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // DARK MODE
     const darkMode = document.getElementById('switch-dark');
     const lightMode = document.getElementById('switch-light');
+    const darkModeMobile = document.getElementById('switch-dark-mobile');
+    const lightModeMobile = document.getElementById('switch-light-mobile');
 
     const logoLight = document.getElementById('logo-light');
     const logoDark = document.getElementById('logo-dark');
     const darkButtons = document.querySelectorAll('.cta-dark');
     const trianglesLight = document.getElementById('triangles-light');
+    const about = document.getElementById('about');
+    const portrait = document.getElementById('portrait');
+    const portraitDark = document.getElementById('portrait-dark');
+    const ctaLight = document.getElementById('cta-light');
+    const elements = document.querySelectorAll('p, h3, h4, h2');
+    const serviceLogos = document.querySelectorAll('#backend, #backend1, #frontend, #frontend1, #others, #others1');
+    const sections = document.querySelectorAll('#projects, body, #contact, #philosopy, footer');
+    const projects = document.querySelectorAll('#project');
+    const fields = document.querySelectorAll('#form-field');
+    const menuIcons = document.querySelectorAll('#linkedIn, #linkedIn1, #git, #git1, #insta, #insta1');
 
     function setDarkMode(enabled) {
         // toggle the 'dark-mode' class on each element
@@ -289,11 +302,25 @@ document.addEventListener('DOMContentLoaded', () => {
         navLinks.forEach(link => link.classList.toggle('dark-mode'));
         pangalan.classList.toggle('dark-mode');
         darkButtons.forEach(link => link.classList.toggle('dark-mode'));
-
+        about.classList.toggle('dark-mode');
+        portraitDark.classList.toggle('dark-mode');
+        portrait.classList.toggle('dark-mode');
+        ctaLight.classList.toggle('dark-mode');
+        elements.forEach(link => link.classList.toggle('dark-mode'));
+        serviceLogos.forEach(link => link.classList.toggle('dark-mode'));
+        sections.forEach(link => link.classList.toggle('dark-mode'));
+        projects.forEach(link => link.classList.toggle('dark-mode'));
+        fields.forEach(link => link.classList.toggle('dark-mode'));
+        menu.classList.toggle('dark-mode');
+        mobileLinks.forEach(link => link.classList.toggle('dark-mode'));
+        menuIcons.forEach(link => link.classList.toggle('dark-mode'));
+        
         // switch visibility
         if (enabled) {
         darkMode.classList.remove('md:block');
         lightMode.classList.add('md:block');
+        darkModeMobile.classList.add('hidden');
+        lightModeMobile.classList.remove('hidden');
 
         logoLight.classList.remove('md:block');
         logoDark.classList.add('md:block');
@@ -303,6 +330,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
         lightMode.classList.remove('md:block');
         darkMode.classList.add('md:block');
+        darkModeMobile.classList.remove('hidden');
+        lightModeMobile.classList.add('hidden');
 
         logoDark.classList.remove('md:block');
         logoLight.classList.add('md:block');
@@ -313,4 +342,6 @@ document.addEventListener('DOMContentLoaded', () => {
   
     darkMode.addEventListener('click', () => setDarkMode(true));
     lightMode.addEventListener('click', () => setDarkMode(false));
+    darkModeMobile.addEventListener('click', () => setDarkMode(true));
+    lightModeMobile.addEventListener('click', () => setDarkMode(false));
 });

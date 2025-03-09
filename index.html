@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="./main.css">
     <script src="./script.js" defer></script>
 </head>
-<body class="">
+<body class="bg-white">
     <header id="header" class="fixed w-full bg-white z-50 h-24 md:h-auto transition-transform duration-300 ease-in-out hidden-main-menu">
 
         <div class="container mx-auto relative flex justify-center">
@@ -34,7 +34,7 @@
             </nav>
 
             <button id="open-menu" class="md:hidden">
-                <img src="./assets/menu.svg" alt="button" class="h-8 w-auto absolute right-4 top-8">
+                <img src="./assets/menu1.svg" alt="button" class="h-8 w-auto absolute right-4 top-8">
             </button>
         </div>
 
@@ -42,19 +42,36 @@
 
     <div id="menu" class="md:hidden fixed z-50 bg-white w-full h-full top-0 left-0 transition-transform duration-300 ease-in-out hidden-menu">
         <button id="close-menu">
-            <img src="./assets/close-menu.svg" alt="button" class="h-8 w-auto absolute right-4 top-8">
+            <img src="./assets/close-menu1.svg" alt="button" class="h-8 w-auto absolute right-4 top-8">
+            
         </button>
         <nav class="flex flex-col mt-16 text-3xl font-medium">
-            <a href="#home" class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300">HOME</a>
-            <a href="#about" class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300">ABOUT</a>
-            <a href="#projects" class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300">PROJECTS</a>
-            <a href="#contact" class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300">CONTACT</a>
+            <a href="#home" class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300 tracking-wider">HOME</a>
+            <a href="#about" class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300 tracking-wider">ABOUT</a>
+            <a href="#projects" class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300 tracking-wider">PROJECTS</a>
+            <a href="#contact" class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300 tracking-wider">CONTACT</a>
 
-            <div class="mt-24 flex space-x-12 ml-8">
-                <a href="https://www.linkedin.com/in/luis-suizo-4b3247130/" target="_blank"><img class="h-12 w-auto" src="./assets/LinkedIn - Negative.svg" alt="linkedin"></a>
-                <a href="https://github.com/ozius22" target="_blank"><img class="h-12 w-auto" src="./assets/Github - Negative.svg" alt="git"></a>
-                <a href="https://www.instagram.com/__ozius__/" target="_blank"><img class="h-12 w-auto" src="./assets/Instagram - Negative.svg" alt="instagram"></a>
+            <div class="mt-24 flex ml-8">
+                <a href="https://www.linkedin.com/in/luis-suizo-4b3247130/" target="_blank"><img class="h-12 w-auto mr-12" id="linkedIn" src="./assets/LinkedIn - Negative.svg" alt="linkedin"></a>
+                <a href="https://www.linkedin.com/in/luis-suizo-4b3247130/" target="_blank"><img class="h-12 w-auto hidden mr-12" id="linkedIn1" src="./assets/linkedin.svg" alt="linkedin"></a>
+
+                <a href="https://github.com/ozius22" target="_blank"><img class="h-12 w-auto mr-12" id="git" src="./assets/Github - Negative.svg" alt="git"></a>
+                <a href="https://github.com/ozius22" target="_blank"><img class="h-12 w-auto mr-12 hidden" id="git1" src="./assets/github.svg" alt="git"></a>
+
+                <a href="https://www.instagram.com/__ozius__/" target="_blank"><img class="h-12 w-auto mr-12" id="insta" src="./assets/Instagram - Negative.svg" alt="instagram"></a>
+                <a href="https://www.instagram.com/__ozius__/" target="_blank"><img class="h-12 w-auto mr-12 hidden" id="insta1" src="./assets/instagram.svg" alt="instagram"></a>
+
             </div>
+
+            <button class="absolute bottom-0 right-0 mb-8 mr-8 md:hidden flex" id="switch-dark-mobile">
+                <img src="./assets/switch-on.svg" alt="button" class="h-16 w-auto mr-2">
+                <p class="text-lg text-gray-600 my-auto font-semibold">Turn Off Light</p>
+            </button>
+
+            <button id="switch-light-mobile" class="hidden md:hidden flex absolute bottom-0 right-0 mb-8 mr-8">
+                <img src="./assets/switch-off.svg" alt="button" class="h-16 w-auto mr-2">
+                <p class="text-lg text-gray-600 my-auto font-semibold">Turn On Light</p>
+            </button>
         </nav>
     </div>
 
@@ -64,7 +81,7 @@
         </svg>
     </div>
 
-    <section id="home" class="min-h-screen flex flex-col justify-center">
+    <section id="home" class="min-h-screen flex flex-col justify-center bg-white">
         <div class="container px-6 mx-auto z-10">
             <div class="text-center">
                 <p id="greeting" class="text-sm text-gray-400 mb-8 italic relative lg:right-80 md:text-xl">Hey there, I'm</p>
@@ -83,8 +100,9 @@
     
     <section id="about" class="pt-20 pb-12 bg-white">
         <div class="container mx-auto px-6">
-            <div class="mb-24 lg:items-stretch md:mb-12 lg:flex lg:space-x-24">
-                <img src="./assets/my-portrait.png" alt="a portrait" class="object-contain mx-auto lg:mx-0 md:max-h-[500px] fade-bottom">
+            <div class="mb-24 lg:items-stretch md:mb-12 lg:flex">
+                <img id="portrait" src="./assets/my-portrait.png" alt="a portrait" class="object-contain mx-auto lg:mx-0 md:max-h-[500px] fade-bottom lg:mr-24">
+                <img id="portrait-dark" src="./assets/my-portrait-dark1.png" alt="a portrait" class="hidden object-contain mx-auto lg:mx-0 md:max-h-[500px] fade-bottom lg:mr-24">
 
                 <div class="mt-8 lg:my-auto lg:flex-1">
                     <h2 class="text-gray-600 text-center font-semibold mb-12 text-3xl md:text-5xl lg:text-left">I’m  a Full-Stack Web Developer</h2>
@@ -102,7 +120,7 @@
                         <a href="./assets/CV - Suizo.pdf" download target="_blank" class="cta-dark bg-gray-800 text-gray-200 transition duration-300 text-xs font-medium tracking-widest border border-transparent px-6 py-3 mt-4 xl:mt-28 hover:bg-white hover:text-gray-800 hover:border hover:border-gray-800 md:px-12 md:text-sm">
                             VIEW CV
                         </a>
-                        <a href="#contact" class="bg-white text-gray-800 transition duration-300 text-xs font-medium tracking-widest border border-gray-800 px-6 py-3 mt-28 hover:bg-gray-800 hover:text-gray-200 hover:border hover:border-transparent md:px-12 md:text-sm">
+                        <a href="#contact" id="cta-light" class="bg-white text-gray-800 transition duration-300 text-xs font-medium tracking-widest border border-gray-800 px-6 py-3 mt-28 hover:bg-gray-800 hover:text-gray-200 hover:border hover:border-transparent md:px-12 md:text-sm">
                             GET IN TOUCH WITH ME
                         </a>
                     </div>
@@ -113,32 +131,38 @@
             
             <div class="lg:flex lg:space-x-12 items-stretch ">
                 <div class="lg:flex-1">
-                    <div class="flex space-x-4 mb-8 items-center">
-                        <img src="./assets/backend.svg" alt="backend" class="w-12">
+                    <div class="flex mb-8 items-center">
+                        <img src="./assets/backend.svg" alt="backend" class="w-12 mr-4" id="backend">
+                        <img src="./assets/backend1.svg" alt="backend" class="w-12 hidden mr-4" id="backend1">
+
                         <h3 class="text-gray-600 font-semibold text-lg">Backend Development</h3>
                     </div>
                     
-                    <p class="text-gray-600 leading-relaxed">
+                    <p class="text-gray-600 leading-relaxed tracking-wider">
                         I architect scalable systems, design efficient APIs, and manage databases using languages like PHP with Laravel and Python. My focus is on security, clean code, and performance optimization to ensure robust functionality that powers seamless interactions behind the scenes.
                     </p>
                 </div>
                 <div class="mt-12 lg:mt-0 lg:flex-1">
-                    <div class="flex space-x-4 mb-8 items-center">
-                        <img src="./assets/client.svg" alt="frontend" class="w-12">
+                    <div class="flex mb-8 items-center">
+                        <img src="./assets/client.svg" alt="frontend" class="w-12 mr-4" id="frontend">
+                        <img src="./assets/client1.svg" alt="frontend" class="w-12 mr-4 hidden" id="frontend1">
+
                         <h3 class="text-gray-600 font-semibold text-lg">Client-Side Development</h3>
                     </div>
 
-                    <p class="text-gray-600 leading-relaxed">
+                    <p class="text-gray-600 leading-relaxed tracking-wider">
                         I craft intuitive, visually engaging user interfaces using modern tools like Vue with Nuxt.js, Tailwind CSS, and JavaScript, while designing prototypes and mockups in Figma or Photoshop. I prioritize responsive design and seamless UX/UI, transforming complex ideas into user-friendly experiences and optimizing performance for fast, accessible, and cross-device compatibility.
                     </p>
                 </div>
                 <div class="mt-12 lg:mt-0 lg:flex-1">
-                    <div class="flex space-x-4 mb-8 items-center">
-                        <img src="./assets/others.svg" alt="others" class="w-12">
+                    <div class="flex mb-8 items-center">
+                        <img src="./assets/others.svg" alt="others" class="w-12 mr-4" id="others">
+                        <img src="./assets/others1.svg" alt="others" class="w-12 mr-4 hidden" id="others1">
+
                         <h3 class="text-gray-600 font-semibold text-lg">Creative & Collaborative</h3>
                     </div>
 
-                    <p class="text-gray-600 leading-relaxed">
+                    <p class="text-gray-600 leading-relaxed tracking-wider">
                         Beyond coding, I bring strong layout design and editing skills to polish visuals and content, paired with the ability to write cohesive and coherent materials. I thrive in team environments, using GitHub for version control, code reviews, and collaborative workflows – ensuring alignment with project goals from concept to deployment.
                     </p>
                 </div>
@@ -146,11 +170,11 @@
         </div>
     </section>
 
-    <section id="projects" class="pb-20 py-20 container mx-auto px-6">
+    <section id="projects" class="pb-20 py-20 container mx-auto px-6 bg-white">
         <h2 class="text-3xl text-gray-800 font-bold text-center md:text-left mb-12">Projects</h2>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <a href="https://citizenone.dk/book-gratis-demo-af-journalsystemet/" target="_blank">
-                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300">
+                <div id="project" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300">
                     <img src="./assets/citizenone.png" alt="citizenone">
                     <div class="p-6">
                         <h3 class="text-gray-600 text-xl font-semibold mb-2">CitizenOne</h3>
@@ -160,7 +184,7 @@
             </a>
     
             <a href="https://github.com/ozius22/theft-prediction-system.git" target="_blank">
-                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300">
+                <div id="project" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300">
                     <img src="./assets/thesis.png" alt="thesis">
                     <div class="p-6">
                         <h3 class="text-gray-600 text-xl font-semibold mb-2">Theft Prediction System</h3>
@@ -171,10 +195,10 @@
         </div>
     </section>
 
-    <section class="min-h-screen flex flex-col justify-center relative">
+    <section id="philosopy" class="min-h-screen flex flex-col justify-center relative bg-white">
         <div class="container mx-auto px-6">
             <div class="pb-12 text-center">
-                <button class="text-xl font-semibold text-gray-800 border rounded-full border-gray-400 px-4 py-2">Philosopy</button>
+                <button class="text-xl font-semibold text-gray-800 border rounded-full border-gray-400 px-4 py-2"><h2>Philosopy</h2></button>
             </div>
 
             <div class="pb-12 text-center">
@@ -182,44 +206,47 @@
             </div>
 
             <div class="text-center">
-                <hr class="w-20 border-t-2 border-gray-600 mx-auto">
+                <hr class="w-20 border-t-2 border-gray-400 mx-auto">
             </div>
         </div>
 
         <svg class="hidden lg:block lg:absolute inset-0 w-full h-full z-0" viewBox="0 0 1440 800" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g class="opacity-25 stroke-gray-400" stroke-width="1">
-                <line x1="85%" y1="100%" x2="100%" y2="85%" class="stroke-current"/>
-                <line x1="80%" y1="100%" x2="95%" y2="85%" class="stroke-current"/>
-                <line x1="75%" y1="100%" x2="90%" y2="85%" class="stroke-current"/>
+            <g class="opacity-100" stroke="#9CA3AF" stroke-width="1">
+                <line x1="85%" y1="100%" x2="100%" y2="85%"/>
+                <line x1="80%" y1="100%" x2="95%" y2="85%"/>
+                <line x1="75%" y1="100%" x2="90%" y2="85%"/>
             </g>
         </svg>
 
         <div></div>
     </section>
 
-    <section id="contact" class="mb-20 py-20 container mx-auto px-6 min-h-screen flex flex-col justify-center">
+    <section id="contact" class="mb-20 py-20 container mx-auto px-6 min-h-screen flex flex-col justify-center bg-white">
         <h2 class="text-3xl text-gray-800 font-bold text-center mb-12">Contact Me</h2>
 
         <form netlify name="contact" method="POST" class="w-full max-w-lg lg:max-w-xl mx-auto">
             <input type="hidden" name="form-name" value="contact">
         
-            <div class="mb-6">
+            <div  class="mb-6">
                 <input 
+                id="form-field"
                 name="name" 
                 placeholder="Your Name" 
                 class="w-full px-4 py-2 border focus:outline-none focus:border-blue-500"
                 required>
             </div>
-            <div class="mb-6">
+            <div  class="mb-6">
                 <input 
+                id="form-field"
                 type="email" 
                 name="email" 
                 placeholder="Your Email" 
                 class="w-full px-4 py-2 border focus:outline-none focus:border-blue-500"
                 required>
             </div>
-            <div class="mb-6">
+            <div  class="mb-6">
                 <textarea 
+                id="form-field"
                 name="message" 
                 rows="4" 
                 placeholder="Your Message" 
@@ -234,7 +261,7 @@
             </form>
     </section>
 
-    <footer class="bg-gray-900">
+    <footer class="bg-black">
         <div class="py-12 px-6 container mx-auto text-gray-400">
 
             <div class="mb-12">
