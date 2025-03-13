@@ -102,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             home.scrollIntoView();
             document.body.removeChild(opening)
-            diamond.remove();
         }, 4000);
 
         setTimeout(() => greeting.classList.add('fade-in'), 3500);
