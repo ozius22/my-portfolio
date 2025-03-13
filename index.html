@@ -8,7 +8,6 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./main.css">
-    <script id="usercentrics-cmp" src="https://app.usercentrics.eu/browser-ui/latest/loader.js" data-settings-id="DHr2CfQ91zdqQm" async></script>
     <script src="./script.js" defer></script>
 </head>
 <body class="bg-white">
@@ -43,7 +42,7 @@
 
     <div id="menu" class="md:hidden fixed z-50 bg-white w-full h-full top-0 left-0 transition-transform duration-300 ease-in-out hidden-menu">
         <button id="close-menu">
-            <img src="./assets/close-menu1.svg" alt="button" class="h-8 w-auto absolute left-8 top-8">
+            <img src="./assets/close-menu1.svg" alt="button" class="h-8 w-auto absolute right-8 top-8">
         </button>
 
         <nav class="flex flex-col mt-16 text-3xl font-medium">
@@ -62,15 +61,15 @@
                 <a href="https://www.instagram.com/__ozius__/" target="_blank"><img class="h-12 w-auto mr-12" id="insta" src="./assets/Instagram - Negative.svg" alt="instagram"></a>
                 <a href="https://www.instagram.com/__ozius__/" target="_blank"><img class="h-12 w-auto mr-12 hidden" id="insta1" src="./assets/instagram.svg" alt="instagram"></a>
             </div>
-
-            <button class="absolute top-8 right-8 md:hidden" id="switch-dark-mobile">
-                <p class="font-semibold text-gray-600 text-base">Turn Off Light</p>
-            </button>
-
-            <button id="switch-light-mobile" class="hidden md:hidden absolute top-8 right-8">
-                <p class="font-semibold text-gray-600 text-base">Turn On Light</p>
-            </button>
         </nav>
+
+        <button class="absolute top-8 mt-2 left-8 md:hidden" id="switch-dark-mobile">
+            <p class="font-medium text-gray-400 text-base">Turn Off Light</p>
+        </button>
+
+        <button id="switch-light-mobile" class="hidden md:hidden absolute top-8 mt-2 left-8">
+            <p class="font-medium text-gray-400 text-base">Turn On Light</p>
+        </button>
     </div>
 
     <div id="loader-container" class="fixed flex flex-col justify-center items-center z-50 top-0 left-0 w-full h-full bg-white fade-out">
@@ -130,37 +129,37 @@
             <div class="lg:flex lg:space-x-12 items-stretch ">
                 <div class="lg:flex-1">
                     <div class="flex mb-8 items-center">
-                        <img src="./assets/backend.svg" alt="backend" class="w-12 mr-4" id="backend">
-                        <img src="./assets/backend1.svg" alt="backend" class="w-12 hidden mr-4" id="backend1">
+                        <img src="./assets/backend.svg" alt="backend" class="w-8 mr-4" id="backend">
+                        <img src="./assets/backend1.svg" alt="backend" class="w-8 hidden mr-4" id="backend1">
 
-                        <h3 class="text-gray-600 font-semibold text-lg">Backend Development</h3>
+                        <h3 class="text-gray-600 font-medium text-lg">Backend Development</h3>
                     </div>
                     
-                    <p class="text-gray-600 leading-relaxed tracking-wider">
+                    <p class="text-gray-600 leading-relaxed tracking-wide">
                         I architect scalable systems, design efficient APIs, and manage databases using languages like PHP with Laravel and Python. My focus is on security, clean code, and performance optimization to ensure robust functionality that powers seamless interactions behind the scenes.
                     </p>
                 </div>
                 <div class="mt-12 lg:mt-0 lg:flex-1">
                     <div class="flex mb-8 items-center">
-                        <img src="./assets/client.svg" alt="frontend" class="w-12 mr-4" id="frontend">
-                        <img src="./assets/client1.svg" alt="frontend" class="w-12 mr-4 hidden" id="frontend1">
+                        <img src="./assets/client.svg" alt="frontend" class="w-8 mr-4" id="frontend">
+                        <img src="./assets/client1.svg" alt="frontend" class="w-8 mr-4 hidden" id="frontend1">
 
-                        <h3 class="text-gray-600 font-semibold text-lg">Client-Side Development</h3>
+                        <h3 class="text-gray-600 font-medium text-lg">Client-Side Development</h3>
                     </div>
 
-                    <p class="text-gray-600 leading-relaxed tracking-wider">
+                    <p class="text-gray-600 leading-relaxed tracking-wide">
                         I craft intuitive, visually engaging user interfaces using modern tools like Vue with Nuxt.js, Tailwind CSS, and JavaScript, while designing prototypes and mockups in Figma or Photoshop. I prioritize responsive design and seamless UX/UI, transforming complex ideas into user-friendly experiences and optimizing performance for fast, accessible, and cross-device compatibility.
                     </p>
                 </div>
                 <div class="mt-12 lg:mt-0 lg:flex-1">
                     <div class="flex mb-8 items-center">
-                        <img src="./assets/others.svg" alt="others" class="w-12 mr-4" id="others">
-                        <img src="./assets/others1.svg" alt="others" class="w-12 mr-4 hidden" id="others1">
+                        <img src="./assets/others.svg" alt="others" class="w-8 mr-4" id="others">
+                        <img src="./assets/others1.svg" alt="others" class="w-8 mr-4 hidden" id="others1">
 
-                        <h3 class="text-gray-600 font-semibold text-lg">Creative & Collaborative</h3>
+                        <h3 class="text-gray-600 font-medium text-lg">Creative & Collaborative</h3>
                     </div>
 
-                    <p class="text-gray-600 leading-relaxed tracking-wider">
+                    <p class="text-gray-600 leading-relaxed tracking-wide">
                         Beyond coding, I bring strong layout design and editing skills to polish visuals and content, paired with the ability to write cohesive and coherent materials. I thrive in team environments, using GitHub for version control, code reviews, and collaborative workflows – ensuring alignment with project goals from concept to deployment.
                     </p>
                 </div>
@@ -175,7 +174,7 @@
                 <div id="project" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300">
                     <img src="./assets/citizenone.png" alt="citizenone">
                     <div class="p-6">
-                        <h3 class="text-gray-600 text-xl font-semibold mb-2">CitizenOne</h3>
+                        <h3 class="text-gray-600 text-xl font-medium mb-2">CitizenOne</h3>
                         <p class="text-gray-600">On-the-Job Training</p>
                     </div>
                 </div>
@@ -185,7 +184,7 @@
                 <div id="project" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300">
                     <img src="./assets/thesis.png" alt="thesis">
                     <div class="p-6">
-                        <h3 class="text-gray-600 text-xl font-semibold mb-2">Theft Prediction System</h3>
+                        <h3 class="text-gray-600 text-xl font-medium mb-2">Theft Prediction System</h3>
                         <p class="text-gray-600">Capstone Project</p>
                     </div>
                 </div>
@@ -196,11 +195,11 @@
     <section id="philosopy" class="min-h-screen flex flex-col justify-center relative bg-white">
         <div class="container mx-auto px-6">
             <div class="pb-12 text-center">
-                <button class="text-xl font-semibold text-gray-800 border rounded-full border-gray-400 px-4 py-2"><h2>Philosopy</h2></button>
+                <button class="text-xl font-semibold tracking-wider text-gray-800 border rounded-full border-gray-400 px-4 py-2"><h3>Philosopy</h3></button>
             </div>
 
             <div class="pb-12 text-center">
-                <p class="text-3xl text-gray-600 tracking-wider leading-relaxed">"There are two ways of constructing a software design: One way is to make it so simple that there are obviously no deficiencies, and the other way is to make it so complicated that there are no obvious deficiencies. The first method is far more difficult."</p>
+                <p class="text-3xl text-gray-600 tracking-wide leading-relaxed">"There are two ways of constructing a software design: One way is to make it so simple that there are obviously no deficiencies, and the other way is to make it so complicated that there are no obvious deficiencies. The first method is far more difficult."</p>
             </div>
 
             <div class="text-center">
