@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             document.body.style.overflow = '';
             document.body.style.height = '';
-    }
+        }
     }
 
     // toggle menu function 
