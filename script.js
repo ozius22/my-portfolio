@@ -217,7 +217,21 @@ document.addEventListener('DOMContentLoaded', () => {
         menu.classList.toggle('hidden-menu');
 
         toggleBodyScroll(preventScroll);
-    } 
+    }
+
+    function closeMenuAndRestoreScroll() {
+        if (isMenuVisible()) {
+            menu.classList.add('hidden-menu');
+            toggleBodyScroll(false);
+        }
+    }
+
+    function handleViewportChange() {
+        const desktopView = window.innerWidth > 768; 
+        if (desktopView) {
+            closeMenuAndRestoreScroll();
+        }
+    }
 
     // listeners for menu toggling
     closeMenu.addEventListener('click', () => toggleMenu(false));
@@ -225,6 +239,8 @@ document.addEventListener('DOMContentLoaded', () => {
     mobileLinks.forEach(navLink => {
         navLink.addEventListener('click', () => toggleMenu(false));
     });
+
+    window.addEventListener('resize', handleViewportChange);
 
     function updateMobileMenuActiveState() {
         const sections = document.querySelectorAll('section');
@@ -253,6 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // initial check
     setTimeout(updateMobileMenuActiveState, 500);
+    handleViewportChange();
 
     // prevent scroll in mobile-menu
     toggleBodyScroll(isMenuVisible());
