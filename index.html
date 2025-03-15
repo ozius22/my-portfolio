@@ -11,10 +11,10 @@
     <script src="./script.js" defer></script>
 </head>
 <body class="bg-white">
-    <header id="header" class="fixed w-full bg-white z-50 h-24 md:h-auto transition-transform duration-300 ease-in-out hidden-main-menu">
+    <header id="header" class="fixed w-full bg-white z-50 h-20 md:h-24 md:h-auto transition-transform duration-300 ease-in-out hidden-main-menu shadow-md md:shadow-none">
 
         <div class="container mx-auto relative flex justify-center">
-            <a href="#home"> <img src="./assets/logo-header.png" alt="Logo" class="h-12 w-auto hidden md:inline-block absolute left-4 top-4" id="logo-light"></a>
+            <a href="#home"> <img src="./assets/logo-header.svg" alt="Logo" class="h-12 w-auto block absolute left-4 top-4" id="logo-light"></a>
             <a href="#home"> <img src="./assets/logo-header-dark.png" alt="Logo" class="h-12 w-auto hidden absolute left-4 top-4" id="logo-dark"></a>
 
             <nav class="text-sm hidden md:flex relative nav-container">
@@ -34,7 +34,7 @@
             </nav>
 
             <button id="open-menu" class="md:hidden">
-                <img src="./assets/menu1.svg" alt="button" class="h-8 w-auto absolute right-4 top-8">
+                <img src="./assets/menu1.svg" alt="button" class="h-8 w-auto absolute right-4 top-6">
             </button>
         </div>
 
@@ -42,7 +42,7 @@
 
     <div id="menu" class="md:hidden fixed z-50 bg-white w-full h-full top-0 left-0 transition-transform duration-300 ease-in-out hidden-menu">
         <button id="close-menu">
-            <img src="./assets/close-menu1.svg" alt="button" class="h-8 w-auto absolute right-8 top-8">
+            <img src="./assets/close-menu1.svg" alt="button" class="h-8 w-auto absolute right-4 top-8">
         </button>
 
         <nav class="flex flex-col mt-16 text-3xl font-medium">
@@ -258,7 +258,7 @@
             </form>
     </section>
 
-    <footer class="bg-black">
+    <footer class="bg-gray-900">
         <div class="py-12 px-6 container mx-auto text-gray-400">
 
             <div class="mb-12">
