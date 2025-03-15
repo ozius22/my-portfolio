@@ -10,21 +10,21 @@ const opening = document.createElement("div");
                     <animate 
                     attributeName="points" 
                     dur="1.5s"
-                    begin="1.7s"
+                    begin="0.2s"
                     fill="freeze"
                     from="500,50 950,500 50,500" 
                     to="400,100 500,300 300,300" />
                     <animate
                     attributeName="opacity"
                     dur="1.5s"
-                    begin="1.7s"
+                    begin="0.2s"
                     from="1"
                     to="0.1"
                     fill="freeze" />
                     <animate
                     attributeName="opacity"
                     dur="1.5s"
-                    begin="1.7s"
+                    begin="0.2s"
                     from="1"
                     to="0.1"
                     fill="freeze" />
@@ -35,14 +35,14 @@ const opening = document.createElement("div");
                     <animate 
                     attributeName="points" 
                     dur="1.5s"
-                    begin="1.7s"
+                    begin="0.2s"
                     fill="freeze"
                     from="500,950 950,500 50,500" 
                     to="675,600 875,700 775,900" />
                     <animate
                     attributeName="opacity"
                     dur="1.5s"
-                    begin="1.7s"
+                    begin="0.2s"
                     from="1"
                     to="0.1"
                     fill="freeze" />
@@ -52,29 +52,50 @@ const opening = document.createElement("div");
         </svg>
     `;
 
+const loader = document.querySelector('#loader-container');
 document.addEventListener('DOMContentLoaded', () => {
-    document.body.appendChild(opening)
-    
     setTimeout(() => loader.remove(), 1000);
+});
+
+const observer = new MutationObserver((mutationsList) => {
+    for (let mutation of mutationsList) {
+        if (mutation.removedNodes.length > 0) {
+            mutation.removedNodes.forEach((node) => {
+                if (node.id === "loader-container") {
+                    onLoaderRemoved();
+                    observer.disconnect(); 
+                }
+            });
+        }
+    }
+});
+
+if (loader && loader.parentNode) {
+    observer.observe(loader.parentNode, { childList: true });
+}
+
+function onLoaderRemoved() {
+    const delay = 2000;
 
     if (window.matchMedia('(min-width: 1800px)').matches) {
+        document.body.appendChild(opening)
+
         setTimeout(() => {
             home.scrollIntoView();
             document.body.removeChild(opening)
-        }, 4000);
+        }, 4000 - delay);
 
-        setTimeout(() => greeting.classList.add('fade-in'), 3500);
-        setTimeout(() => pangalan.classList.add('fade-in'), 5000);
-        setTimeout(() => cta.classList.add('fade-in'), 5700);
-        setTimeout(() => header.classList.remove('hidden-main-menu'), 7000);
+        setTimeout(() => greeting.classList.add('fade-in'), 3500 - delay);
+        setTimeout(() => pangalan.classList.add('fade-in'), 5000 - delay);
+        setTimeout(() => cta.classList.add('fade-in'), 5700 - delay);
+        setTimeout(() => header.classList.remove('hidden-main-menu'), 7000- delay);
     } else {
-        document.body.removeChild(opening)
-        setTimeout(() => greeting.classList.add('fade-in'), 1200);
-        setTimeout(() => pangalan.classList.add('fade-in'), 2000);
-        setTimeout(() => cta.classList.add('fade-in'), 3000);
-        setTimeout(() => header.classList.remove('hidden-main-menu'), 4500);
+        greeting.classList.add('fade-in')
+        setTimeout(() => pangalan.classList.add('fade-in'), 700);
+        setTimeout(() => cta.classList.add('fade-in'), 3000 - delay);
+        setTimeout(() => header.classList.remove('hidden-main-menu'), 4000 - delay);
     }
-});
+}
 
 // FOR UNDERLINE NAVIGATION
 const navLinks = document.querySelectorAll('.nav-link');
@@ -271,7 +292,6 @@ trianglesDark.appendChild(polygon);
 trianglesDark.appendChild(path);
 
 // FOR LOADING SCREEN AND ANIMATION
-const loader = document.querySelector('#loader-container');
 const greeting = document.querySelector('#greeting');
 const header = document.querySelector('#header');
 const pangalan = document.querySelector('#pangalan');
