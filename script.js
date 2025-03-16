@@ -368,3 +368,16 @@ darkMode.addEventListener('click', () => setDarkMode(true));
 lightMode.addEventListener('click', () => setDarkMode(false));
 darkModeMobile.addEventListener('click', () => setDarkMode(true));
 lightModeMobile.addEventListener('click', () => setDarkMode(false));
+
+const scrollObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+    if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target); 
+    }
+    });
+}, { threshold: 0.1 }); 
+
+document.querySelectorAll('.animate-on-scroll').forEach(el => {
+    scrollObserver.observe(el);
+});

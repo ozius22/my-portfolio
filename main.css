@@ -168,3 +168,15 @@ header.dark-mode, #home.dark-mode, #about.dark-mode, #projects.dark-mode, body.d
   scrollbar-width: thin;
   scrollbar-color: #9ca3af transparent;
 }
+
+/* animate on scroll */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
