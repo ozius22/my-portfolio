@@ -144,3 +144,27 @@ header.dark-mode, #home.dark-mode, #about.dark-mode, #projects.dark-mode, body.d
 #backend1.dark-mode, #frontend1.dark-mode, #others1.dark-mode, #linkedIn1.dark-mode, #git1.dark-mode, #insta1.dark-mode {
   display: inline-block;
 }
+
+/* scroll bar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #9ca3af;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #9ca3af transparent;
+}
