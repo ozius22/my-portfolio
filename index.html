@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Luis Suizo</title>
-        <link rel="icon" href="./assets/favicon1.ico">
-    
-        <link rel="preload" href="https://cdn.jsdelivr.net/npm/tailwindcss@^2/dist/tailwind.min.css" as="style">
-        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" as="style" crossorigin="anonymous">
-        <link rel="preload" href="./script.js" as="script">
-    
-        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" crossorigin="anonymous">
-    
-        <link rel="stylesheet" href="./main.css">
-        <script src="./script.js" defer></script>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luis Suizo</title>
+    <link rel="icon" href="./assets/favicon1.ico">
+
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/tailwindcss@^2/dist/tailwind.min.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" as="style" crossorigin="anonymous">
+    <link rel="preload" href="./script.js" as="script">
+
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="./main.css">
+    <script src="./script.js" defer></script>
+</head>
+
 <body class="bg-white">
     <header id="header" class="fixed w-full bg-white z-50 h-20 md:h-24 md:h-auto transition-transform duration-300 ease-in-out hidden-main-menu">
 
@@ -39,7 +40,7 @@
                 </button>
             </nav>
 
-            <button id="open-menu" class="md:hidden absolute right-4 top-6">
+            <button id="open-menu" class="md:hidden absolute right-4 top-8">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" class="h-8 w-auto text-gray-400">
                     <rect width="256" height="256" fill="none"/>
                     <circle cx="128" cy="128" r="24" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="16"/>
@@ -119,15 +120,16 @@
                 <div class="mt-8 lg:my-auto lg:flex-1">
                     <h3 class="text-gray-600 text-center font-semibold mb-12 text-3xl md:text-5xl lg:text-left">I’m  a Full-Stack Web Developer</h3>
                     <div class="grid grid-cols-3 md:grid-cols-5 gap-8 md:gap-y-4 w-64 md:w-96 mx-auto lg:mx-0">
-                        <img src="./assets/laravel.png" alt="Icon 1" class="w-16 object-contain mx-auto md:mx-0">
-                        <img src="./assets/git.png" alt="Icon 3" class="w-16 object-contain mx-auto md:mx-0">
-                        <img src="./assets/python.png" alt="Icon 5" class="w-16 object-contain mx-auto md:mx-0">
-                        <img src="./assets/javascript.png" alt="Icon 4" class="w-16 object-contain mx-auto md:mx-0">
-                        <img src="./assets/tailwindcss.png" alt="Icon 7" class="w-16 object-contain mx-auto md:mx-0">
-                        <img src="./assets/nuxtjs.png" alt="Icon 6" class="w-16 object-contain mx-auto md:mx-0">
-                        <img src="./assets/mysql.png" alt="Icon 8" class="w-16 object-contain mx-auto md:mx-0">
-                        <img src="./assets/figma.png" alt="Icon 9" class="w-16 object-contain mx-auto md:mx-0">
+                        <img src="./assets/laravel.png" title="Laravel" alt="Icon 1" class="w-16 object-contain mx-auto md:mx-0 cursor-pointer transform transition-all duration-150 ease-in-out hover:scale-110">
+                        <img src="./assets/git.png" title="Git" alt="Icon 3" class="w-16 object-contain mx-auto md:mx-0 cursor-pointer transform transition-all duration-150 ease-in-out hover:scale-110">
+                        <img src="./assets/python.png" title="Python" alt="Icon 5" class="w-16 object-contain mx-auto md:mx-0 cursor-pointer transform transition-all duration-150 ease-in-out hover:scale-110">
+                        <img src="./assets/javascript.png" title="JavaScript" alt="Icon 4" class="w-16 object-contain mx-auto md:mx-0 cursor-pointer transform transition-all duration-150 ease-in-out hover:scale-110">
+                        <img src="./assets/tailwindcss.png" title="Tailwind" alt="Icon 7" class="w-16 object-contain mx-auto md:mx-0 cursor-pointer transform transition-all duration-150 ease-in-out hover:scale-110">
+                        <img src="./assets/nuxtjs.png" title="Nuxtjs" alt="Icon 6" class="w-16 object-contain mx-auto md:mx-0 cursor-pointer transform transition-all duration-150 ease-in-out hover:scale-110">
+                        <img src="./assets/mysql.png" title="Mysql" alt="Icon 8" class="w-16 object-contain mx-auto md:mx-0 cursor-pointer transform transition-all duration-150 ease-in-out hover:scale-110">
+                        <img src="./assets/figma.png" title="Figma" alt="Icon 9" class="w-16 object-contain mx-auto md:mx-0 cursor-pointer transform transition-all duration-150 ease-in-out hover:scale-110">
                     </div>
+                    
                     <div class="text-center flex flex-col-reverse -mt-8 xl:mt-28 xl:text-left xl:block xl:space-x-4">
                         <a href="./assets/CV - Suizo.pdf" download target="_blank" class="cta-dark bg-gray-800 text-gray-200 transition duration-300 text-xs font-medium tracking-widest border border-transparent px-6 py-3 mt-4 xl:mt-28 hover:bg-white hover:text-gray-800 hover:border hover:border-gray-800 md:px-12 md:text-sm">
                             VIEW CV
