@@ -292,8 +292,8 @@ function setDarkMode(enabled) {
         darkModeMobile.classList.add('hidden');
         lightModeMobile.classList.remove('hidden');
 
-        logoLight.classList.add('hidden');
-        logoDark.classList.remove('hidden');
+        logoLight.classList.remove('md:block');
+        logoDark.classList.add('md:block');
         trianglesLight.classList.remove('show-3xl');
         home.appendChild(trianglesDark);
     } else {
@@ -302,8 +302,8 @@ function setDarkMode(enabled) {
         darkModeMobile.classList.remove('hidden');
         lightModeMobile.classList.add('hidden');
 
-        logoDark.classList.add('hidden');
-        logoLight.classList.remove('hidden');
+        logoDark.classList.remove('md:block');
+        logoLight.classList.add('md:block');
         trianglesLight.classList.add('show-3xl');
         home.removeChild(trianglesDark);
     }

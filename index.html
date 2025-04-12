@@ -20,7 +20,7 @@
     <header id="header" class="fixed w-full bg-white z-50 h-20 md:h-24 md:h-auto transition-transform duration-300 ease-in-out hidden-main-menu">
 
         <div class="container mx-auto relative flex justify-center">
-            <a href="#home"> <img src="./assets/logo-header.svg" alt="Logo" class="h-12 w-auto block absolute left-4 top-4" id="logo-light"></a>
+            <a href="#home"> <img src="./assets/logo-header.svg" alt="Logo" class="h-12 w-auto hidden md:block absolute left-4 top-4" id="logo-light"></a>
             <a href="#home"> <img src="./assets/logo-header-dark.png" alt="Logo" class="h-12 w-auto hidden absolute left-4 top-4" id="logo-dark"></a>
 
             <nav class="text-sm hidden md:flex relative nav-container">
@@ -39,16 +39,23 @@
                 </button>
             </nav>
 
-            <button id="open-menu" class="md:hidden">
-                <img src="./assets/menu1.svg" alt="button" class="h-8 w-auto absolute right-4 top-6">
+            <button id="open-menu" class="md:hidden absolute right-4 top-6">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" class="h-8 w-auto text-gray-400">
+                    <rect width="256" height="256" fill="none"/>
+                    <circle cx="128" cy="128" r="24" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="16"/>
+                    <circle cx="128" cy="48" r="24" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="16"/>
+                    <circle cx="128" cy="208" r="24" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="16"/>
+                </svg>
             </button>
         </div>
-
     </header>
 
     <div id="menu" class="md:hidden fixed z-50 bg-white w-full h-full top-0 left-0 transition-transform duration-300 ease-in-out hidden-menu">
-        <button id="close-menu">
-            <img src="./assets/close-menu1.svg" alt="button" class="h-8 w-auto absolute right-4 top-8">
+        <button id="close-menu" class="absolute right-4 top-8 text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
+                <line x1="200" y1="56" x2="56" y2="200" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/>
+                <line x1="200" y1="200" x2="56" y2="56" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/>
+            </svg>
         </button>
 
         <nav class="flex flex-col mt-16 text-3xl font-medium">
@@ -69,11 +76,11 @@
             </div>
         </nav>
 
-        <button class="absolute top-8 mt-2 left-8 md:hidden" id="switch-dark-mobile">
+        <button class="absolute top-8 mt-2 left-4 md:hidden" id="switch-dark-mobile">
             <p class="font-medium text-gray-400 text-base">Turn Off Light</p>
         </button>
 
-        <button id="switch-light-mobile" class="hidden md:hidden absolute top-8 mt-2 left-8">
+        <button id="switch-light-mobile" class="hidden md:hidden absolute top-8 mt-2 left-4">
             <p class="font-medium text-gray-400 text-base">Turn On Light</p>
         </button>
     </div>
