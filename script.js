@@ -1,7 +1,8 @@
 // ---------- Opening Animation Element ----------
 const opening = document.createElement("div");
 opening.id = "opening";
-opening.className = "fixed hidden lg:flex flex-col justify-center items-center z-10 top-0 left-0 w-full h-full bg-white";
+opening.className =
+  "fixed hidden lg:flex flex-col justify-center items-center z-10 top-0 left-0 w-full h-full bg-white";
 opening.innerHTML = `
     <svg viewBox="0 0 1000 1000">
         <g>
@@ -52,213 +53,238 @@ opening.innerHTML = `
 `;
 
 // ---------- DOM Element References ----------
-const loader = document.querySelector('#loader-container');
-const greeting = document.querySelector('#greeting');
-const header = document.querySelector('#header');
-const pangalan = document.querySelector('#pangalan');
-const cta = document.querySelector('#cta');
-const home = document.querySelector('#home');
-const navLinks = document.querySelectorAll('.nav-link');
-const navContainer = document.querySelector('.nav-container');
-let underline = document.querySelector('.traveling-underline');
-const menu = document.getElementById('menu');
-const closeMenu = document.getElementById('close-menu');
-const openMenu = document.getElementById('open-menu');
-const mobileLinks = document.querySelectorAll('#menu a');
-const darkMode = document.getElementById('switch-dark');
-const lightMode = document.getElementById('switch-light');
-const darkModeMobile = document.getElementById('switch-dark-mobile');
-const lightModeMobile = document.getElementById('switch-light-mobile');
-const logoLight = document.getElementById('logo-light');
-const logoDark = document.getElementById('logo-dark');
-const darkButtons = document.querySelectorAll('.cta-dark');
-const trianglesLight = document.getElementById('triangles-light');
-const about = document.getElementById('about');
-const portrait = document.getElementById('portrait');
-const portraitDark = document.getElementById('portrait-dark');
-const ctaLight = document.getElementById('cta-light');
-const elements = document.querySelectorAll('p, h3, h4, h2');
-const serviceLogos = document.querySelectorAll('#backend, #backend1, #frontend, #frontend1, #others, #others1');
-const sections = document.querySelectorAll('#projects, body, #contact, #philosopy, footer');
-const projects = document.querySelectorAll('#project');
-const fields = document.querySelectorAll('#form-field');
-const menuIcons = document.querySelectorAll('#linkedIn, #linkedIn1, #git, #git1, #insta, #insta1');
+const loader = document.querySelector("#loader-container");
+const greeting = document.querySelector("#greeting");
+const header = document.querySelector("#header");
+const pangalan = document.querySelector("#pangalan");
+const cta = document.querySelector("#cta");
+const home = document.querySelector("#home");
+const navLinks = document.querySelectorAll(".nav-link");
+const navContainer = document.querySelector(".nav-container");
+let underline = document.querySelector(".traveling-underline");
+const menu = document.getElementById("menu");
+const closeMenu = document.getElementById("close-menu");
+const openMenu = document.getElementById("open-menu");
+const mobileLinks = document.querySelectorAll("#menu a");
+const darkMode = document.getElementById("switch-dark");
+const lightMode = document.getElementById("switch-light");
+const darkModeMobile = document.getElementById("switch-dark-mobile");
+const lightModeMobile = document.getElementById("switch-light-mobile");
+const logoLight = document.getElementById("logo-light");
+const logoDark = document.getElementById("logo-dark");
+const darkButtons = document.querySelectorAll(".cta-dark");
+const trianglesLight = document.getElementById("triangles-light");
+const about = document.getElementById("about");
+const portrait = document.getElementById("portrait");
+const portraitDark = document.getElementById("portrait-dark");
+const ctaLight = document.getElementById("cta-light");
+const elements = document.querySelectorAll("p, h3, h4, h2");
+const serviceLogos = document.querySelectorAll(
+  "#backend, #backend1, #frontend, #frontend1, #others, #others1"
+);
+const sections = document.querySelectorAll(
+  "#projects, body, #contact, #philosopy, footer"
+);
+const projects = document.querySelectorAll("#project");
+const fields = document.querySelectorAll("#form-field");
+const menuIcons = document.querySelectorAll(
+  "#linkedIn, #linkedIn1, #git, #git1, #insta, #insta1"
+);
 
 // Track current active navigation item
 let currentActive = null;
 
 // ---------- Loader Handling ----------
-document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => loader.remove(), 1000);
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => loader.remove(), 1000);
 });
 
 const observer = new MutationObserver((mutationsList) => {
-    for (let mutation of mutationsList) {
-        if (mutation.removedNodes.length > 0) {
-            mutation.removedNodes.forEach((node) => {
-                if (node.id === "loader-container") {
-                    onLoaderRemoved();
-                    observer.disconnect(); 
-                }
-            });
+  for (let mutation of mutationsList) {
+    if (mutation.removedNodes.length > 0) {
+      mutation.removedNodes.forEach((node) => {
+        if (node.id === "loader-container") {
+          onLoaderRemoved();
+          observer.disconnect();
         }
+      });
     }
+  }
 });
 
 if (loader && loader.parentNode) {
-    observer.observe(loader.parentNode, { childList: true });
+  observer.observe(loader.parentNode, { childList: true });
 }
 
 function onLoaderRemoved() {
-    const delay = 2000;
-    const isLargeScreen = window.matchMedia('(min-width: 1800px)').matches;
-    
-    if (isLargeScreen) {
-        document.body.appendChild(opening);
+  const delay = 2000;
+  const isLargeScreen = window.matchMedia("(min-width: 1800px)").matches;
 
-        setTimeout(() => {
-            home.scrollIntoView();
-            document.body.removeChild(opening);
-        }, 4000 - delay);
+  if (isLargeScreen) {
+    document.body.appendChild(opening);
 
-        setTimeout(() => greeting.classList.add('fade-in'), 3500 - delay);
-        setTimeout(() => pangalan.classList.add('fade-in'), 5000 - delay);
-        setTimeout(() => cta.classList.add('fade-in'), 5700 - delay);
-        setTimeout(() => header.classList.remove('hidden-main-menu'), 7000 - delay);
-    } else {
-        greeting.classList.add('fade-in');
-        setTimeout(() => pangalan.classList.add('fade-in'), 700);
-        setTimeout(() => cta.classList.add('fade-in'), 3000 - delay);
-        setTimeout(() => header.classList.remove('hidden-main-menu'), 4000 - delay);
-    }
+    setTimeout(() => {
+      home.scrollIntoView();
+      document.body.removeChild(opening);
+    }, 4000 - delay);
+
+    setTimeout(() => greeting.classList.add("fade-in"), 3500 - delay);
+    setTimeout(() => pangalan.classList.add("fade-in"), 5000 - delay);
+    setTimeout(() => cta.classList.add("fade-in"), 5700 - delay);
+    setTimeout(() => header.classList.remove("hidden-main-menu"), 7000 - delay);
+  } else {
+    greeting.classList.add("fade-in");
+    setTimeout(() => pangalan.classList.add("fade-in"), 700);
+    setTimeout(() => cta.classList.add("fade-in"), 3000 - delay);
+    setTimeout(() => header.classList.remove("hidden-main-menu"), 4000 - delay);
+  }
 }
 
 // ---------- Navigation Underline ----------
 function positionUnderline(element, show = true) {
-    if (!element || !underline) return;
-    
-    const rect = element.getBoundingClientRect();
-    const parentRect = navContainer.getBoundingClientRect();
+  if (!element || !underline) return;
 
-    const width = rect.width * 1.2;
-    const leftOffset = rect.left - parentRect.left + (rect.width - width) / 2;
-    
-    underline.style.width = `${width}px`;
-    underline.style.left = `${leftOffset}px`;
-    underline.style.opacity = show ? '1' : '0';
+  const rect = element.getBoundingClientRect();
+  const parentRect = navContainer.getBoundingClientRect();
+
+  const width = rect.width * 1.2;
+  const leftOffset = rect.left - parentRect.left + (rect.width - width) / 2;
+
+  underline.style.width = `${width}px`;
+  underline.style.left = `${leftOffset}px`;
+  underline.style.opacity = show ? "1" : "0";
 }
 
 // Handle hover on nav links
-navLinks.forEach(link => {
-    link.addEventListener('mouseenter', () => {
-        positionUnderline(link);
-    });
+navLinks.forEach((link) => {
+  link.addEventListener("mouseenter", () => {
+    positionUnderline(link);
+  });
 
-    link.addEventListener('mouseleave', () => {
-        if (currentActive) {
-            positionUnderline(currentActive);
-        } else {
-            if (underline) underline.style.opacity = '0';
-        }
-    });
+  link.addEventListener("mouseleave", () => {
+    if (currentActive) {
+      positionUnderline(currentActive);
+    } else {
+      if (underline) underline.style.opacity = "0";
+    }
+  });
 });
 
 // Check which section is in view for navigation highlighting
 function checkSectionInView() {
-    const sections = document.querySelectorAll('section');
-    let found = false;
+  const sections = document.querySelectorAll("section");
+  let found = false;
 
-    sections.forEach(section => {
-        if (!section) return;
-        
-        const rect = section.getBoundingClientRect();
-        const id = section.id;
-        
-        // Check if section is in middle of viewport
-        if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
-            const correspondingLink = document.querySelector(`.nav-link[href="#${id}"]`);
-            
-            navLinks.forEach(link => link.classList.remove('active'));
-            if (correspondingLink) {
-                correspondingLink.classList.add('active');
-                currentActive = correspondingLink;
-                positionUnderline(correspondingLink);
-            }
-            found = true;
-        }
-    });
+  sections.forEach((section) => {
+    if (!section) return;
 
-    if (!found) {
-        currentActive = null;
-        if (underline) underline.style.opacity = '0';
+    const rect = section.getBoundingClientRect();
+    const id = section.id;
+
+    // Check if section is in middle of viewport
+    if (
+      rect.top <= window.innerHeight / 2 &&
+      rect.bottom >= window.innerHeight / 2
+    ) {
+      const correspondingLink = document.querySelector(
+        `.nav-link[href="#${id}"]`
+      );
+
+      navLinks.forEach((link) => link.classList.remove("active"));
+      if (correspondingLink) {
+        correspondingLink.classList.add("active");
+        currentActive = correspondingLink;
+        positionUnderline(correspondingLink);
+      }
+      found = true;
     }
+  });
+
+  if (!found) {
+    currentActive = null;
+    if (underline) underline.style.opacity = "0";
+  }
 }
 
 // ---------- Mobile Menu Functions ----------
 function isMenuVisible() {
-    return !menu.classList.contains('hidden-menu');
+  return !menu.classList.contains("hidden-menu");
 }
 
 function toggleBodyScroll(preventScroll) {
-    if (preventScroll) {
-        document.body.style.overflow = 'hidden';
-        document.body.style.height = '100%';
-    } else {
-        document.body.style.overflow = '';
-        document.body.style.height = '';
-    }
+  if (preventScroll) {
+    document.body.style.overflow = "hidden";
+    document.body.style.height = "100%";
+  } else {
+    document.body.style.overflow = "";
+    document.body.style.height = "";
+  }
 }
 
 function toggleMenu(preventScroll) {
-    menu.classList.toggle('hidden-menu');
-    toggleBodyScroll(preventScroll);
+  menu.classList.toggle("hidden-menu");
+  toggleBodyScroll(preventScroll);
 }
 
 function closeMenuAndRestoreScroll() {
-    if (isMenuVisible()) {
-        menu.classList.add('hidden-menu');
-        toggleBodyScroll(false);
-    }
+  if (isMenuVisible()) {
+    menu.classList.add("hidden-menu");
+    toggleBodyScroll(false);
+  }
 }
 
 function handleViewportChange() {
-    const desktopView = window.innerWidth > 768; 
-    if (desktopView) {
-        closeMenuAndRestoreScroll();
-    }
+  const desktopView = window.innerWidth > 768;
+  if (desktopView) {
+    closeMenuAndRestoreScroll();
+  }
 }
 
 // Update active state in mobile menu
 function updateMobileMenuActiveState() {
-    const sections = document.querySelectorAll('section');
-    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-    
-    sections.forEach(section => {
-        if (!section) return;
-        
-        const rect = section.getBoundingClientRect();
-        const id = section.id;
-        
-        if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
-            const correspondingLink = document.querySelector(`.mobile-nav-link[href="#${id}"]`);
-            
-            mobileNavLinks.forEach(link => link.classList.remove('active-section'));
-            if (correspondingLink) {
-                correspondingLink.classList.add('active-section');
-            }
-        }
-    });
+  const sections = document.querySelectorAll("section");
+  const mobileNavLinks = document.querySelectorAll(".mobile-nav-link");
+
+  sections.forEach((section) => {
+    if (!section) return;
+
+    const rect = section.getBoundingClientRect();
+    const id = section.id;
+
+    if (
+      rect.top <= window.innerHeight / 2 &&
+      rect.bottom >= window.innerHeight / 2
+    ) {
+      const correspondingLink = document.querySelector(
+        `.mobile-nav-link[href="#${id}"]`
+      );
+
+      mobileNavLinks.forEach((link) => link.classList.remove("active-section"));
+      if (correspondingLink) {
+        correspondingLink.classList.add("active-section");
+      }
+    }
+  });
 }
 
 // ---------- Dark Mode Setup ----------
 // Create dark mode triangles SVG
-const trianglesDark = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+const trianglesDark = document.createElementNS(
+  "http://www.w3.org/2000/svg",
+  "svg"
+);
 trianglesDark.setAttribute("id", "triangles-Dark");
-trianglesDark.setAttribute("class", "hidden show-3xl absolute inset-0 w-full h-full z-0");
+trianglesDark.setAttribute(
+  "class",
+  "hidden show-3xl absolute inset-0 w-full h-full z-0"
+);
 trianglesDark.setAttribute("viewBox", "0 0 1000 1000");
 trianglesDark.setAttribute("xmlns", "http://www.w3.org/2000/svg");
 
-const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+const polygon = document.createElementNS(
+  "http://www.w3.org/2000/svg",
+  "polygon"
+);
 polygon.setAttribute("points", "400,100 500,300 300,300");
 polygon.setAttribute("fill", "#313F5C");
 polygon.setAttribute("opacity", "1");
@@ -273,93 +299,109 @@ trianglesDark.appendChild(path);
 
 // Dark mode toggle function
 function setDarkMode(enabled) {
-    // Toggle the 'dark-mode' class on elements
-    const elementsToToggle = [
-        header, home, ...navLinks, pangalan, ...darkButtons, 
-        about, portraitDark, portrait, ctaLight, ...elements, 
-        ...serviceLogos, ...sections, ...projects, ...fields, 
-        menu, ...mobileLinks, ...menuIcons
-    ];
-    
-    elementsToToggle.forEach(el => {
-        if (el) el.classList.toggle('dark-mode');
-    });
-    
-    // Switch visibility based on mode
-    if (enabled) {
-        darkMode.classList.remove('md:block');
-        lightMode.classList.add('md:block');
-        darkModeMobile.classList.add('hidden');
-        lightModeMobile.classList.remove('hidden');
+  // Toggle the 'dark-mode' class on elements
+  const elementsToToggle = [
+    header,
+    home,
+    ...navLinks,
+    pangalan,
+    ...darkButtons,
+    about,
+    portraitDark,
+    portrait,
+    ctaLight,
+    ...elements,
+    ...serviceLogos,
+    ...sections,
+    ...projects,
+    ...fields,
+    menu,
+    ...mobileLinks,
+    ...menuIcons,
+  ];
 
-        logoLight.classList.remove('md:block');
-        logoDark.classList.add('md:block');
-        trianglesLight.classList.remove('show-3xl');
-        home.appendChild(trianglesDark);
-    } else {
-        lightMode.classList.remove('md:block');
-        darkMode.classList.add('md:block');
-        darkModeMobile.classList.remove('hidden');
-        lightModeMobile.classList.add('hidden');
+  elementsToToggle.forEach((el) => {
+    if (el) el.classList.toggle("dark-mode");
+  });
 
-        logoDark.classList.remove('md:block');
-        logoLight.classList.add('md:block');
-        trianglesLight.classList.add('show-3xl');
-        home.removeChild(trianglesDark);
-    }
+  // Switch visibility based on mode
+  if (enabled) {
+    darkMode.classList.remove("md:block");
+    lightMode.classList.add("md:block");
+    darkModeMobile.classList.add("hidden");
+    lightModeMobile.classList.remove("hidden");
+
+    logoLight.classList.remove("md:block");
+    logoDark.classList.add("md:block");
+    trianglesLight.classList.remove("show-3xl");
+    home.appendChild(trianglesDark);
+  } else {
+    lightMode.classList.remove("md:block");
+    darkMode.classList.add("md:block");
+    darkModeMobile.classList.remove("hidden");
+    lightModeMobile.classList.add("hidden");
+
+    logoDark.classList.remove("md:block");
+    logoLight.classList.add("md:block");
+    trianglesLight.classList.add("show-3xl");
+    home.removeChild(trianglesDark);
+  }
 }
 
 // ---------- Scroll Animation ----------
-const scrollObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target); 
-        }
+const scrollObserver = new IntersectionObserver(
+  (entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      }
     });
-}, { threshold: 0.1 }); 
+  },
+  { threshold: 0.1 }
+);
 
 // ---------- Event Listeners ----------
 // Navigation and scrolling
-window.addEventListener('scroll', checkSectionInView);
-window.addEventListener('scroll', updateMobileMenuActiveState);
-window.addEventListener('resize', () => {
-    if (currentActive) positionUnderline(currentActive);
+window.addEventListener("scroll", checkSectionInView);
+window.addEventListener("scroll", updateMobileMenuActiveState);
+window.addEventListener("resize", () => {
+  if (currentActive) positionUnderline(currentActive);
 });
-window.addEventListener('resize', handleViewportChange);
+window.addEventListener("resize", handleViewportChange);
 
 // Mobile menu
-closeMenu.addEventListener('click', () => toggleMenu(false));
-openMenu.addEventListener('click', () => toggleMenu(true));
-mobileLinks.forEach(navLink => {
-    navLink.addEventListener('click', () => toggleMenu(false));
+closeMenu.addEventListener("click", () => toggleMenu(false));
+openMenu.addEventListener("click", () => toggleMenu(true));
+mobileLinks.forEach((navLink) => {
+  navLink.addEventListener("click", () => toggleMenu(false));
 });
 
 // Dark mode toggle
-darkMode.addEventListener('click', () => setDarkMode(true));
-lightMode.addEventListener('click', () => setDarkMode(false));
-darkModeMobile.addEventListener('click', () => setDarkMode(true));
-lightModeMobile.addEventListener('click', () => setDarkMode(false));
+darkMode.addEventListener("click", () => setDarkMode(true));
+lightMode.addEventListener("click", () => setDarkMode(false));
+darkModeMobile.addEventListener("click", () => setDarkMode(true));
+lightModeMobile.addEventListener("click", () => setDarkMode(false));
 
 // Smooth scrolling for internal links
 const internalLinks = document.querySelectorAll('a[href^="#"]');
-internalLinks.forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href');
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-            targetElement.scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
-    });
+internalLinks.forEach((anchor) => {
+  anchor.addEventListener("click", function (e) {
+    e.preventDefault();
+    const targetId = this.getAttribute("href");
+    const targetElement = document.querySelector(targetId);
+    if (targetElement) {
+      targetElement.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+  });
 });
 
 // ---------- Initialize ----------
 // Set up scroll animations
-document.querySelectorAll('.animate-on-scroll').forEach(el => {
-    scrollObserver.observe(el);
+document.querySelectorAll(".animate-on-scroll").forEach((el) => {
+  scrollObserver.observe(el);
 });
 
 // Initial checks

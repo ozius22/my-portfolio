@@ -1,322 +1,705 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Luis Suizo</title>
-    <link rel="icon" href="./assets/favicon1.ico">
+    <link rel="icon" href="./assets/favicon1.ico" />
 
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/tailwindcss@^2/dist/tailwind.min.css" as="style">
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" as="style" crossorigin="anonymous">
-    <link rel="preload" href="./script.js" as="script">
+    <link
+      rel="preload"
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@^2/dist/tailwind.min.css"
+      as="style"
+    />
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      as="style"
+      crossorigin="anonymous"
+    />
+    <link rel="preload" href="./script.js" as="script" />
 
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" crossorigin="anonymous">
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@^2/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+      crossorigin="anonymous"
+    />
 
-    <link rel="stylesheet" href="./main.css">
+    <link rel="stylesheet" href="./main.css" />
     <script src="./script.js" defer></script>
-</head>
+  </head>
 
-<body class="bg-white">
-    <header id="header" class="fixed w-full bg-white z-50 h-20 md:h-24 md:h-auto transition-transform duration-300 ease-in-out hidden-main-menu">
+  <body class="bg-white">
+    <header
+      id="header"
+      class="fixed w-full bg-white z-50 h-20 md:h-24 md:h-auto transition-transform duration-300 ease-in-out hidden-main-menu"
+    >
+      <div class="container mx-auto relative flex justify-center">
+        <a href="#home">
+          <img
+            src="./assets/logo-header.svg"
+            alt="Logo"
+            class="h-12 w-auto hidden md:block absolute left-4 top-4"
+            id="logo-light"
+        /></a>
+        <a href="#home">
+          <img
+            src="./assets/logo-header-dark.png"
+            alt="Logo"
+            class="h-12 w-auto hidden absolute left-4 top-4"
+            id="logo-dark"
+        /></a>
 
-        <div class="container mx-auto relative flex justify-center">
-            <a href="#home"> <img src="./assets/logo-header.svg" alt="Logo" class="h-12 w-auto hidden md:block absolute left-4 top-4" id="logo-light"></a>
-            <a href="#home"> <img src="./assets/logo-header-dark.png" alt="Logo" class="h-12 w-auto hidden absolute left-4 top-4" id="logo-dark"></a>
+        <nav class="text-sm hidden md:flex relative nav-container">
+          <p class="py-8 px-8">
+            <a href="#home" class="text-gray-600 nav-link">HOME</a>
+          </p>
+          <p class="py-8 px-8">
+            <a href="#about" class="text-gray-600 nav-link">ABOUT</a>
+          </p>
+          <p class="py-8 px-8">
+            <a href="#projects" class="text-gray-600 nav-link">PROJECTS</a>
+          </p>
+          <p class="py-8 px-8">
+            <a href="#contact" class="text-gray-600 nav-link">CONTACT</a>
+          </p>
+          <div class="traveling-underline"></div>
 
-            <nav class="text-sm hidden md:flex relative nav-container">
-                <p class="py-8 px-8"><a href="#home" class="text-gray-600 nav-link">HOME</a></p>
-                <p class="py-8 px-8"><a href="#about" class="text-gray-600 nav-link">ABOUT</a></p>
-                <p class="py-8 px-8"><a href="#projects" class="text-gray-600 nav-link">PROJECTS</a></p>
-                <p class="py-8 px-8"><a href="#contact" class="text-gray-600 nav-link">CONTACT</a></p>
-                <div class="traveling-underline"></div>
-                
-                <button id="switch-dark" class="hidden md:block">
-                    <img src="./assets/switch-on.svg" alt="button" class="h-8 w-auto absolute -right-16 top-6">
-                </button>
+          <button id="switch-dark" class="hidden md:block">
+            <img
+              src="./assets/switch-on.svg"
+              alt="button"
+              class="h-8 w-auto absolute -right-16 top-6"
+            />
+          </button>
 
-                <button id="switch-light" class="hidden">
-                    <img src="./assets/switch-off.svg" alt="button" class="h-8 w-auto absolute -right-16 top-6">
-                </button>
-            </nav>
-
-            <button id="open-menu" class="md:hidden absolute right-4 top-8">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" class="h-8 w-auto text-gray-400">
-                    <rect width="256" height="256" fill="none"/>
-                    <circle cx="128" cy="128" r="24" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="16"/>
-                    <circle cx="128" cy="48" r="24" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="16"/>
-                    <circle cx="128" cy="208" r="24" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="16"/>
-                </svg>
-            </button>
-        </div>
-    </header>
-
-    <div id="menu" class="md:hidden fixed z-50 bg-white w-full h-full top-0 left-0 transition-transform duration-300 ease-in-out hidden-menu">
-        <button id="close-menu" class="absolute right-4 top-8 text-gray-400">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
-                <line x1="200" y1="56" x2="56" y2="200" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/>
-                <line x1="200" y1="200" x2="56" y2="56" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/>
-            </svg>
-        </button>
-
-        <nav class="flex flex-col mt-16 text-3xl font-medium">
-            <a href="#home" class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300 tracking-wider">HOME</a>
-            <a href="#about" class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300 tracking-wider">ABOUT</a>
-            <a href="#projects" class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300 tracking-wider">PROJECTS</a>
-            <a href="#contact" class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300 tracking-wider">CONTACT</a>
-
-            <div class="mt-8 flex ml-8">
-                <a href="https://www.linkedin.com/in/luis-suizo-4b3247130/" target="_blank"><img class="h-12 w-auto mr-12" id="linkedIn" src="./assets/LinkedIn - Negative.svg" alt="linkedin"></a>
-                <a href="https://www.linkedin.com/in/luis-suizo-4b3247130/" target="_blank"><img class="h-12 w-auto hidden mr-12" id="linkedIn1" src="./assets/linkedin.svg" alt="linkedin"></a>
-
-                <a href="https://github.com/ozius22" target="_blank"><img class="h-12 w-auto mr-12" id="git" src="./assets/Github - Negative.svg" alt="git"></a>
-                <a href="https://github.com/ozius22" target="_blank"><img class="h-12 w-auto mr-12 hidden" id="git1" src="./assets/github.svg" alt="git"></a>
-
-                <a href="https://www.instagram.com/__ozius__/" target="_blank"><img class="h-12 w-auto mr-12" id="insta" src="./assets/Instagram - Negative.svg" alt="instagram"></a>
-                <a href="https://www.instagram.com/__ozius__/" target="_blank"><img class="h-12 w-auto mr-12 hidden" id="insta1" src="./assets/instagram.svg" alt="instagram"></a>
-            </div>
+          <button id="switch-light" class="hidden">
+            <img
+              src="./assets/switch-off.svg"
+              alt="button"
+              class="h-8 w-auto absolute -right-16 top-6"
+            />
+          </button>
         </nav>
 
-        <button class="absolute top-8 mt-2 left-4 md:hidden" id="switch-dark-mobile">
-            <p class="font-medium text-gray-400 text-base">Turn Off Light</p>
+        <button id="open-menu" class="md:hidden absolute right-4 top-8">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 256 256"
+            class="h-8 w-auto text-gray-400"
+          >
+            <rect width="256" height="256" fill="none" />
+            <circle
+              cx="128"
+              cy="128"
+              r="24"
+              fill="none"
+              stroke="currentColor"
+              stroke-miterlimit="10"
+              stroke-width="16"
+            />
+            <circle
+              cx="128"
+              cy="48"
+              r="24"
+              fill="none"
+              stroke="currentColor"
+              stroke-miterlimit="10"
+              stroke-width="16"
+            />
+            <circle
+              cx="128"
+              cy="208"
+              r="24"
+              fill="none"
+              stroke="currentColor"
+              stroke-miterlimit="10"
+              stroke-width="16"
+            />
+          </svg>
         </button>
+      </div>
+    </header>
 
-        <button id="switch-light-mobile" class="hidden md:hidden absolute top-8 mt-2 left-4">
-            <p class="font-medium text-gray-400 text-base">Turn On Light</p>
-        </button>
-    </div>
-
-    <div id="loader-container" class="fixed flex flex-col justify-center items-center z-50 top-0 left-0 w-full h-full bg-white">
-        <svg class="loader-svg" viewBox="0 0 100 100">
-            <path d="M5.1,50 L50,6.5 L93.4,50 L50,93.4 L6.5,50" fill="none" stroke="black" stroke-width="2"/>
+    <div
+      id="menu"
+      class="md:hidden fixed z-50 bg-white w-full h-full top-0 left-0 transition-transform duration-300 ease-in-out hidden-menu"
+    >
+      <button id="close-menu" class="absolute right-4 top-8 text-gray-400">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 256 256"
+          width="32"
+          height="32"
+        >
+          <line
+            x1="200"
+            y1="56"
+            x2="56"
+            y2="200"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="24"
+          />
+          <line
+            x1="200"
+            y1="200"
+            x2="56"
+            y2="56"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="24"
+          />
         </svg>
-    </div>
+      </button>
 
-    <section id="home" class="min-h-screen flex flex-col justify-center bg-white">
-        <div class="container px-6 mx-auto z-10">
-            <div class="text-center -mt-20 md:mt-0">
-                <p id="greeting" class="text-sm text-gray-400 mb-8 italic relative right-24 lg:right-80 md:text-xl">Hey there, I'm</p>
-                <h1 id="pangalan" class="text-6xl font-bold text-gray-800 mb-4 md:space-x-16 md:text-9xl">LUIS
-                    <span class="-ml-12 sm:-ml-6 md:ml-0 inline-block relative top-20 md:top-32">SUIZO</span>
-                </h1>
-                <a id="cta" href="#contact" class="cta-dark inline-block bg-gray-800 text-gray-200 transition duration-300 text-xs font-medium tracking-widest border border-transparent px-6 py-3 mt-40 md:mt-60 hover:bg-white hover:text-gray-800 hover:border hover:border-gray-800 md:px-16 md:text-xl">
-                    LET'S TALK
-                </a>
-            </div>
+      <nav class="flex flex-col mt-16 text-3xl font-medium">
+        <a
+          href="#home"
+          class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300 tracking-wider"
+          >HOME</a
+        >
+        <a
+          href="#about"
+          class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300 tracking-wider"
+          >ABOUT</a
+        >
+        <a
+          href="#projects"
+          class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300 tracking-wider"
+          >PROJECTS</a
+        >
+        <a
+          href="#contact"
+          class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300 tracking-wider"
+          >CONTACT</a
+        >
+
+        <div class="mt-8 flex ml-8">
+          <a
+            href="https://www.linkedin.com/in/luis-suizo-4b3247130/"
+            target="_blank"
+            ><img
+              class="h-12 w-auto mr-12"
+              id="linkedIn"
+              src="./assets/LinkedIn - Negative.svg"
+              alt="linkedin"
+          /></a>
+          <a
+            href="https://www.linkedin.com/in/luis-suizo-4b3247130/"
+            target="_blank"
+            ><img
+              class="h-12 w-auto hidden mr-12"
+              id="linkedIn1"
+              src="./assets/linkedin.svg"
+              alt="linkedin"
+          /></a>
+
+          <a href="https://github.com/ozius22" target="_blank"
+            ><img
+              class="h-12 w-auto mr-12"
+              id="git"
+              src="./assets/Github - Negative.svg"
+              alt="git"
+          /></a>
+          <a href="https://github.com/ozius22" target="_blank"
+            ><img
+              class="h-12 w-auto mr-12 hidden"
+              id="git1"
+              src="./assets/github.svg"
+              alt="git"
+          /></a>
+
+          <a href="https://www.instagram.com/__ozius__/" target="_blank"
+            ><img
+              class="h-12 w-auto mr-12"
+              id="insta"
+              src="./assets/Instagram - Negative.svg"
+              alt="instagram"
+          /></a>
+          <a href="https://www.instagram.com/__ozius__/" target="_blank"
+            ><img
+              class="h-12 w-auto mr-12 hidden"
+              id="insta1"
+              src="./assets/instagram.svg"
+              alt="instagram"
+          /></a>
         </div>
+      </nav>
 
-        <svg id="triangles-light" class="hidden show-3xl absolute inset-0 w-full h-full z-0" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
-            <polygon points="400,100 500,300 300,300" fill="black" opacity="0.1"/>
-            <polygon points="675,600 875,700 775,900" fill="black" opacity="0.1"/>        
-        </svg>
+      <button
+        class="absolute top-8 mt-2 left-4 md:hidden"
+        id="switch-dark-mobile"
+      >
+        <p class="font-medium text-gray-400 text-base">Turn Off Light</p>
+      </button>
+
+      <button
+        id="switch-light-mobile"
+        class="hidden md:hidden absolute top-8 mt-2 left-4"
+      >
+        <p class="font-medium text-gray-400 text-base">Turn On Light</p>
+      </button>
+    </div>
+
+    <div
+      id="loader-container"
+      class="fixed flex flex-col justify-center items-center z-50 top-0 left-0 w-full h-full bg-white"
+    >
+      <svg class="loader-svg" viewBox="0 0 100 100">
+        <path
+          d="M5.1,50 L50,6.5 L93.4,50 L50,93.4 L6.5,50"
+          fill="none"
+          stroke="black"
+          stroke-width="2"
+        />
+      </svg>
+    </div>
+
+    <section
+      id="home"
+      class="min-h-screen flex flex-col justify-center bg-white"
+    >
+      <div class="container px-6 mx-auto z-10">
+        <div class="text-center -mt-20 md:mt-0">
+          <p
+            id="greeting"
+            class="text-sm text-gray-400 mb-8 italic relative right-24 lg:right-80 md:text-xl"
+          >
+            Hey there, I'm
+          </p>
+          <h1
+            id="pangalan"
+            class="text-6xl font-bold text-gray-800 mb-4 md:space-x-16 md:text-9xl"
+          >
+            LUIS
+            <span
+              class="-ml-12 sm:-ml-6 md:ml-0 inline-block relative top-20 md:top-32"
+              >SUIZO</span
+            >
+          </h1>
+          <a
+            id="cta"
+            href="#contact"
+            class="cta-dark inline-block bg-gray-800 text-gray-200 transition duration-300 text-xs font-medium tracking-widest border border-transparent px-6 py-3 mt-40 md:mt-60 hover:bg-white hover:text-gray-800 hover:border hover:border-gray-800 md:px-16 md:text-xl"
+          >
+            LET'S TALK
+          </a>
+        </div>
+      </div>
+
+      <svg
+        id="triangles-light"
+        class="hidden show-3xl absolute inset-0 w-full h-full z-0"
+        viewBox="0 0 1000 1000"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <polygon points="400,100 500,300 300,300" fill="black" opacity="0.1" />
+        <polygon points="675,600 875,700 775,900" fill="black" opacity="0.1" />
+      </svg>
     </section>
-    
+
     <section id="about" class="pt-20 pb-12 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="mb-24 lg:items-stretch md:mb-12 lg:flex">
-                <img id="portrait" src="./assets/my-portrait-transparent.png" alt="a portrait" class="object-contain mx-auto lg:mx-0 md:max-h-[500px] fade-bottom lg:mr-24">
-                <img id="portrait-dark" src="./assets/my-portrait-dark.png" alt="a portrait" class="hidden object-contain mx-auto lg:mx-0 md:max-h-[500px] fade-bottom lg:mr-24">
+      <div class="container mx-auto px-6">
+        <div class="mb-24 lg:items-stretch md:mb-12 lg:flex">
+          <img
+            id="portrait"
+            src="./assets/my-portrait-transparent.png"
+            alt="a portrait"
+            class="object-contain mx-auto lg:mx-0 md:max-h-[500px] fade-bottom lg:mr-24"
+          />
+          <img
+            id="portrait-dark"
+            src="./assets/my-portrait-dark.png"
+            alt="a portrait"
+            class="hidden object-contain mx-auto lg:mx-0 md:max-h-[500px] fade-bottom lg:mr-24"
+          />
 
-                <div class="mt-8 lg:my-auto lg:flex-1">
-                    <h3 class="text-gray-600 text-center font-semibold mb-12 text-3xl md:text-5xl lg:text-left">I’m  a Full-Stack Web Developer</h3>
-                    <div class="grid grid-cols-3 md:grid-cols-5 gap-8 md:gap-y-4 w-64 md:w-96 mx-auto lg:mx-0">
-                        <img src="./assets/laravel.png" title="Laravel" alt="Icon 1" class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110">
-                        <img src="./assets/git.png" title="Git" alt="Icon 3" class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110">
-                        <img src="./assets/python.png" title="Python" alt="Icon 5" class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110">
-                        <img src="./assets/javascript.png" title="JavaScript" alt="Icon 4" class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110">
-                        <img src="./assets/tailwindcss.png" title="Tailwind" alt="Icon 7" class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110">
-                        <img src="./assets/nuxtjs.png" title="Nuxtjs" alt="Icon 6" class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110">
-                        <img src="./assets/mysql.png" title="Mysql" alt="Icon 8" class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110">
-                        <img src="./assets/figma.png" title="Figma" alt="Icon 9" class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110">
-                    </div>
-                    
-                    <div class="text-center flex flex-col-reverse -mt-8 xl:mt-28 xl:text-left xl:block xl:space-x-4">
-                        <a href="./assets/CV - Suizo.pdf" download target="_blank" class="cta-dark bg-gray-800 text-gray-200 transition duration-300 text-xs font-medium tracking-widest border border-transparent px-6 py-3 mt-4 xl:mt-28 hover:bg-white hover:text-gray-800 hover:border hover:border-gray-800 md:px-12 md:text-sm">
-                            VIEW CV
-                        </a>
-                        <a href="#contact" id="cta-light" class="bg-white text-gray-800 transition duration-300 text-xs font-medium tracking-widest border border-gray-800 px-6 py-3 mt-28 hover:bg-gray-800 hover:text-gray-200 hover:border hover:border-transparent md:px-12 md:text-sm">
-                            GET IN TOUCH WITH ME
-                        </a>
-                    </div>
-                </div>
+          <div class="mt-8 lg:my-auto lg:flex-1">
+            <h3
+              class="text-gray-600 text-center font-semibold mb-12 text-3xl md:text-5xl lg:text-left"
+            >
+              I’m a Full-Stack Web Developer
+            </h3>
+            <div
+              class="grid grid-cols-3 md:grid-cols-5 gap-8 md:gap-y-4 w-64 md:w-96 mx-auto lg:mx-0"
+            >
+              <img
+                src="./assets/laravel.png"
+                title="Laravel"
+                alt="Icon 1"
+                class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110"
+              />
+              <img
+                src="./assets/git.png"
+                title="Git"
+                alt="Icon 3"
+                class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110"
+              />
+              <img
+                src="./assets/python.png"
+                title="Python"
+                alt="Icon 5"
+                class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110"
+              />
+              <img
+                src="./assets/javascript.png"
+                title="JavaScript"
+                alt="Icon 4"
+                class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110"
+              />
+              <img
+                src="./assets/tailwindcss.png"
+                title="Tailwind"
+                alt="Icon 7"
+                class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110"
+              />
+              <img
+                src="./assets/nuxtjs.png"
+                title="Nuxtjs"
+                alt="Icon 6"
+                class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110"
+              />
+              <img
+                src="./assets/mysql.png"
+                title="Mysql"
+                alt="Icon 8"
+                class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110"
+              />
+              <img
+                src="./assets/figma.png"
+                title="Figma"
+                alt="Icon 9"
+                class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110"
+              />
             </div>
 
-            <h2 class="animate-on-scroll text-3xl text-gray-800 font-bold text-center md:text-left mb-12">Services</h2>
-        
-            <div class="animate-on-scroll lg:flex lg:space-x-12 items-stretch">
-                <div class="lg:flex-1">
-                    <div class="flex mb-8 items-center">
-                        <img src="./assets/backend.svg" alt="backend" class="w-8 mr-4" id="backend">
-                        <img src="./assets/backend1.svg" alt="backend" class="w-8 hidden mr-4" id="backend1">
-
-                        <h3 class="text-gray-600 font-medium text-lg">Backend Development</h3>
-                    </div>
-                    
-                    <p class="text-gray-600 leading-relaxed tracking-wide">
-                        I architect scalable systems, design efficient APIs, and manage databases using languages like PHP with Laravel and Python. My focus is on security, clean code, and performance optimization to ensure robust functionality that powers seamless interactions behind the scenes.
-                    </p>
-                </div>
-                <div class="mt-12 lg:mt-0 lg:flex-1">
-                    <div class="flex mb-8 items-center">
-                        <img src="./assets/client.svg" alt="frontend" class="w-8 mr-4" id="frontend">
-                        <img src="./assets/client1.svg" alt="frontend" class="w-8 mr-4 hidden" id="frontend1">
-
-                        <h3 class="text-gray-600 font-medium text-lg">Client-Side Development</h3>
-                    </div>
-
-                    <p class="text-gray-600 leading-relaxed tracking-wide">
-                        I craft intuitive, visually engaging user interfaces using modern tools like Vue with Nuxt.js, Tailwind CSS, and JavaScript, while designing prototypes and mockups in Figma or Photoshop. I prioritize responsive design and seamless UX/UI, transforming complex ideas into user-friendly experiences and optimizing performance for fast, accessible, and cross-device compatibility.
-                    </p>
-                </div>
-                <div class="mt-12 lg:mt-0 lg:flex-1">
-                    <div class="flex mb-8 items-center">
-                        <img src="./assets/others.svg" alt="others" class="w-8 mr-4" id="others">
-                        <img src="./assets/others1.svg" alt="others" class="w-8 mr-4 hidden" id="others1">
-
-                        <h3 class="text-gray-600 font-medium text-lg">Creative & Collaborative</h3>
-                    </div>
-
-                    <p class="text-gray-600 leading-relaxed tracking-wide">
-                        Beyond coding, I bring strong layout design and editing skills to polish visuals and content, paired with the ability to write cohesive and coherent materials. I thrive in team environments, using GitHub for version control, code reviews, and collaborative workflows – ensuring alignment with project goals from concept to deployment.
-                    </p>
-                </div>
+            <div
+              class="text-center flex flex-col-reverse -mt-8 xl:mt-28 xl:text-left xl:block xl:space-x-4"
+            >
+              <a
+                href="./assets/CV - Suizo.pdf"
+                download
+                target="_blank"
+                class="cta-dark bg-gray-800 text-gray-200 transition duration-300 text-xs font-medium tracking-widest border border-transparent px-6 py-3 mt-4 xl:mt-28 hover:bg-white hover:text-gray-800 hover:border hover:border-gray-800 md:px-12 md:text-sm"
+              >
+                VIEW CV
+              </a>
+              <a
+                href="#contact"
+                id="cta-light"
+                class="bg-white text-gray-800 transition duration-300 text-xs font-medium tracking-widest border border-gray-800 px-6 py-3 mt-28 hover:bg-gray-800 hover:text-gray-200 hover:border hover:border-transparent md:px-12 md:text-sm"
+              >
+                GET IN TOUCH WITH ME
+              </a>
             </div>
+          </div>
         </div>
+
+        <h2
+          class="animate-on-scroll text-3xl text-gray-800 font-bold text-center md:text-left mb-12"
+        >
+          Services
+        </h2>
+
+        <div class="animate-on-scroll lg:flex lg:space-x-12 items-stretch">
+          <div class="lg:flex-1">
+            <div class="flex mb-8 items-center">
+              <img
+                src="./assets/backend.svg"
+                alt="backend"
+                class="w-8 mr-4"
+                id="backend"
+              />
+              <img
+                src="./assets/backend1.svg"
+                alt="backend"
+                class="w-8 hidden mr-4"
+                id="backend1"
+              />
+
+              <h3 class="text-gray-600 font-medium text-lg">
+                Backend Development
+              </h3>
+            </div>
+
+            <p class="text-gray-600 leading-relaxed tracking-wide">
+              I architect scalable systems, design efficient APIs, and manage
+              databases using languages like PHP with Laravel and Python. My
+              focus is on security, clean code, and performance optimization to
+              ensure robust functionality that powers seamless interactions
+              behind the scenes.
+            </p>
+          </div>
+          <div class="mt-12 lg:mt-0 lg:flex-1">
+            <div class="flex mb-8 items-center">
+              <img
+                src="./assets/client.svg"
+                alt="frontend"
+                class="w-8 mr-4"
+                id="frontend"
+              />
+              <img
+                src="./assets/client1.svg"
+                alt="frontend"
+                class="w-8 mr-4 hidden"
+                id="frontend1"
+              />
+
+              <h3 class="text-gray-600 font-medium text-lg">
+                Client-Side Development
+              </h3>
+            </div>
+
+            <p class="text-gray-600 leading-relaxed tracking-wide">
+              I craft intuitive, visually engaging user interfaces using modern
+              tools like Vue with Nuxt.js, Tailwind CSS, and JavaScript, while
+              designing prototypes and mockups in Figma or Photoshop. I
+              prioritize responsive design and seamless UX/UI, transforming
+              complex ideas into user-friendly experiences and optimizing
+              performance for fast, accessible, and cross-device compatibility.
+            </p>
+          </div>
+          <div class="mt-12 lg:mt-0 lg:flex-1">
+            <div class="flex mb-8 items-center">
+              <img
+                src="./assets/others.svg"
+                alt="others"
+                class="w-8 mr-4"
+                id="others"
+              />
+              <img
+                src="./assets/others1.svg"
+                alt="others"
+                class="w-8 mr-4 hidden"
+                id="others1"
+              />
+
+              <h3 class="text-gray-600 font-medium text-lg">
+                Creative & Collaborative
+              </h3>
+            </div>
+
+            <p class="text-gray-600 leading-relaxed tracking-wide">
+              Beyond coding, I bring strong layout design and editing skills to
+              polish visuals and content, paired with the ability to write
+              cohesive and coherent materials. I thrive in team environments,
+              using GitHub for version control, code reviews, and collaborative
+              workflows – ensuring alignment with project goals from concept to
+              deployment.
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section id="projects" class="pb-20 py-20 container mx-auto px-6 bg-white">
-        <h2 class="animate-on-scroll text-3xl text-gray-800 font-bold text-center md:text-left mb-12">Projects</h2>
-        <div class="animate-on-scroll grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <a href="https://citizenone.dk/book-gratis-demo-af-journalsystemet/" target="_blank">
-                <div id="project" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300">
-                    <img src="./assets/citizenone.png" alt="citizenone">
-                    <div class="p-6">
-                        <h3 class="text-gray-600 text-xl font-medium mb-2">CitizenOne</h3>
-                        <p class="text-gray-600">On-the-Job Training</p>
-                    </div>
-                </div>
-            </a>
-    
-            <a href="https://github.com/ozius22/theft-prediction-system.git" target="_blank">
-                <div id="project" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300">
-                    <img src="./assets/thesis.png" alt="thesis">
-                    <div class="p-6">
-                        <h3 class="text-gray-600 text-xl font-medium mb-2">Theft Prediction System</h3>
-                        <p class="text-gray-600">Capstone Project</p>
-                    </div>
-                </div>
-            </a>
-        </div>
+      <h2
+        class="animate-on-scroll text-3xl text-gray-800 font-bold text-center md:text-left mb-12"
+      >
+        Projects
+      </h2>
+      <div class="animate-on-scroll grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <a
+          href="https://citizenone.dk/book-gratis-demo-af-journalsystemet/"
+          target="_blank"
+        >
+          <div
+            id="project"
+            class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300"
+          >
+            <img src="./assets/citizenone.png" alt="citizenone" />
+            <div class="p-6">
+              <h3 class="text-gray-600 text-xl font-medium mb-2">CitizenOne</h3>
+              <p class="text-gray-600">On-the-Job Training</p>
+            </div>
+          </div>
+        </a>
+
+        <a
+          href="https://github.com/ozius22/theft-prediction-system.git"
+          target="_blank"
+        >
+          <div
+            id="project"
+            class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300"
+          >
+            <img src="./assets/thesis.png" alt="thesis" />
+            <div class="p-6">
+              <h3 class="text-gray-600 text-xl font-medium mb-2">
+                Theft Prediction System
+              </h3>
+              <p class="text-gray-600">Capstone Project</p>
+            </div>
+          </div>
+        </a>
+      </div>
     </section>
 
-    <section id="philosopy" class="min-h-screen flex flex-col justify-center relative bg-white">
-        <div class="container mx-auto px-6">
-            <div class="pb-12 text-center">
-                <button class="text-xl font-semibold tracking-wider text-gray-800 border rounded-full border-gray-400 px-4 py-2"><h3>Philosopy</h3></button>
-            </div>
-
-            <div class="pb-12 text-center">
-                <p class="text-3xl text-gray-600 tracking-wide leading-relaxed">"There are two ways of constructing a software design: One way is to make it so simple that there are obviously no deficiencies, and the other way is to make it so complicated that there are no obvious deficiencies. The first method is far more difficult."</p>
-            </div>
-
-            <div class="text-center">
-                <hr class="w-20 border-t-2 border-gray-400 mx-auto">
-            </div>
+    <section
+      id="philosopy"
+      class="min-h-screen flex flex-col justify-center relative bg-white"
+    >
+      <div class="container mx-auto px-6">
+        <div class="pb-12 text-center">
+          <button
+            class="text-xl font-semibold tracking-wider text-gray-800 border rounded-full border-gray-400 px-4 py-2"
+          >
+            <h3>Philosopy</h3>
+          </button>
         </div>
 
-        <svg class="hidden lg:block lg:absolute inset-0 w-full h-full z-0" viewBox="0 0 1440 800" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g class="opacity-100" stroke="#9CA3AF" stroke-width="1">
-                <line x1="85%" y1="100%" x2="100%" y2="85%"/>
-                <line x1="80%" y1="100%" x2="95%" y2="85%"/>
-                <line x1="75%" y1="100%" x2="90%" y2="85%"/>
-            </g>
-        </svg>
+        <div class="pb-12 text-center">
+          <p class="text-3xl text-gray-600 tracking-wide leading-relaxed">
+            "There are two ways of constructing a software design: One way is to
+            make it so simple that there are obviously no deficiencies, and the
+            other way is to make it so complicated that there are no obvious
+            deficiencies. The first method is far more difficult."
+          </p>
+        </div>
 
-        <div></div>
+        <div class="text-center">
+          <hr class="w-20 border-t-2 border-gray-400 mx-auto" />
+        </div>
+      </div>
+
+      <svg
+        class="hidden lg:block lg:absolute inset-0 w-full h-full z-0"
+        viewBox="0 0 1440 800"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g class="opacity-100" stroke="#9CA3AF" stroke-width="1">
+          <line x1="85%" y1="100%" x2="100%" y2="85%" />
+          <line x1="80%" y1="100%" x2="95%" y2="85%" />
+          <line x1="75%" y1="100%" x2="90%" y2="85%" />
+        </g>
+      </svg>
+
+      <div></div>
     </section>
 
-    <section id="contact" class="mb-20 py-20 container mx-auto px-6 min-h-screen flex flex-col justify-center bg-white">
-        <h2 class="text-3xl text-gray-800 font-bold text-center mb-12">Contact Me</h2>
+    <section
+      id="contact"
+      class="mb-20 py-20 container mx-auto px-6 min-h-screen flex flex-col justify-center bg-white"
+    >
+      <h2 class="text-3xl text-gray-800 font-bold text-center mb-12">
+        Contact Me
+      </h2>
 
-        <form netlify name="contact" method="POST" class="w-full max-w-lg lg:max-w-xl mx-auto">
-            <input type="hidden" name="form-name" value="contact">
-        
-            <div  class="mb-6">
-                <input 
-                id="form-field"
-                name="name" 
-                placeholder="Your Name" 
-                class="w-full px-4 py-2 border focus:outline-none focus:border-blue-500"
-                required>
-            </div>
-            <div  class="mb-6">
-                <input 
-                id="form-field"
-                type="email" 
-                name="email" 
-                placeholder="Your Email" 
-                class="w-full px-4 py-2 border focus:outline-none focus:border-blue-500"
-                required>
-            </div>
-            <div  class="mb-6">
-                <textarea 
-                id="form-field"
-                name="message" 
-                rows="4" 
-                placeholder="Your Message" 
-                class="w-full px-4 py-2 border focus:outline-none focus:border-blue-500"
-                required></textarea>
-            </div>
-            <button 
-                type="submit" 
-                class="cta-dark w-full bg-gray-800 text-gray-200 transition duration-300 text-xs font-medium tracking-widest border border-transparent px-6 py-3 mt-4 xl:mt-28 hover:bg-white hover:text-gray-800 hover:border hover:border-gray-800 md:px-12 md:text-sm">
-                SEND MESSAGE
-            </button>
-            </form>
+      <form
+        netlify
+        name="contact"
+        method="POST"
+        class="w-full max-w-lg lg:max-w-xl mx-auto"
+      >
+        <input type="hidden" name="form-name" value="contact" />
+
+        <div class="mb-6">
+          <input
+            id="form-field"
+            name="name"
+            placeholder="Your Name"
+            class="w-full px-4 py-2 border focus:outline-none focus:border-blue-500"
+            required
+          />
+        </div>
+        <div class="mb-6">
+          <input
+            id="form-field"
+            type="email"
+            name="email"
+            placeholder="Your Email"
+            class="w-full px-4 py-2 border focus:outline-none focus:border-blue-500"
+            required
+          />
+        </div>
+        <div class="mb-6">
+          <textarea
+            id="form-field"
+            name="message"
+            rows="4"
+            placeholder="Your Message"
+            class="w-full px-4 py-2 border focus:outline-none focus:border-blue-500"
+            required
+          ></textarea>
+        </div>
+        <button
+          type="submit"
+          class="cta-dark w-full bg-gray-800 text-gray-200 transition duration-300 text-xs font-medium tracking-widest border border-transparent px-6 py-3 mt-4 xl:mt-28 hover:bg-white hover:text-gray-800 hover:border hover:border-gray-800 md:px-12 md:text-sm"
+        >
+          SEND MESSAGE
+        </button>
+      </form>
     </section>
 
     <footer class="bg-gray-900">
-        <div class="py-12 px-6 container mx-auto text-gray-400">
-
-            <div class="mb-12">
-                <p>Lsuizo72@gmail.com</p>
-                <p>+63 9566401574</p>
-            </div>
-
-            <div class="flex mb-12">
-                <div class="md:flex md:space-x-24">
-
-                    <div class="mb-12 md:mb-0">
-                        <h4 class="font-semibold mb-2">A Creative Developer</h4>
-                        <p>Based in Davao City,</p>
-                        <p>Philippines</p>
-                        <a href="./assets/CV - Suizo.pdf" download target="_blank" ><p class="mt-8 flex items-center gap-2">Download my CV<svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg></p></a>
-                    </div>
-    
-                    <div class="flex flex-col items-start space-y-4 mb-12 md:mb-0">
-                        <h4 class="font-semibold">Follow Me</h4>
-                        <a href="https://github.com/ozius22" target="_blank"><img src="./assets/github.svg" alt="git"></a>
-                        <a href="https://www.linkedin.com/in/luis-suizo-4b3247130/" target="_blank"><img src="./assets/linkedin.svg" alt="linkedin"></a>
-                        <a href="https://www.instagram.com/__ozius__/" target="_blank"><img src="./assets/instagram.svg" alt="instagram"></a>
-                    </div>
-
-                    <img class="h-48" src="./assets/logo-footer.svg" alt="logo">
-
-                </div>
-                
-            </div>
-
-            <div class="border-b border-gray-400 my-8"></div>
-
-            <div class="lg:flex justify-between tracking-wider">
-                <p>© 2025 Luis Suizo. All Rights Reserved.</p>
-                <p>PORTFOLIO | Crafting Experiences | <span class="font-semibold">2023 - 2025</span>
-                </p>
-            </div>
-
+      <div class="py-12 px-6 container mx-auto text-gray-400">
+        <div class="mb-12">
+          <p>Lsuizo72@gmail.com</p>
+          <p>+63 9566401574</p>
         </div>
+
+        <div class="flex mb-12">
+          <div class="md:flex md:space-x-24">
+            <div class="mb-12 md:mb-0">
+              <h4 class="font-semibold mb-2">A Creative Developer</h4>
+              <p>Based in Davao City,</p>
+              <p>Philippines</p>
+              <a href="./assets/CV - Suizo.pdf" download target="_blank"
+                ><p class="mt-8 flex items-center gap-2">
+                  Download my CV<svg
+                    class="w-5 h-5 text-gray-400"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    ></path>
+                  </svg></p
+              ></a>
+            </div>
+
+            <div class="flex flex-col items-start space-y-4 mb-12 md:mb-0">
+              <h4 class="font-semibold">Follow Me</h4>
+              <a href="https://github.com/ozius22" target="_blank"
+                ><img src="./assets/github.svg" alt="git"
+              /></a>
+              <a
+                href="https://www.linkedin.com/in/luis-suizo-4b3247130/"
+                target="_blank"
+                ><img src="./assets/linkedin.svg" alt="linkedin"
+              /></a>
+              <a href="https://www.instagram.com/__ozius__/" target="_blank"
+                ><img src="./assets/instagram.svg" alt="instagram"
+              /></a>
+            </div>
+
+            <img class="h-48" src="./assets/logo-footer.svg" alt="logo" />
+          </div>
+        </div>
+
+        <div class="border-b border-gray-400 my-8"></div>
+
+        <div class="lg:flex justify-between tracking-wider">
+          <p>© 2025 Luis Suizo. All Rights Reserved.</p>
+          <p>
+            PORTFOLIO | Crafting Experiences |
+            <span class="font-semibold">2023 - 2025</span>
+          </p>
+        </div>
+      </div>
     </footer>
-</body>
+  </body>
 </html>
