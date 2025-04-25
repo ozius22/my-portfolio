@@ -373,8 +373,22 @@ window.addEventListener("resize", handleViewportChange);
 // Mobile menu
 closeMenu.addEventListener("click", () => toggleMenu(false));
 openMenu.addEventListener("click", () => toggleMenu(true));
+
 mobileLinks.forEach((navLink) => {
-  navLink.addEventListener("click", () => toggleMenu(false));
+  navLink.addEventListener("click", function (e) {
+    e.preventDefault();
+    toggleMenu(false);
+    const targetId = this.getAttribute("href");
+    const targetElement = document.querySelector(targetId);
+    if (targetElement) {
+      setTimeout(() => {
+        targetElement.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 100);
+    }
+  });
 });
 
 // Dark mode toggle

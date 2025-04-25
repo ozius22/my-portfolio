@@ -86,38 +86,27 @@
           </button>
         </nav>
 
-        <button id="open-menu" class="md:hidden absolute right-4 top-8">
+        <button id="open-menu" class="md:hidden absolute right-8 top-8">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 256 256"
             class="h-8 w-auto text-gray-400"
           >
             <rect width="256" height="256" fill="none" />
-            <circle
-              cx="128"
-              cy="128"
-              r="24"
+            <polyline
+              points="200 208 120 128 200 48"
               fill="none"
               stroke="currentColor"
-              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
               stroke-width="16"
             />
-            <circle
-              cx="128"
-              cy="48"
-              r="24"
+            <polyline
+              points="120 208 40 128 120 48"
               fill="none"
               stroke="currentColor"
-              stroke-miterlimit="10"
-              stroke-width="16"
-            />
-            <circle
-              cx="128"
-              cy="208"
-              r="24"
-              fill="none"
-              stroke="currentColor"
-              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
               stroke-width="16"
             />
           </svg>
@@ -129,32 +118,28 @@
       id="menu"
       class="md:hidden fixed z-50 bg-white w-full h-full top-0 left-0 transition-transform duration-300 ease-in-out hidden-menu"
     >
-      <button id="close-menu" class="absolute right-4 top-8 text-gray-400">
+      <button id="close-menu" class="absolute right-8 top-8 text-gray-400">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 256 256"
-          width="32"
-          height="32"
+          class="h-8 w-auto text-gray-400"
         >
-          <line
-            x1="200"
-            y1="56"
-            x2="56"
-            y2="200"
+          <rect width="256" height="256" fill="none" />
+          <polyline
+            points="56 48 136 128 56 208"
+            fill="none"
             stroke="currentColor"
             stroke-linecap="round"
             stroke-linejoin="round"
-            stroke-width="24"
+            stroke-width="16"
           />
-          <line
-            x1="200"
-            y1="200"
-            x2="56"
-            y2="56"
+          <polyline
+            points="136 48 216 128 136 208"
+            fill="none"
             stroke="currentColor"
             stroke-linecap="round"
             stroke-linejoin="round"
-            stroke-width="24"
+            stroke-width="16"
           />
         </svg>
       </button>
@@ -233,7 +218,7 @@
         </div>
       </nav>
 
-      <button
+      <!-- <button
         class="absolute top-8 mt-2 left-4 md:hidden"
         id="switch-dark-mobile"
       >
@@ -245,7 +230,7 @@
         class="hidden md:hidden absolute top-8 mt-2 left-4"
       >
         <p class="font-medium text-gray-400 text-base">Turn On Light</p>
-      </button>
+      </button> -->
     </div>
 
     <div
