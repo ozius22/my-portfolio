@@ -409,3 +409,74 @@ setTimeout(checkSectionInView, 500);
 setTimeout(updateMobileMenuActiveState, 500);
 handleViewportChange();
 toggleBodyScroll(isMenuVisible());
+
+// Form confirmation
+const form = document.getElementById("contact-form");
+const messageBox = document.getElementById("form-message");
+const submitButton = form.querySelector("button[type='submit']");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  messageBox.textContent = "";
+  messageBox.style.opacity = "0";
+  messageBox.setAttribute("aria-hidden", "true");
+
+  submitButton.disabled = true;
+  submitButton.classList.add("opacity-50", "cursor-not-allowed");
+  submitButton.textContent = "SENDING...";
+
+  const formData = new FormData(form);
+
+  try {
+    await fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(formData).toString(),
+    });
+
+    messageBox.textContent = "Message sent successfully!";
+    messageBox.className =
+      "mt-6 text-sm font-medium px-4 py-2 rounded w-full max-w-lg lg:max-w-xl mx-auto bg-green-100 text-green-800 animate-slide-in h-10";
+    messageBox.style.opacity = "1";
+    messageBox.setAttribute("aria-hidden", "false");
+
+    form.reset();
+
+    submitButton.disabled = false;
+    submitButton.classList.remove("opacity-50", "cursor-not-allowed");
+    submitButton.textContent = "SEND MESSAGE";
+
+    setTimeout(() => {
+      messageBox.classList.add("transition-opacity", "duration-1000");
+      messageBox.classList.remove("animate-slide-in");
+      messageBox.style.opacity = "0";
+
+      setTimeout(() => {
+        messageBox.textContent = "";
+        messageBox.setAttribute("aria-hidden", "true");
+      }, 1000);
+    }, 3000);
+  } catch (error) {
+    messageBox.textContent = "Something went wrong. Please try again.";
+    messageBox.className =
+      "mt-6 text-sm font-medium px-4 py-2 rounded w-full max-w-lg lg:max-w-xl mx-auto bg-red-100 text-red-800 animate-slide-in h-10";
+    messageBox.style.opacity = "1";
+    messageBox.setAttribute("aria-hidden", "false");
+
+    submitButton.disabled = false;
+    submitButton.classList.remove("opacity-50", "cursor-not-allowed");
+    submitButton.textContent = "SEND MESSAGE";
+
+    setTimeout(() => {
+      messageBox.classList.add("transition-opacity", "duration-1000");
+      messageBox.classList.remove("animate-slide-in");
+      messageBox.style.opacity = "0";
+
+      setTimeout(() => {
+        messageBox.textContent = "";
+        messageBox.setAttribute("aria-hidden", "true");
+      }, 1000);
+    }, 5000);
+  }
+});
