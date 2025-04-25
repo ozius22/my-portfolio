@@ -68,8 +68,8 @@ const openMenu = document.getElementById("open-menu");
 const mobileLinks = document.querySelectorAll("#menu a");
 const darkMode = document.getElementById("switch-dark");
 const lightMode = document.getElementById("switch-light");
-const darkModeMobile = document.getElementById("switch-dark-mobile");
-const lightModeMobile = document.getElementById("switch-light-mobile");
+// const darkModeMobile = document.getElementById("switch-dark-mobile");
+// const lightModeMobile = document.getElementById("switch-light-mobile");
 const logoLight = document.getElementById("logo-light");
 const logoDark = document.getElementById("logo-dark");
 const darkButtons = document.querySelectorAll(".cta-dark");
@@ -328,8 +328,8 @@ function setDarkMode(enabled) {
   if (enabled) {
     darkMode.classList.remove("md:block");
     lightMode.classList.add("md:block");
-    darkModeMobile.classList.add("hidden");
-    lightModeMobile.classList.remove("hidden");
+    // darkModeMobile.classList.add("hidden");
+    // lightModeMobile.classList.remove("hidden");
 
     logoLight.classList.remove("md:block");
     logoDark.classList.add("md:block");
@@ -338,8 +338,8 @@ function setDarkMode(enabled) {
   } else {
     lightMode.classList.remove("md:block");
     darkMode.classList.add("md:block");
-    darkModeMobile.classList.remove("hidden");
-    lightModeMobile.classList.add("hidden");
+    // darkModeMobile.classList.remove("hidden");
+    // lightModeMobile.classList.add("hidden");
 
     logoDark.classList.remove("md:block");
     logoLight.classList.add("md:block");
@@ -394,8 +394,8 @@ mobileLinks.forEach((navLink) => {
 // Dark mode toggle
 darkMode.addEventListener("click", () => setDarkMode(true));
 lightMode.addEventListener("click", () => setDarkMode(false));
-darkModeMobile.addEventListener("click", () => setDarkMode(true));
-lightModeMobile.addEventListener("click", () => setDarkMode(false));
+// darkModeMobile.addEventListener("click", () => setDarkMode(true));
+// lightModeMobile.addEventListener("click", () => setDarkMode(false));
 
 // Smooth scrolling for internal links
 const internalLinks = document.querySelectorAll('a[href^="#"]');
