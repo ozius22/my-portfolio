@@ -245,26 +245,31 @@ h4.dark-mode {
 /* Animation for the mouse wheel */
 @keyframes smoothScroll {
   0% {
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
     opacity: 1;
   }
-  40% {
-    transform: translateY(8px);
+  35% {
+    transform: translateY(10px) scale(3);
     opacity: 1;
+  }
+  60% {
+    transform: translateY(18px) scale(0.2);
+    opacity: 0.7;
   }
   80% {
-    transform: translateY(12px);
-    opacity: 0;
+    transform: translateY(10px) scale(3);
+    opacity: 0.5;
   }
   100% {
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
     opacity: 0;
   }
 }
 
 .scroll-wheel-dot {
   animation: smoothScroll 2s infinite;
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+  will-change: transform, opacity;
 }
 
 .fade-transition {
@@ -274,7 +279,7 @@ h4.dark-mode {
 .mouse-shape {
   width: 22px;
   height: 36px;
-  border: 2px solid #9ca3af;
+  border: 2px solid #bfbfc5;
   border-radius: 9999px;
   position: relative;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
@@ -299,7 +304,7 @@ h4.dark-mode {
 .wheel-dot {
   width: 2px;
   height: 3px;
-  background-color: #9ca3af;
+  background-color: #bfbfc5;
   border-radius: 1px;
 }
 
