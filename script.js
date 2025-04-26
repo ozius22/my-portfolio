@@ -124,7 +124,7 @@ function onLoaderRemoved() {
     document.body.appendChild(opening);
 
     setTimeout(() => {
-      home.scrollIntoView();
+      window.scrollTo(0, 0);
       document.body.removeChild(opening);
     }, 4000 - delay);
 

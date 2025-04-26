@@ -236,3 +236,7 @@ h4.dark-mode {
   transition: opacity 1s ease;
   min-height: 2.5rem;
 }
+
+#outward-arrow {
+  color: #9ca2ae;
+}
