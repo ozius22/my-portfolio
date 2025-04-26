@@ -434,12 +434,12 @@ const contact = document.getElementById("contact");
 function getMessageBoxClasses(isSuccess, isDarkMode) {
   if (isSuccess) {
     return isDarkMode
-      ? "mt-4 text-sm font-medium tracking-wider px-4 py-2 w-full max-w-lg lg:max-w-xl mx-auto bg-green-900 text-green-100 animate-slide-in h-10 text-center text-xs font-medium border-transparent md:px-12 md:text-sm"
-      : "mt-4 text-sm font-medium tracking-wider px-4 py-2 w-full max-w-lg lg:max-w-xl mx-auto bg-green-100 text-green-800 animate-slide-in h-10 text-center text-xs font-medium border-transparent md:px-12 md:text-sm";
+      ? "mt-4 font-medium tracking-wider px-4 py-2 w-full max-w-lg lg:max-w-xl mx-auto bg-green-900 text-green-100 animate-slide-in text-center text-xs font-medium border-transparent md:px-12 md:text-sm flex items-center justify-center"
+      : "mt-4 font-medium tracking-wider px-4 py-2 w-full max-w-lg lg:max-w-xl mx-auto bg-green-100 text-green-800 animate-slide-in text-center text-xs font-medium border-transparent md:px-12 md:text-sm flex items-center justify-center";
   } else {
     return isDarkMode
-      ? "mt-4 text-sm font-medium tracking-wider px-4 py-2 w-full max-w-lg lg:max-w-xl mx-auto bg-red-900 text-red-100 animate-slide-in h-10 text-center text-xs font-medium border-transparent md:px-12 md:text-sm"
-      : "mt-4 text-sm font-medium tracking-wider px-4 py-2 w-full max-w-lg lg:max-w-xl mx-auto bg-red-100 text-red-800 animate-slide-in h-10 text-center text-xs font-medium border-transparent md:px-12 md:text-sm";
+      ? "mt-4 font-medium tracking-wider px-4 py-2 w-full max-w-lg lg:max-w-xl mx-auto bg-red-900 text-red-100 animate-slide-in text-center text-xs font-medium border-transparent md:px-12 md:text-sm flex items-center justify-center"
+      : "mt-4 font-medium tracking-wider px-4 py-2 w-full max-w-lg lg:max-w-xl mx-auto bg-red-100 text-red-800 animate-slide-in text-center text-xs font-medium border-transparent md:px-12 md:text-sm flex items-center justify-center";
   }
 }
 
