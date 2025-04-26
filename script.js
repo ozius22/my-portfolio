@@ -90,6 +90,7 @@ const fields = document.querySelectorAll("#form-field");
 const menuIcons = document.querySelectorAll(
   "#linkedIn, #linkedIn1, #git, #git1, #insta, #insta1"
 );
+const scrollIndicator = document.getElementById("scrollIndicator");
 
 // Track current active navigation item
 let currentActive = null;
@@ -132,6 +133,7 @@ function onLoaderRemoved() {
     setTimeout(() => pangalan.classList.add("fade-in"), 5000 - delay);
     setTimeout(() => cta.classList.add("fade-in"), 5700 - delay);
     setTimeout(() => header.classList.remove("hidden-main-menu"), 7000 - delay);
+    setTimeout(() => scrollIndicator.classList.add("fade-in"), 8000 - delay);
   } else {
     greeting.classList.add("fade-in");
     setTimeout(() => pangalan.classList.add("fade-in"), 700);
