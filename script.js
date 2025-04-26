@@ -429,6 +429,20 @@ handleViewportChange();
 toggleBodyScroll(isMenuVisible());
 
 // Form confirmation
+const contact = document.getElementById("contact");
+
+function getMessageBoxClasses(isSuccess, isDarkMode) {
+  if (isSuccess) {
+    return isDarkMode
+      ? "mt-6 text-sm font-medium px-4 py-2 rounded w-full max-w-lg lg:max-w-xl mx-auto bg-green-800 text-green-100 animate-slide-in h-10"
+      : "mt-6 text-sm font-medium px-4 py-2 rounded w-full max-w-lg lg:max-w-xl mx-auto bg-green-100 text-green-800 animate-slide-in h-10";
+  } else {
+    return isDarkMode
+      ? "mt-6 text-sm font-medium px-4 py-2 rounded w-full max-w-lg lg:max-w-xl mx-auto bg-red-800 text-red-100 animate-slide-in h-10"
+      : "mt-6 text-sm font-medium px-4 py-2 rounded w-full max-w-lg lg:max-w-xl mx-auto bg-red-100 text-red-800 animate-slide-in h-10";
+  }
+}
+
 const form = document.getElementById("contact-form");
 const messageBox = document.getElementById("form-message");
 const submitButton = form.querySelector("button[type='submit']");
@@ -454,8 +468,9 @@ form.addEventListener("submit", async (e) => {
     });
 
     messageBox.textContent = "Message sent successfully!";
-    messageBox.className =
-      "mt-6 text-sm font-medium px-4 py-2 rounded w-full max-w-lg lg:max-w-xl mx-auto bg-green-100 text-green-800 animate-slide-in h-10";
+    const isDarkMode = contact.classList.contains("dark-mode");
+    messageBox.className = getMessageBoxClasses(true, isDarkMode);
+
     messageBox.style.opacity = "1";
     messageBox.setAttribute("aria-hidden", "false");
 
@@ -477,8 +492,9 @@ form.addEventListener("submit", async (e) => {
     }, 3000);
   } catch (error) {
     messageBox.textContent = "Something went wrong. Please try again.";
-    messageBox.className =
-      "mt-6 text-sm font-medium px-4 py-2 rounded w-full max-w-lg lg:max-w-xl mx-auto bg-red-100 text-red-800 animate-slide-in h-10";
+    const isDarkMode = contact.classList.contains("dark-mode");
+    messageBox.className = getMessageBoxClasses(false, isDarkMode);
+
     messageBox.style.opacity = "1";
     messageBox.setAttribute("aria-hidden", "false");
 
