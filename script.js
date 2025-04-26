@@ -90,6 +90,8 @@ const fields = document.querySelectorAll("#form-field");
 const menuIcons = document.querySelectorAll(
   "#linkedIn, #linkedIn1, #git, #git1, #insta, #insta1"
 );
+const scrollIndicator = document.getElementById("scrollIndicator");
+const tooltips = document.querySelectorAll(".tooltip");
 
 // Track current active navigation item
 let currentActive = null;
@@ -124,7 +126,7 @@ function onLoaderRemoved() {
     document.body.appendChild(opening);
 
     setTimeout(() => {
-      home.scrollIntoView();
+      window.scrollTo(0, 0);
       document.body.removeChild(opening);
     }, 4000 - delay);
 
@@ -132,6 +134,7 @@ function onLoaderRemoved() {
     setTimeout(() => pangalan.classList.add("fade-in"), 5000 - delay);
     setTimeout(() => cta.classList.add("fade-in"), 5700 - delay);
     setTimeout(() => header.classList.remove("hidden-main-menu"), 7000 - delay);
+    setTimeout(() => scrollIndicator.classList.add("fade-in"), 7000 - delay);
   } else {
     greeting.classList.add("fade-in");
     setTimeout(() => pangalan.classList.add("fade-in"), 700);
@@ -318,6 +321,7 @@ function setDarkMode(enabled) {
     menu,
     ...mobileLinks,
     ...menuIcons,
+    ...tooltips,
   ];
 
   elementsToToggle.forEach((el) => {
@@ -425,6 +429,20 @@ handleViewportChange();
 toggleBodyScroll(isMenuVisible());
 
 // Form confirmation
+const contact = document.getElementById("contact");
+
+function getMessageBoxClasses(isSuccess, isDarkMode) {
+  if (isSuccess) {
+    return isDarkMode
+      ? "mt-4 font-medium tracking-wider px-4 py-2 w-full max-w-lg lg:max-w-xl mx-auto bg-green-900 text-green-100 animate-slide-in text-center text-xs font-medium border-transparent md:px-12 md:text-sm flex items-center justify-center"
+      : "mt-4 font-medium tracking-wider px-4 py-2 w-full max-w-lg lg:max-w-xl mx-auto bg-green-100 text-green-800 animate-slide-in text-center text-xs font-medium border-transparent md:px-12 md:text-sm flex items-center justify-center";
+  } else {
+    return isDarkMode
+      ? "mt-4 font-medium tracking-wider px-4 py-2 w-full max-w-lg lg:max-w-xl mx-auto bg-red-900 text-red-100 animate-slide-in text-center text-xs font-medium border-transparent md:px-12 md:text-sm flex items-center justify-center"
+      : "mt-4 font-medium tracking-wider px-4 py-2 w-full max-w-lg lg:max-w-xl mx-auto bg-red-100 text-red-800 animate-slide-in text-center text-xs font-medium border-transparent md:px-12 md:text-sm flex items-center justify-center";
+  }
+}
+
 const form = document.getElementById("contact-form");
 const messageBox = document.getElementById("form-message");
 const submitButton = form.querySelector("button[type='submit']");
@@ -450,8 +468,9 @@ form.addEventListener("submit", async (e) => {
     });
 
     messageBox.textContent = "Message sent successfully!";
-    messageBox.className =
-      "mt-6 text-sm font-medium px-4 py-2 rounded w-full max-w-lg lg:max-w-xl mx-auto bg-green-100 text-green-800 animate-slide-in h-10";
+    const isDarkMode = contact.classList.contains("dark-mode");
+    messageBox.className = getMessageBoxClasses(true, isDarkMode);
+
     messageBox.style.opacity = "1";
     messageBox.setAttribute("aria-hidden", "false");
 
@@ -473,8 +492,9 @@ form.addEventListener("submit", async (e) => {
     }, 3000);
   } catch (error) {
     messageBox.textContent = "Something went wrong. Please try again.";
-    messageBox.className =
-      "mt-6 text-sm font-medium px-4 py-2 rounded w-full max-w-lg lg:max-w-xl mx-auto bg-red-100 text-red-800 animate-slide-in h-10";
+    const isDarkMode = contact.classList.contains("dark-mode");
+    messageBox.className = getMessageBoxClasses(false, isDarkMode);
+
     messageBox.style.opacity = "1";
     messageBox.setAttribute("aria-hidden", "false");
 
@@ -493,4 +513,18 @@ form.addEventListener("submit", async (e) => {
       }, 1000);
     }, 5000);
   }
+});
+
+// Tooltip
+document.querySelectorAll(".relative").forEach((item) => {
+  item.setAttribute("tabindex", "0");
+
+  item.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      const tooltip = item.querySelector(".tooltip");
+      tooltip.style.opacity = tooltip.style.opacity === "1" ? "0" : "1";
+      tooltip.style.visibility =
+        tooltip.style.visibility === "visible" ? "hidden" : "visible";
+    }
+  });
 });

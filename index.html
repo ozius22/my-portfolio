@@ -288,6 +288,19 @@
         <polygon points="400,100 500,300 300,300" fill="black" opacity="0.1" />
         <polygon points="675,600 875,700 775,900" fill="black" opacity="0.1" />
       </svg>
+
+      <a href="#about" class="z-50">
+        <div
+          id="scrollIndicator"
+          class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center fade-transition cursor-pointer"
+        >
+          <div class="mouse-shape flex justify-center">
+            <div class="scroll-track flex justify-center">
+              <div class="wheel-dot scroll-wheel-dot"></div>
+            </div>
+          </div>
+        </div>
+      </a>
     </section>
 
     <section id="about" class="pt-20 pb-12 bg-white">
@@ -315,54 +328,77 @@
             <div
               class="grid grid-cols-3 md:grid-cols-5 gap-8 md:gap-y-4 w-64 md:w-96 mx-auto lg:mx-0"
             >
-              <img
-                src="./assets/laravel.png"
-                title="Laravel"
-                alt="Icon 1"
-                class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110"
-              />
-              <img
-                src="./assets/git.png"
-                title="Git"
-                alt="Icon 3"
-                class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110"
-              />
-              <img
-                src="./assets/python.png"
-                title="Python"
-                alt="Icon 5"
-                class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110"
-              />
-              <img
-                src="./assets/javascript.png"
-                title="JavaScript"
-                alt="Icon 4"
-                class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110"
-              />
-              <img
-                src="./assets/tailwindcss.png"
-                title="Tailwind"
-                alt="Icon 7"
-                class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110"
-              />
-              <img
-                src="./assets/nuxtjs.png"
-                title="Nuxtjs"
-                alt="Icon 6"
-                class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110"
-              />
-              <img
-                src="./assets/mysql.png"
-                title="Mysql"
-                alt="Icon 8"
-                class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110"
-              />
-              <img
-                src="./assets/figma.png"
-                title="Figma"
-                alt="Icon 9"
-                class="w-16 object-contain mx-auto md:mx-0 transform transition-all duration-150 ease-in-out hover:scale-110"
-              />
+              <div class="relative">
+                <img
+                  src="./assets/laravel.png"
+                  alt="Icon 1"
+                  class="w-16 object-contain mx-auto md:mx-0"
+                />
+                <div class="tooltip">Laravel</div>
+              </div>
+
+              <div class="relative">
+                <img
+                  src="./assets/git.png"
+                  alt="Icon 3"
+                  class="w-16 object-contain mx-auto md:mx-0"
+                />
+                <div class="tooltip">Git</div>
+              </div>
+
+              <div class="relative">
+                <img
+                  src="./assets/python.png"
+                  alt="Icon 5"
+                  class="w-16 object-contain mx-auto md:mx-0"
+                />
+                <div class="tooltip">Python</div>
+              </div>
+
+              <div class="relative">
+                <img
+                  src="./assets/javascript.png"
+                  alt="Icon 4"
+                  class="w-16 object-contain mx-auto md:mx-0"
+                />
+                <div class="tooltip">JavaScript</div>
+              </div>
+
+              <div class="relative">
+                <img
+                  src="./assets/tailwindcss.png"
+                  alt="Icon 7"
+                  class="w-16 object-contain mx-auto md:mx-0"
+                />
+                <div class="tooltip">Tailwind</div>
+              </div>
+
+              <div class="relative">
+                <img
+                  src="./assets/nuxtjs.png"
+                  alt="Icon 6"
+                  class="w-16 object-contain mx-auto md:mx-0"
+                />
+                <div class="tooltip">Nuxtjs</div>
+              </div>
+
+              <div class="relative">
+                <img
+                  src="./assets/mysql.png"
+                  alt="Icon 8"
+                  class="w-16 object-contain mx-auto md:mx-0"
+                />
+                <div class="tooltip">MySQL</div>
+              </div>
+
+              <div class="relative">
+                <img
+                  src="./assets/figma.png"
+                  alt="Icon 9"
+                  class="w-16 object-contain mx-auto md:mx-0"
+                />
+                <div class="tooltip">Figma</div>
+              </div>
             </div>
 
             <div
@@ -505,7 +541,8 @@
               <div class="flex justify-between items-center">
                 <p class="text-gray-600">On-the-Job Training</p>
                 <svg
-                  class="w-5 h-5 text-gray-400 ml-2"
+                  id="outward-arrow"
+                  class="w-6 h-6 ml-2"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -514,7 +551,7 @@
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    stroke-width="2"
+                    stroke-width="1.5"
                     d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
                   ></path>
                 </svg>
@@ -539,7 +576,8 @@
               <div class="flex justify-between items-center">
                 <p class="text-gray-600">Capstone Project</p>
                 <svg
-                  class="w-5 h-5 text-gray-400 ml-2"
+                  id="outward-arrow"
+                  class="w-6 h-6 ml-2"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -548,7 +586,7 @@
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    stroke-width="2"
+                    stroke-width="1.5"
                     d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
                   ></path>
                 </svg>
