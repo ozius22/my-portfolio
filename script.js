@@ -91,6 +91,7 @@ const menuIcons = document.querySelectorAll(
   "#linkedIn, #linkedIn1, #git, #git1, #insta, #insta1"
 );
 const scrollIndicator = document.getElementById("scrollIndicator");
+const tooltips = document.querySelectorAll(".tooltip");
 
 // Track current active navigation item
 let currentActive = null;
@@ -133,7 +134,7 @@ function onLoaderRemoved() {
     setTimeout(() => pangalan.classList.add("fade-in"), 5000 - delay);
     setTimeout(() => cta.classList.add("fade-in"), 5700 - delay);
     setTimeout(() => header.classList.remove("hidden-main-menu"), 7000 - delay);
-    setTimeout(() => scrollIndicator.classList.add("fade-in"), 8000 - delay);
+    setTimeout(() => scrollIndicator.classList.add("fade-in"), 7000 - delay);
   } else {
     greeting.classList.add("fade-in");
     setTimeout(() => pangalan.classList.add("fade-in"), 700);
@@ -320,6 +321,7 @@ function setDarkMode(enabled) {
     menu,
     ...mobileLinks,
     ...menuIcons,
+    ...tooltips,
   ];
 
   elementsToToggle.forEach((el) => {
@@ -495,4 +497,18 @@ form.addEventListener("submit", async (e) => {
       }, 1000);
     }, 5000);
   }
+});
+
+// Tooltip
+document.querySelectorAll(".relative").forEach((item) => {
+  item.setAttribute("tabindex", "0");
+
+  item.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      const tooltip = item.querySelector(".tooltip");
+      tooltip.style.opacity = tooltip.style.opacity === "1" ? "0" : "1";
+      tooltip.style.visibility =
+        tooltip.style.visibility === "visible" ? "hidden" : "visible";
+    }
+  });
 });

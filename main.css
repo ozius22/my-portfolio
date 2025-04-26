@@ -203,7 +203,7 @@ h4.dark-mode {
   scrollbar-color: #9ca3af transparent;
 }
 
-/* animate on scroll - downward, smooth cubic easing */
+/* animate on element scroll - downward, smooth cubic easing */
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(-20px);
@@ -216,7 +216,7 @@ h4.dark-mode {
   transform: translateY(0);
 }
 
-/* form animation */
+/* form confirmation animation */
 @keyframes slide-in {
   0% {
     transform: translateX(-50%);
@@ -242,7 +242,7 @@ h4.dark-mode {
   color: #9ca2ae;
 }
 
-/* Animation for the scroll */
+/* Animation for the mouse wheel */
 @keyframes smoothScroll {
   0% {
     transform: translateY(0);
@@ -263,7 +263,7 @@ h4.dark-mode {
 }
 
 .scroll-wheel-dot {
-  animation: smoothScroll 3s infinite;
+  animation: smoothScroll 2s infinite;
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -301,4 +301,52 @@ h4.dark-mode {
   height: 3px;
   background-color: #9ca3af;
   border-radius: 1px;
+}
+
+/* tool tip */
+.tooltip {
+  position: absolute;
+  top: -2.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background-color: white;
+  border: 2px solid #4b5563;
+  color: #4b5563;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  letter-spacing: 0.025em;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out,
+    transform 0.3s ease-in-out;
+  z-index: 10;
+}
+
+.tooltip.dark-mode {
+  background-color: #111827;
+  color: #9ca3af;
+  border: 2px solid #9ca3af;
+}
+
+.tooltip::after {
+  content: "";
+  position: absolute;
+  bottom: -0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 0.5rem 0.5rem 0 0.5rem;
+  border-color: #4b5563 transparent transparent transparent;
+  border-style: solid;
+}
+
+.tooltip.dark-mode::after {
+  border-color: #9ca3af transparent transparent transparent;
+}
+
+.relative:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0px);
 }
