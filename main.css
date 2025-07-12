@@ -350,3 +350,24 @@ h4.dark-mode {
   visibility: visible;
   transform: translateX(-50%) translateY(0px);
 }
+
+.portrait {
+  width: 16rem;
+  object-fit: contain;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 768px) {
+  .portrait {
+    width: 20rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .portrait {
+    width: 485px;
+    margin-left: 0;
+    margin-right: 28.5px;
+  }
+}
