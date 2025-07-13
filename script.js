@@ -3,53 +3,45 @@ const opening = document.createElement("div");
 opening.id = "opening";
 opening.className =
   "fixed hidden lg:flex flex-col justify-center items-center z-10 top-0 left-0 w-full h-full bg-white";
+
 opening.innerHTML = `
-    <svg viewBox="0 0 1000 1000">
-        <g>
-            <polygon id="triangle1" points="500,50 950,500 50,500" fill="black">
-                <animate 
-                attributeName="points" 
-                dur="1.5s"
-                begin="0.2s"
-                fill="freeze"
-                from="500,50 950,500 50,500" 
-                to="400,100 500,300 300,300" />
-                <animate
-                attributeName="opacity"
-                dur="1.5s"
-                begin="0.2s"
-                from="1"
-                to="0.1"
-                fill="freeze" />
-                <animate
-                attributeName="opacity"
-                dur="1.5s"
-                begin="0.2s"
-                from="1"
-                to="0.1"
-                fill="freeze" />
-                />
-            </polygon>
-            
-            <polygon id="triangle2" points="500,950 950,500 50,500" fill="black">
-                <animate 
-                attributeName="points" 
-                dur="1.5s"
-                begin="0.2s"
-                fill="freeze"
-                from="500,950 950,500 50,500" 
-                to="675,600 875,700 775,900" />
-                <animate
-                attributeName="opacity"
-                dur="1.5s"
-                begin="0.2s"
-                from="1"
-                to="0.1"
-                fill="freeze" />
-                />
-            </polygon>
-        </g>
-    </svg>
+<svg viewBox="0 0 1000 1000">
+  <g>
+    <polygon id="triangle1" points="500,50 950,500 50,500" fill="black">
+      <animate 
+        attributeName="points" 
+        dur="1.5s"
+        begin="0.2s"
+        fill="freeze"
+        from="500,50 950,500 50,500" 
+        to="400,100 500,300 300,300" />
+      <animate
+        attributeName="opacity"
+        dur="1.5s"
+        begin="0.2s"
+        from="1"
+        to="0.1"
+        fill="freeze" />
+    </polygon>
+
+    <polygon id="triangle2" points="500,950 950,500 50,500" fill="black">
+      <animate 
+        attributeName="points" 
+        dur="1.5s"
+        begin="0.2s"
+        fill="freeze"
+        from="500,950 950,500 50,500" 
+        to="675,600 875,700 775,900" />
+      <animate
+        attributeName="opacity"
+        dur="1.5s"
+        begin="0.2s"
+        from="1"
+        to="0.1"
+        fill="freeze" />
+    </polygon>
+  </g>
+</svg>
 `;
 
 // ---------- DOM Element References ----------
@@ -528,3 +520,6 @@ document.querySelectorAll(".relative").forEach((item) => {
     }
   });
 });
+
+const currentYear = new Date().getFullYear();
+document.getElementById("year-span").textContent += currentYear;
