@@ -62,12 +62,11 @@ window.addEventListener("load", () => {
 function onLoaderRemoved() {
   const isLargeScreen = window.matchMedia("(min-width: 1800px)").matches;
 
-  // I normalized your negative math (3500 - 3700) to be 0 (instant)
-  // This is much cleaner for the browser to process.
+  // window.scrollTo(0, 0);
 
   if (isLargeScreen) {
-    greeting.classList.add("fade-in");       // 0ms
-    trianglesLight.classList.add("fade-in"); // 0ms
+    greeting.classList.add("fade-in");       
+    trianglesLight.classList.add("fade-in"); 
     
     setTimeout(() => pangalan.classList.add("fade-in"), 1300);
     setTimeout(() => cta.classList.add("fade-in"), 2000);

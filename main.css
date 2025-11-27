@@ -351,13 +351,6 @@ h4.dark-mode {
   transform: translateX(-50%) translateY(0px);
 }
 
-.portrait {
-  width: 16rem;
-  object-fit: contain;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 @media (min-width: 768px) {
   .portrait {
     width: 20rem;
@@ -374,4 +367,19 @@ h4.dark-mode {
 
 #triangles-light {
   opacity: 0;
+}
+
+.portrait {
+  width: 400px;
+  height: 400px;
+  object-fit: cover;
+  object-position: center; 
+  border-radius: 50%;
+
+  border: 8px solid #ffffff;
+  
+  box-shadow: 
+    0 10px 15px -3px rgba(0, 0, 0, 0.1), 
+    0 4px 6px -2px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(0,0,0,0.05); 
 }
