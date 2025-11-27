@@ -371,3 +371,7 @@ h4.dark-mode {
     margin-right: 28.5px;
   }
 }
+
+#triangles-light {
+  opacity: 0;
+}

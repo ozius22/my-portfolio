@@ -1,49 +1,3 @@
-// ---------- Opening Animation Element ----------
-const opening = document.createElement("div");
-opening.id = "opening";
-opening.className =
-  "fixed hidden lg:flex flex-col justify-center items-center z-10 top-0 left-0 w-full h-full bg-white";
-
-opening.innerHTML = `
-<svg viewBox="0 0 1000 1000">
-  <g>
-    <polygon id="triangle1" points="500,50 950,500 50,500" fill="black">
-      <animate 
-        attributeName="points" 
-        dur="1.5s"
-        begin="0.2s"
-        fill="freeze"
-        from="500,50 950,500 50,500" 
-        to="400,100 500,300 300,300" />
-      <animate
-        attributeName="opacity"
-        dur="1.5s"
-        begin="0.2s"
-        from="1"
-        to="0.1"
-        fill="freeze" />
-    </polygon>
-
-    <polygon id="triangle2" points="500,950 950,500 50,500" fill="black">
-      <animate 
-        attributeName="points" 
-        dur="1.5s"
-        begin="0.2s"
-        fill="freeze"
-        from="500,950 950,500 50,500" 
-        to="675,600 875,700 775,900" />
-      <animate
-        attributeName="opacity"
-        dur="1.5s"
-        begin="0.2s"
-        from="1"
-        to="0.1"
-        fill="freeze" />
-    </polygon>
-  </g>
-</svg>
-`;
-
 // ---------- DOM Element References ----------
 const loader = document.querySelector("#loader-container");
 const greeting = document.querySelector("#greeting");
@@ -89,49 +43,42 @@ const tooltips = document.querySelectorAll(".tooltip");
 let currentActive = null;
 
 // ---------- Loader Handling ----------
-document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(() => loader.remove(), 1000);
-});
-
-const observer = new MutationObserver((mutationsList) => {
-  for (let mutation of mutationsList) {
-    if (mutation.removedNodes.length > 0) {
-      mutation.removedNodes.forEach((node) => {
-        if (node.id === "loader-container") {
-          onLoaderRemoved();
-          observer.disconnect();
-        }
-      });
-    }
+window.addEventListener("load", () => {
+  // Fade out loader immediately
+  if (loader) {
+    loader.style.transition = "opacity 0.5s ease";
+    loader.style.opacity = "0";
+    
+    // Remove from DOM after fade finishes
+    setTimeout(() => {
+      loader.remove();
+      onLoaderRemoved(); 
+    }, 500); 
+  } else {
+    onLoaderRemoved();
   }
 });
 
-if (loader && loader.parentNode) {
-  observer.observe(loader.parentNode, { childList: true });
-}
-
 function onLoaderRemoved() {
-  const delay = 2000;
   const isLargeScreen = window.matchMedia("(min-width: 1800px)").matches;
 
+  // I normalized your negative math (3500 - 3700) to be 0 (instant)
+  // This is much cleaner for the browser to process.
+
   if (isLargeScreen) {
-    document.body.appendChild(opening);
-
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-      document.body.removeChild(opening);
-    }, 4000 - delay);
-
-    setTimeout(() => greeting.classList.add("fade-in"), 3500 - delay);
-    setTimeout(() => pangalan.classList.add("fade-in"), 5000 - delay);
-    setTimeout(() => cta.classList.add("fade-in"), 5700 - delay);
-    setTimeout(() => header.classList.remove("hidden-main-menu"), 7000 - delay);
-    setTimeout(() => scrollIndicator.classList.add("fade-in"), 7000 - delay);
+    greeting.classList.add("fade-in");       // 0ms
+    trianglesLight.classList.add("fade-in"); // 0ms
+    
+    setTimeout(() => pangalan.classList.add("fade-in"), 1300);
+    setTimeout(() => cta.classList.add("fade-in"), 2000);
+    setTimeout(() => header.classList.remove("hidden-main-menu"), 3300);
+    setTimeout(() => scrollIndicator.classList.add("fade-in"), 3300);
   } else {
+    // Mobile - Fast & Snappy
     greeting.classList.add("fade-in");
     setTimeout(() => pangalan.classList.add("fade-in"), 700);
-    setTimeout(() => cta.classList.add("fade-in"), 3000 - delay);
-    setTimeout(() => header.classList.remove("hidden-main-menu"), 4000 - delay);
+    setTimeout(() => cta.classList.add("fade-in"), 1000);
+    setTimeout(() => header.classList.remove("hidden-main-menu"), 1200);
   }
 }
 
