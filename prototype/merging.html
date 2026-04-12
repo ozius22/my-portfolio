@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Git Merging — Visual Aid</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --green: #00ff88;
+      --cyan: #00e5ff;
+      --purple: #bf5af2;
+      --orange: #ff9f0a;
+      --red: #ff453a;
+      --bg: #0a0c10;
+      --surface: #111318;
+      --border: #1e2230;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      background-color: var(--bg);
+      font-family: 'JetBrains Mono', monospace;
+      color: #c8d3e8;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3 { font-family: 'Syne', sans-serif; }
+
+    /* Scanline overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 3px,
+        rgba(0,0,0,0.04) 3px,
+        rgba(0,0,0,0.04) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Noise texture */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    .glow-green { text-shadow: 0 0 20px var(--green), 0 0 40px rgba(0,255,136,0.4); }
+    .glow-cyan  { text-shadow: 0 0 20px var(--cyan),  0 0 40px rgba(0,229,255,0.4); }
+    .glow-purple{ text-shadow: 0 0 20px var(--purple), 0 0 40px rgba(191,90,242,0.4); }
+
+    .border-glow-green { box-shadow: 0 0 0 1px var(--green), 0 0 20px rgba(0,255,136,0.15); }
+    .border-glow-cyan  { box-shadow: 0 0 0 1px var(--cyan),  0 0 20px rgba(0,229,255,0.15); }
+    .border-glow-purple{ box-shadow: 0 0 0 1px var(--purple), 0 0 20px rgba(191,90,242,0.15); }
+    .border-glow-orange{ box-shadow: 0 0 0 1px var(--orange), 0 0 20px rgba(255,159,10,0.15); }
+
+    /* === HERO === */
+    .hero-grid {
+      background-image:
+        linear-gradient(rgba(0,255,136,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,136,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.3); }
+    }
+
+    @keyframes flow {
+      0% { stroke-dashoffset: 200; opacity: 0; }
+      20% { opacity: 1; }
+      100% { stroke-dashoffset: 0; opacity: 1; }
+    }
+
+    @keyframes branch-in {
+      from { opacity: 0; transform: translateX(-30px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes commit-pop {
+      0%   { opacity: 0; transform: scale(0); }
+      70%  { transform: scale(1.2); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes merge-flash {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; box-shadow: 0 0 30px var(--green), 0 0 60px rgba(0,255,136,0.5); }
+    }
+
+    @keyframes float-up {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes slide-in-left {
+      from { opacity: 0; transform: translateX(-50px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slide-in-right {
+      from { opacity: 0; transform: translateX(50px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .animate-float { animation: float-up 3s ease-in-out infinite; }
+    .animate-pulse-dot { animation: pulse-dot 1.5s ease-in-out infinite; }
+    .animate-merge-flash { animation: merge-flash 2s ease-in-out infinite; }
+
+    .animate-fade-up { animation: fade-up 0.7s ease forwards; }
+    .animate-slide-left { animation: slide-in-left 0.7s ease forwards; }
+    .animate-slide-right { animation: slide-in-right 0.7s ease forwards; }
+
+    .delay-100 { animation-delay: 0.1s; opacity: 0; }
+    .delay-200 { animation-delay: 0.2s; opacity: 0; }
+    .delay-300 { animation-delay: 0.3s; opacity: 0; }
+    .delay-400 { animation-delay: 0.4s; opacity: 0; }
+    .delay-500 { animation-delay: 0.5s; opacity: 0; }
+    .delay-600 { animation-delay: 0.6s; opacity: 0; }
+    .delay-700 { animation-delay: 0.7s; opacity: 0; }
+    .delay-800 { animation-delay: 0.8s; opacity: 0; }
+
+    .shimmer-text {
+      background: linear-gradient(90deg, var(--green) 0%, var(--cyan) 30%, var(--green) 60%, var(--cyan) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 3s linear infinite;
+    }
+
+    /* Card hover */
+    .card-hover {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 0 1px var(--cyan), 0 12px 40px rgba(0,229,255,0.15);
+    }
+
+    /* Branch node */
+    .commit-node {
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      border: 2px solid;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    /* Terminal cursor blink */
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .cursor { animation: blink 1s step-end infinite; }
+
+    /* SVG flow animation */
+    .flow-path {
+      stroke-dasharray: 200;
+      stroke-dashoffset: 200;
+      animation: flow 1.5s ease forwards;
+    }
+    .flow-delay-1 { animation-delay: 0.3s; }
+    .flow-delay-2 { animation-delay: 0.6s; }
+    .flow-delay-3 { animation-delay: 0.9s; }
+
+    .tag-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .step-number {
+      font-family: 'Syne', sans-serif;
+      font-size: 72px;
+      font-weight: 800;
+      line-height: 1;
+      -webkit-text-stroke: 1px currentColor;
+      color: transparent;
+      opacity: 0.12;
+      position: absolute;
+      top: -10px;
+      right: 16px;
+    }
+
+    /* Protected shield */
+    .shield-badge {
+      position: relative;
+      overflow: hidden;
+    }
+    .shield-badge::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 60%);
+    }
+
+    /* Tooltip */
+    .tooltip-wrap { position: relative; }
+    .tooltip-wrap .tooltip {
+      visibility: hidden; opacity: 0;
+      position: absolute; bottom: calc(100% + 8px);
+      left: 50%; transform: translateX(-50%);
+      background: #1e2230; border: 1px solid var(--border);
+      color: #c8d3e8; font-size: 11px;
+      padding: 6px 10px; border-radius: 6px;
+      white-space: nowrap; transition: opacity 0.2s;
+      z-index: 10;
+    }
+    .tooltip-wrap:hover .tooltip { visibility: visible; opacity: 1; }
+
+    /* Wide section underline */
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+    }
+
+    /* Horizontal rule */
+    .rule {
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+
+    /* PR card */
+    .pr-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .pr-card:hover {
+      border-color: var(--cyan);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- ===== HERO ===== -->
+  <section class="hero-grid relative flex flex-col items-center justify-center text-center px-6 py-24 overflow-hidden">
+
+    <!-- Radial glow background -->
+    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div style="width:600px;height:600px;background:radial-gradient(circle, rgba(0,255,136,0.08) 0%, transparent 70%);border-radius:50%;"></div>
+    </div>
+
+    <!-- Terminal header bar -->
+    <div class="animate-fade-up delay-100 mb-10 w-full max-w-2xl bg-[#111318] rounded-xl border border-[#1e2230] overflow-hidden shadow-2xl">
+      <div class="flex items-center gap-2 px-4 py-3 border-b border-[#1e2230] bg-[#0d0f14]">
+        <span class="w-3 h-3 rounded-full bg-[#ff453a]"></span>
+        <span class="w-3 h-3 rounded-full bg-[#ff9f0a]"></span>
+        <span class="w-3 h-3 rounded-full bg-[#30d158]"></span>
+        <span class="ml-3 text-xs text-[#4a5568]">git — bash — 80×24</span>
+      </div>
+      <div class="px-5 py-4 text-left text-sm leading-7">
+        <p><span style="color:#4a5568">$</span> <span style="color:var(--cyan)">git</span> <span style="color:var(--green)">merge</span> <span style="color:var(--orange)">feature/awesome-thing</span></p>
+        <p style="color:#4a5568">Updating a3f2c1..9de4b8</p>
+        <p style="color:#4a5568">Fast-forward</p>
+        <p>&nbsp;<span style="color:var(--green)">src/main.js</span>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;<span style="color:var(--green)">42 +++++</span></p>
+        <p>&nbsp;<span style="color:var(--red)">src/old.js</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;<span style="color:var(--red)">3 ---</span></p>
+        <p>&nbsp;<span style="color:#c8d3e8">2 files changed, 45 insertions(+), 3 deletions(-)</span></p>
+        <p><span style="color:#4a5568">$</span> <span class="cursor" style="color:var(--green)">▋</span></p>
+      </div>
+    </div>
+
+    <p class="animate-fade-up delay-200 section-label mb-4">Visual Aid · Git Version Control</p>
+    <h1 class="animate-fade-up delay-300 text-6xl md:text-8xl font-extrabold mb-6 leading-none">
+      <span class="shimmer-text">Git Merging</span>
+    </h1>
+    <p class="animate-fade-up delay-400 text-lg text-[#7a8aaa] max-w-lg leading-relaxed">
+      Combine your colleagues' code, ship features safely, and keep your protected branches clean.
+    </p>
+
+    <!-- Key stats row -->
+    <div class="animate-fade-up delay-500 mt-12 flex flex-wrap gap-4 justify-center">
+      <div class="tag-pill border border-[#1e2230] bg-[#111318]" style="color:var(--green)">
+        <span class="w-2 h-2 rounded-full animate-pulse-dot" style="background:var(--green)"></span>
+        Combine Code
+      </div>
+      <div class="tag-pill border border-[#1e2230] bg-[#111318]" style="color:var(--cyan)">
+        <span class="w-2 h-2 rounded-full animate-pulse-dot" style="background:var(--cyan)"></span>
+        Feature-Based
+      </div>
+      <div class="tag-pill border border-[#1e2230] bg-[#111318]" style="color:var(--purple)">
+        <span class="w-2 h-2 rounded-full animate-pulse-dot" style="background:var(--purple)"></span>
+        Protected Branches
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- ===== SECTION 1: What is Git Merge? ===== -->
+  <section class="max-w-6xl mx-auto px-6 py-20">
+    <p class="section-label mb-3 animate-fade-up">01 — The Concept</p>
+    <h2 class="text-4xl md:text-5xl font-bold mb-3 animate-fade-up delay-100" style="color:#e8edf8">
+      What is <span style="color:var(--green)">Git Merge</span>?
+    </h2>
+    <p class="text-[#7a8aaa] mb-12 max-w-2xl animate-fade-up delay-200">
+      Git merge is the process of integrating changes from one branch into another — bringing your teammates' work together into a single unified codebase.
+    </p>
+
+    <!-- 3 columns -->
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <!-- Card 1 -->
+      <div class="card-hover animate-fade-up delay-300 relative rounded-xl border border-[#1e2230] bg-[#111318] p-6 overflow-hidden">
+        <span class="step-number" style="color:var(--green)">1</span>
+        <div class="mb-4 w-12 h-12 rounded-lg flex items-center justify-center" style="background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2)">
+          <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="#00ff88" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="#00ff88" stroke-width="2"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="#00ff88" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <h3 class="text-lg font-bold mb-2" style="color:#e8edf8">Combine Colleagues' Code</h3>
+        <p class="text-sm text-[#7a8aaa] leading-relaxed">
+          When two or more developers work on different branches, merging brings all their changes together — like assembling puzzle pieces from different teammates.
+        </p>
+        <div class="mt-4 flex gap-2 flex-wrap">
+          <span class="tag-pill" style="background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.15);color:var(--green)">Alice's code</span>
+          <span class="tag-pill" style="background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.15);color:var(--cyan)">Bob's code</span>
+          <span class="tag-pill" style="background:rgba(191,90,242,0.06);border:1px solid rgba(191,90,242,0.15);color:var(--purple)">→ Merged</span>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card-hover animate-fade-up delay-400 relative rounded-xl border border-[#1e2230] bg-[#111318] p-6 overflow-hidden">
+        <span class="step-number" style="color:var(--cyan)">2</span>
+        <div class="mb-4 w-12 h-12 rounded-lg flex items-center justify-center" style="background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2)">
+          <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke="#00e5ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3 class="text-lg font-bold mb-2" style="color:#e8edf8">Each Feature, One Merge</h3>
+        <p class="text-sm text-[#7a8aaa] leading-relaxed">
+          Each feature lives on its own branch. Once it's complete and tested, it gets merged. This keeps work isolated, reviewable, and safe.
+        </p>
+        <div class="mt-4 font-mono text-xs space-y-1" style="color:#4a5568">
+          <p><span style="color:var(--orange)">feature/login</span> → <span style="color:var(--green)">done ✓</span></p>
+          <p><span style="color:var(--orange)">feature/dashboard</span> → <span style="color:var(--cyan)">in review</span></p>
+          <p><span style="color:var(--orange)">feature/payments</span> → <span style="color:#4a5568">in progress</span></p>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card-hover animate-fade-up delay-500 relative rounded-xl border border-[#1e2230] bg-[#111318] p-6 overflow-hidden">
+        <span class="step-number" style="color:var(--purple)">3</span>
+        <div class="mb-4 w-12 h-12 rounded-lg flex items-center justify-center" style="background:rgba(191,90,242,0.08);border:1px solid rgba(191,90,242,0.2)">
+          <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#bf5af2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3 class="text-lg font-bold mb-2" style="color:#e8edf8">Protected Branches</h3>
+        <p class="text-sm text-[#7a8aaa] leading-relaxed">
+          <code style="color:var(--green)">main</code> and <code style="color:var(--cyan)">dev</code> are protected — you cannot push directly. All changes must go through a Pull Request and be approved first.
+        </p>
+        <div class="mt-4 flex gap-2">
+          <span class="tag-pill shield-badge" style="background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);color:var(--green)">🔒 main</span>
+          <span class="tag-pill shield-badge" style="background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);color:var(--cyan)">🔒 dev</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- ===== SECTION 2: THE GIT GRAPH ===== -->
+  <section class="max-w-6xl mx-auto px-6 py-20">
+    <p class="section-label mb-3">02 — Branch Visualization</p>
+    <h2 class="text-4xl md:text-5xl font-bold mb-3" style="color:#e8edf8">
+      The <span style="color:var(--cyan)">Branch Graph</span>
+    </h2>
+    <p class="text-[#7a8aaa] mb-12 max-w-2xl">
+      This is what happens when your team works in parallel — each person branches off, does their work, then merges back in.
+    </p>
+
+    <!-- SVG Git Graph -->
+    <div class="rounded-2xl border border-[#1e2230] bg-[#0d0f14] p-8 overflow-x-auto">
+      <svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;min-width:600px;height:auto;">
+        <defs>
+          <marker id="arrow-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#00ff88" />
+          </marker>
+          <marker id="arrow-cyan" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#00e5ff" />
+          </marker>
+          <marker id="arrow-orange" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#ff9f0a" />
+          </marker>
+          <marker id="arrow-purple" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#bf5af2" />
+          </marker>
+          <filter id="glow-g"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="glow-c"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+
+        <!-- Row labels -->
+        <text x="8" y="57" font-family="JetBrains Mono" font-size="11" fill="#00ff88" opacity="0.8">main</text>
+        <text x="8" y="122" font-family="JetBrains Mono" font-size="11" fill="#00e5ff" opacity="0.8">dev</text>
+        <text x="8" y="177" font-family="JetBrains Mono" font-size="11" fill="#ff9f0a" opacity="0.8">feat/login</text>
+        <text x="8" y="237" font-family="JetBrains Mono" font-size="11" fill="#bf5af2" opacity="0.8">feat/dash</text>
+
+        <!-- === MAIN BRANCH === -->
+        <!-- line segments -->
+        <line x1="70" y1="50" x2="170" y2="50" stroke="#00ff88" stroke-width="2.5" opacity="0.4"/>
+        <!-- merge arrives at 660 from dev -->
+        <line x1="170" y1="50" x2="660" y2="50" stroke="#00ff88" stroke-width="2.5" opacity="0.4"/>
+        <line x1="660" y1="50" x2="780" y2="50" stroke="#00ff88" stroke-width="2.5" opacity="0.4"/>
+
+        <!-- Commit: C1 (initial) -->
+        <circle cx="110" cy="50" r="10" fill="#0d0f14" stroke="#00ff88" stroke-width="2.5" filter="url(#glow-g)"/>
+        <text x="110" y="54.5" font-family="JetBrains Mono" font-size="8" fill="#00ff88" text-anchor="middle">C1</text>
+        <text x="110" y="36" font-family="JetBrains Mono" font-size="9" fill="#4a5568" text-anchor="middle">initial</text>
+
+        <!-- Commit: C2 (after dev branch) -->
+        <circle cx="220" cy="50" r="10" fill="#0d0f14" stroke="#00ff88" stroke-width="2.5" filter="url(#glow-g)"/>
+        <text x="220" y="54.5" font-family="JetBrains Mono" font-size="8" fill="#00ff88" text-anchor="middle">C2</text>
+
+        <!-- Commit: MERGE main ← dev -->
+        <circle cx="660" cy="50" r="13" fill="#0d0f14" stroke="#00ff88" stroke-width="3" filter="url(#glow-g)"/>
+        <text x="660" y="54.5" font-family="JetBrains Mono" font-size="8" fill="#00ff88" text-anchor="middle">M3</text>
+        <text x="660" y="33" font-family="JetBrains Mono" font-size="9" fill="#00ff88" text-anchor="middle" opacity="0.8">merge ↓</text>
+
+        <!-- HEAD tag -->
+        <rect x="750" y="40" width="44" height="18" rx="4" fill="rgba(0,255,136,0.12)" stroke="#00ff88" stroke-width="1"/>
+        <text x="772" y="52" font-family="JetBrains Mono" font-size="9" fill="#00ff88" text-anchor="middle">HEAD</text>
+        <circle cx="800" cy="50" r="7" fill="#0d0f14" stroke="#00ff88" stroke-width="2"/>
+        <text x="800" y="53.5" font-family="JetBrains Mono" font-size="7" fill="#00ff88" text-anchor="middle">C7</text>
+
+        <!-- === DEV BRANCH === -->
+        <!-- branch off from C1 -->
+        <path d="M 110 60 Q 110 115 170 115" stroke="#00e5ff" stroke-width="2" fill="none" opacity="0.5"/>
+        <line x1="170" y1="115" x2="500" y2="115" stroke="#00e5ff" stroke-width="2.5" opacity="0.4"/>
+        <!-- merge up to main M3 -->
+        <path d="M 500 115 Q 580 115 660 60" stroke="#00e5ff" stroke-width="2" fill="none" stroke-dasharray="5,3" opacity="0.5"/>
+
+        <!-- dev commits -->
+        <circle cx="220" cy="115" r="9" fill="#0d0f14" stroke="#00e5ff" stroke-width="2"/>
+        <text x="220" y="119" font-family="JetBrains Mono" font-size="7" fill="#00e5ff" text-anchor="middle">D1</text>
+
+        <circle cx="350" cy="115" r="9" fill="#0d0f14" stroke="#00e5ff" stroke-width="2"/>
+        <text x="350" y="119" font-family="JetBrains Mono" font-size="7" fill="#00e5ff" text-anchor="middle">D2</text>
+
+        <circle cx="500" cy="115" r="9" fill="#0d0f14" stroke="#00e5ff" stroke-width="2"/>
+        <text x="500" y="119" font-family="JetBrains Mono" font-size="7" fill="#00e5ff" text-anchor="middle">D3</text>
+        <text x="500" y="104" font-family="JetBrains Mono" font-size="9" fill="#00e5ff" text-anchor="middle" opacity="0.7">PR ✓</text>
+
+        <!-- === FEATURE/LOGIN === -->
+        <path d="M 220 124 Q 220 170 280 170" stroke="#ff9f0a" stroke-width="2" fill="none" opacity="0.5"/>
+        <line x1="280" y1="170" x2="460" y2="170" stroke="#ff9f0a" stroke-width="2.5" opacity="0.4"/>
+        <!-- merge back to dev -->
+        <path d="M 460 170 Q 480 170 500 124" stroke="#ff9f0a" stroke-width="2" fill="none" stroke-dasharray="5,3" opacity="0.5"/>
+
+        <circle cx="320" cy="170" r="8" fill="#0d0f14" stroke="#ff9f0a" stroke-width="2"/>
+        <text x="320" y="173.5" font-family="JetBrains Mono" font-size="7" fill="#ff9f0a" text-anchor="middle">F1</text>
+        <text x="320" y="157" font-family="JetBrains Mono" font-size="8" fill="#4a5568" text-anchor="middle">Alice</text>
+
+        <circle cx="420" cy="170" r="8" fill="#0d0f14" stroke="#ff9f0a" stroke-width="2"/>
+        <text x="420" y="173.5" font-family="JetBrains Mono" font-size="7" fill="#ff9f0a" text-anchor="middle">F2</text>
+
+        <circle cx="460" cy="170" r="8" fill="#0d0f14" stroke="#ff9f0a" stroke-width="2"/>
+        <text x="460" y="173.5" font-family="JetBrains Mono" font-size="7" fill="#ff9f0a" text-anchor="middle">F3</text>
+        <text x="460" y="159" font-family="JetBrains Mono" font-size="9" fill="#ff9f0a" text-anchor="middle" opacity="0.7">done ✓</text>
+
+        <!-- === FEATURE/DASHBOARD === -->
+        <path d="M 350 124 Q 350 230 410 230" stroke="#bf5af2" stroke-width="2" fill="none" opacity="0.5"/>
+        <line x1="410" y1="230" x2="560" y2="230" stroke="#bf5af2" stroke-width="2.5" opacity="0.4"/>
+        <!-- merge back to dev -->
+        <path d="M 560 230 Q 590 230 600 124 Q 600 115 500 115" stroke="#bf5af2" stroke-width="2" fill="none" stroke-dasharray="5,3" opacity="0.5"/>
+
+        <circle cx="450" cy="230" r="8" fill="#0d0f14" stroke="#bf5af2" stroke-width="2"/>
+        <text x="450" y="233.5" font-family="JetBrains Mono" font-size="7" fill="#bf5af2" text-anchor="middle">P1</text>
+        <text x="450" y="218" font-family="JetBrains Mono" font-size="8" fill="#4a5568" text-anchor="middle">Bob</text>
+
+        <circle cx="530" cy="230" r="8" fill="#0d0f14" stroke="#bf5af2" stroke-width="2"/>
+        <text x="530" y="233.5" font-family="JetBrains Mono" font-size="7" fill="#bf5af2" text-anchor="middle">P2</text>
+
+        <circle cx="560" cy="230" r="8" fill="#0d0f14" stroke="#bf5af2" stroke-width="2"/>
+        <text x="560" y="233.5" font-family="JetBrains Mono" font-size="7" fill="#bf5af2" text-anchor="middle">P3</text>
+        <text x="560" y="218" font-family="JetBrains Mono" font-size="9" fill="#bf5af2" text-anchor="middle" opacity="0.7">done ✓</text>
+
+        <!-- Legend -->
+        <line x1="70" y1="264" x2="90" y2="264" stroke="#00e5ff" stroke-width="2" stroke-dasharray="5,3"/>
+        <text x="95" y="268" font-family="JetBrains Mono" font-size="9" fill="#4a5568">= Pull Request / Merge</text>
+        <line x1="260" y1="264" x2="280" y2="264" stroke="#4a5568" stroke-width="2"/>
+        <text x="285" y="268" font-family="JetBrains Mono" font-size="9" fill="#4a5568">= Active branch</text>
+      </svg>
+    </div>
+
+    <!-- Legend chips -->
+    <div class="mt-6 flex flex-wrap gap-3">
+      <span class="tag-pill" style="background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.2);color:var(--green)">● main — production</span>
+      <span class="tag-pill" style="background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.2);color:var(--cyan)">● dev — staging</span>
+      <span class="tag-pill" style="background:rgba(255,159,10,0.06);border:1px solid rgba(255,159,10,0.2);color:var(--orange)">● feature/login (Alice)</span>
+      <span class="tag-pill" style="background:rgba(191,90,242,0.06);border:1px solid rgba(191,90,242,0.2);color:var(--purple)">● feature/dashboard (Bob)</span>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- ===== SECTION 3: HOW A MERGE WORKS ===== -->
+  <section class="max-w-6xl mx-auto px-6 py-20">
+    <p class="section-label mb-3">03 — The Workflow</p>
+    <h2 class="text-4xl md:text-5xl font-bold mb-3" style="color:#e8edf8">
+      The <span style="color:var(--orange)">Merge Workflow</span>
+    </h2>
+    <p class="text-[#7a8aaa] mb-12 max-w-2xl">
+      From writing code to landing it in <code style="color:var(--green)">main</code> — here's the typical flow every team follows.
+    </p>
+
+    <!-- Steps timeline -->
+    <div class="relative">
+      <!-- vertical connector -->
+      <div class="absolute left-6 top-6 bottom-6 w-px" style="background:linear-gradient(to bottom, var(--green), var(--cyan), var(--orange), var(--purple))"></div>
+
+      <div class="space-y-6">
+
+        <!-- Step 1 -->
+        <div class="flex gap-6 items-start">
+          <div class="w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center font-bold z-10" style="background:#0d0f14;border:2px solid var(--green);color:var(--green);font-family:'Syne',sans-serif">1</div>
+          <div class="flex-1 rounded-xl border border-[#1e2230] bg-[#111318] p-6 card-hover">
+            <div class="flex items-center gap-3 mb-2">
+              <h3 class="font-bold text-lg" style="color:#e8edf8">Create a Feature Branch</h3>
+              <span class="tag-pill" style="background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);color:var(--green)">git checkout -b</span>
+            </div>
+            <p class="text-sm text-[#7a8aaa] mb-3">Branch off from <code style="color:var(--cyan)">dev</code>. Give it a clear descriptive name. Never work directly on <code style="color:var(--green)">main</code> or <code style="color:var(--cyan)">dev</code>.</p>
+            <div class="rounded-lg bg-[#0d0f14] border border-[#1e2230] px-4 py-3 text-sm font-mono">
+              <span style="color:#4a5568">$</span> <span style="color:var(--cyan)">git</span> <span style="color:var(--green)">checkout</span> <span style="color:#4a5568">-b</span> <span style="color:var(--orange)">feature/user-auth</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="flex gap-6 items-start">
+          <div class="w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center font-bold z-10" style="background:#0d0f14;border:2px solid var(--cyan);color:var(--cyan);font-family:'Syne',sans-serif">2</div>
+          <div class="flex-1 rounded-xl border border-[#1e2230] bg-[#111318] p-6 card-hover">
+            <div class="flex items-center gap-3 mb-2">
+              <h3 class="font-bold text-lg" style="color:#e8edf8">Commit Your Changes</h3>
+              <span class="tag-pill" style="background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);color:var(--cyan)">git commit</span>
+            </div>
+            <p class="text-sm text-[#7a8aaa] mb-3">Make atomic, meaningful commits. Each commit should do one thing and have a clear message.</p>
+            <div class="rounded-lg bg-[#0d0f14] border border-[#1e2230] px-4 py-3 text-sm font-mono space-y-1">
+              <p><span style="color:#4a5568">$</span> <span style="color:var(--cyan)">git</span> <span style="color:var(--green)">add</span> <span style="color:#c8d3e8">.</span></p>
+              <p><span style="color:#4a5568">$</span> <span style="color:var(--cyan)">git</span> <span style="color:var(--green)">commit</span> <span style="color:#4a5568">-m</span> <span style="color:var(--orange)">"feat: add JWT authentication"</span></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="flex gap-6 items-start">
+          <div class="w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center font-bold z-10" style="background:#0d0f14;border:2px solid var(--orange);color:var(--orange);font-family:'Syne',sans-serif">3</div>
+          <div class="flex-1 rounded-xl border border-[#1e2230] bg-[#111318] p-6 card-hover">
+            <div class="flex items-center gap-3 mb-2">
+              <h3 class="font-bold text-lg" style="color:#e8edf8">Open a Pull Request</h3>
+              <span class="tag-pill" style="background:rgba(255,159,10,0.08);border:1px solid rgba(255,159,10,0.2);color:var(--orange)">GitHub / GitLab</span>
+            </div>
+            <p class="text-sm text-[#7a8aaa] mb-3">Push your branch and open a PR targeting <code style="color:var(--cyan)">dev</code>. Your colleagues review your code before it's merged.</p>
+            <!-- PR Card mock -->
+            <div class="pr-card">
+              <div class="flex items-center gap-2 mb-2">
+                <span style="color:var(--green)">⬤</span>
+                <span class="text-sm font-semibold" style="color:#e8edf8">feat: add JWT authentication</span>
+                <span class="ml-auto tag-pill" style="background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);color:var(--green);font-size:10px">Open</span>
+              </div>
+              <p class="text-xs text-[#7a8aaa]">feature/user-auth → dev · 3 commits · +148 -12 lines</p>
+              <div class="mt-3 flex gap-2">
+                <span class="tag-pill" style="background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.15);color:var(--cyan)">👀 2 reviewers</span>
+                <span class="tag-pill" style="background:rgba(255,159,10,0.06);border:1px solid rgba(255,159,10,0.15);color:var(--orange)">💬 4 comments</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="flex gap-6 items-start">
+          <div class="w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center font-bold z-10" style="background:#0d0f14;border:2px solid var(--purple);color:var(--purple);font-family:'Syne',sans-serif">4</div>
+          <div class="flex-1 rounded-xl border border-[#1e2230] bg-[#111318] p-6 card-hover">
+            <div class="flex items-center gap-3 mb-2">
+              <h3 class="font-bold text-lg" style="color:#e8edf8">Merge After Approval</h3>
+              <span class="tag-pill" style="background:rgba(191,90,242,0.08);border:1px solid rgba(191,90,242,0.2);color:var(--purple)">git merge</span>
+            </div>
+            <p class="text-sm text-[#7a8aaa] mb-3">Once reviewers approve, the PR is merged into <code style="color:var(--cyan)">dev</code>. When the sprint ends, <code style="color:var(--cyan)">dev</code> merges into <code style="color:var(--green)">main</code> for release.</p>
+            <div class="rounded-lg bg-[#0d0f14] border border-[#1e2230] px-4 py-3 text-sm font-mono space-y-1">
+              <p><span style="color:#4a5568">$</span> <span style="color:var(--cyan)">git</span> <span style="color:var(--green)">checkout</span> <span style="color:var(--cyan)">dev</span></p>
+              <p><span style="color:#4a5568">$</span> <span style="color:var(--cyan)">git</span> <span style="color:var(--green)">merge</span> <span style="color:var(--orange)">feature/user-auth</span></p>
+              <p style="color:#4a5568"># ✅ Merge made by the 'ort' strategy.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- ===== SECTION 4: PROTECTED BRANCHES ===== -->
+  <section class="max-w-6xl mx-auto px-6 py-20">
+    <p class="section-label mb-3">04 — Protected Branches</p>
+    <h2 class="text-4xl md:text-5xl font-bold mb-3" style="color:#e8edf8">
+      <span style="color:var(--purple)">main</span> &amp; <span style="color:var(--cyan)">dev</span> are Sacred
+    </h2>
+    <p class="text-[#7a8aaa] mb-12 max-w-2xl">
+      These branches are the backbone of your project. They are locked down for a reason — no direct pushes, no shortcuts.
+    </p>
+
+    <div class="grid md:grid-cols-2 gap-8">
+
+      <!-- main -->
+      <div class="rounded-2xl border-2 border-[#00ff88] bg-[#0d0f14] p-8 relative overflow-hidden animate-float" style="box-shadow:0 0 40px rgba(0,255,136,0.1)">
+        <div class="absolute top-0 right-0 w-40 h-40 rounded-full" style="background:radial-gradient(circle, rgba(0,255,136,0.08) 0%, transparent 70%);transform:translate(30%,-30%)"></div>
+        <div class="flex items-center gap-3 mb-6">
+          <span class="text-3xl">🔒</span>
+          <code class="text-3xl font-bold glow-green" style="color:var(--green);font-family:'JetBrains Mono',monospace">main</code>
+          <span class="tag-pill ml-auto" style="background:rgba(0,255,136,0.12);border:1px solid rgba(0,255,136,0.3);color:var(--green)">PRODUCTION</span>
+        </div>
+        <ul class="space-y-3 text-sm text-[#7a8aaa]">
+          <li class="flex gap-2"><span style="color:var(--green)">▸</span> <span>Live code — what users see in production</span></li>
+          <li class="flex gap-2"><span style="color:var(--green)">▸</span> <span>Only receives merges from <code style="color:var(--cyan)">dev</code></span></li>
+          <li class="flex gap-2"><span style="color:var(--green)">▸</span> <span>Requires at least 1–2 approvals before merge</span></li>
+          <li class="flex gap-2"><span style="color:var(--green)">▸</span> <span>CI/CD pipelines must pass (tests, linting)</span></li>
+          <li class="flex gap-2"><span style="color:var(--green)">▸</span> <span>Direct push → ❌ Rejected by the repository</span></li>
+        </ul>
+        <div class="mt-6 rounded-lg bg-[#0a0c10] border border-[#1e2230] px-4 py-3 font-mono text-xs" style="color:var(--red)">
+          $ git push origin main<br/>
+          remote: error: GH006: Protected branch update failed.<br/>
+          <span style="color:#4a5568">remote: Required status checks are not passing.</span>
+        </div>
+      </div>
+
+      <!-- dev -->
+      <div class="rounded-2xl border-2 border-[#00e5ff] bg-[#0d0f14] p-8 relative overflow-hidden animate-float" style="box-shadow:0 0 40px rgba(0,229,255,0.1);animation-delay:0.5s">
+        <div class="absolute top-0 right-0 w-40 h-40 rounded-full" style="background:radial-gradient(circle, rgba(0,229,255,0.08) 0%, transparent 70%);transform:translate(30%,-30%)"></div>
+        <div class="flex items-center gap-3 mb-6">
+          <span class="text-3xl">🔒</span>
+          <code class="text-3xl font-bold glow-cyan" style="color:var(--cyan);font-family:'JetBrains Mono',monospace">dev</code>
+          <span class="tag-pill ml-auto" style="background:rgba(0,229,255,0.12);border:1px solid rgba(0,229,255,0.3);color:var(--cyan)">STAGING</span>
+        </div>
+        <ul class="space-y-3 text-sm text-[#7a8aaa]">
+          <li class="flex gap-2"><span style="color:var(--cyan)">▸</span> <span>Integration branch — features come here first</span></li>
+          <li class="flex gap-2"><span style="color:var(--cyan)">▸</span> <span>Receives merges from all <code style="color:var(--orange)">feature/*</code> branches</span></li>
+          <li class="flex gap-2"><span style="color:var(--cyan)">▸</span> <span>Team tests here before promoting to <code style="color:var(--green)">main</code></span></li>
+          <li class="flex gap-2"><span style="color:var(--cyan)">▸</span> <span>Requires at least 1 approval before merge</span></li>
+          <li class="flex gap-2"><span style="color:var(--cyan)">▸</span> <span>All feature branches are based off of this</span></li>
+        </ul>
+        <div class="mt-6 rounded-lg bg-[#0a0c10] border border-[#1e2230] px-4 py-3 font-mono text-xs" style="color:var(--green)">
+          $ git push origin feature/auth<br/>
+          <span style="color:#4a5568"># ✅ Branch pushed, open a PR → dev</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- ===== SECTION 5: QUICK REFERENCE ===== -->
+  <section class="max-w-6xl mx-auto px-6 py-20">
+    <p class="section-label mb-3">05 — Quick Reference</p>
+    <h2 class="text-4xl md:text-5xl font-bold mb-10" style="color:#e8edf8">
+      Git Merge <span style="color:var(--green)">Cheatsheet</span>
+    </h2>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+      <div class="rounded-xl bg-[#111318] border border-[#1e2230] p-5 card-hover">
+        <p class="text-xs text-[#4a5568] mb-2 uppercase tracking-widest">Branch off from dev</p>
+        <code class="text-sm" style="color:var(--orange)">git checkout -b feature/name</code>
+      </div>
+
+      <div class="rounded-xl bg-[#111318] border border-[#1e2230] p-5 card-hover">
+        <p class="text-xs text-[#4a5568] mb-2 uppercase tracking-widest">Stage all changes</p>
+        <code class="text-sm" style="color:var(--orange)">git add .</code>
+      </div>
+
+      <div class="rounded-xl bg-[#111318] border border-[#1e2230] p-5 card-hover">
+        <p class="text-xs text-[#4a5568] mb-2 uppercase tracking-widest">Commit with message</p>
+        <code class="text-sm" style="color:var(--orange)">git commit -m "feat: thing"</code>
+      </div>
+
+      <div class="rounded-xl bg-[#111318] border border-[#1e2230] p-5 card-hover">
+        <p class="text-xs text-[#4a5568] mb-2 uppercase tracking-widest">Push your branch</p>
+        <code class="text-sm" style="color:var(--orange)">git push origin feature/name</code>
+      </div>
+
+      <div class="rounded-xl bg-[#111318] border border-[#1e2230] p-5 card-hover">
+        <p class="text-xs text-[#4a5568] mb-2 uppercase tracking-widest">Switch to dev to merge</p>
+        <code class="text-sm" style="color:var(--orange)">git checkout dev</code>
+      </div>
+
+      <div class="rounded-xl bg-[#111318] border border-[#1e2230] p-5 card-hover">
+        <p class="text-xs text-[#4a5568] mb-2 uppercase tracking-widest">Merge feature into dev</p>
+        <code class="text-sm" style="color:var(--orange)">git merge feature/name</code>
+      </div>
+
+      <div class="rounded-xl bg-[#111318] border border-[#1e2230] p-5 card-hover">
+        <p class="text-xs text-[#4a5568] mb-2 uppercase tracking-widest">Pull latest before merging</p>
+        <code class="text-sm" style="color:var(--orange)">git pull origin dev</code>
+      </div>
+
+      <div class="rounded-xl bg-[#111318] border border-[#1e2230] p-5 card-hover">
+        <p class="text-xs text-[#4a5568] mb-2 uppercase tracking-widest">Delete merged branch</p>
+        <code class="text-sm" style="color:var(--orange)">git branch -d feature/name</code>
+      </div>
+
+      <div class="rounded-xl bg-[#111318] border border-[#1e2230] p-5 card-hover">
+        <p class="text-xs text-[#4a5568] mb-2 uppercase tracking-widest">View all branches</p>
+        <code class="text-sm" style="color:var(--orange)">git branch -a</code>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="border-t border-[#1e2230] py-10 px-6 text-center">
+    <p class="font-mono text-xs text-[#4a5568]">
+      <span style="color:var(--green)">git merge</span> — Visual Aid
+    </p>
+    <p class="font-mono text-xs text-[#2a3040] mt-1">
+      Remember: <span style="color:#2a3040">branch early, merge often, review always.</span>
+    </p>
+  </footer>
+
+</body>
+</html>

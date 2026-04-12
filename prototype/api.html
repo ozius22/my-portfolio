@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Laravel Architecture — Visual Aid</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Mono:wght@300;400;600&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:      #16120c;
+      --surface: #1f1a11;
+      --card:    #261f14;
+      --border:  #3a2e1e;
+      --amber:   #f59e0b;
+      --orange:  #fb923c;
+      --red:     #f97316;
+      --green:   #4ade80;
+      --blue:    #60a5fa;
+      --purple:  #c084fc;
+      --text:    #e8d5b0;
+      --muted:   #7a6a4a;
+      --code-bg: #120f08;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      font-family: 'Barlow', sans-serif;
+      color: var(--text);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Diagonal stripe texture */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 40px,
+        rgba(245,158,11,0.015) 40px,
+        rgba(245,158,11,0.015) 41px
+      );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Vignette */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .content { position: relative; z-index: 1; }
+
+    h1, h2 { font-family: 'Playfair Display', serif; }
+    code, pre, .mono { font-family: 'IBM Plex Mono', monospace; }
+
+    /* Amber glow effects */
+    .glow-amber { text-shadow: 0 0 30px rgba(245,158,11,0.5); }
+    .glow-orange { text-shadow: 0 0 30px rgba(251,146,60,0.5); }
+
+    .shadow-amber { box-shadow: 0 0 0 1px var(--amber), 0 8px 40px rgba(245,158,11,0.12); }
+    .shadow-orange { box-shadow: 0 0 0 1px var(--orange), 0 8px 40px rgba(251,146,60,0.1); }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes shimmer {
+      0%   { background-position: -300% center; }
+      100% { background-position: 300% center; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-6px); }
+    }
+    @keyframes pulse-ring {
+      0%   { box-shadow: 0 0 0 0 rgba(245,158,11,0.4); }
+      70%  { box-shadow: 0 0 0 10px rgba(245,158,11,0); }
+      100% { box-shadow: 0 0 0 0 rgba(245,158,11,0); }
+    }
+    @keyframes drawLine {
+      from { stroke-dashoffset: 500; }
+      to   { stroke-dashoffset: 0; }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; } 50% { opacity: 0; }
+    }
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    .anim-fade { opacity: 0; animation: fadeUp 0.6s ease forwards; }
+    .d1  { animation-delay: 0.1s; }
+    .d2  { animation-delay: 0.2s; }
+    .d3  { animation-delay: 0.3s; }
+    .d4  { animation-delay: 0.4s; }
+    .d5  { animation-delay: 0.5s; }
+    .d6  { animation-delay: 0.6s; }
+    .d7  { animation-delay: 0.7s; }
+    .d8  { animation-delay: 0.8s; }
+
+    .shimmer-text {
+      background: linear-gradient(90deg, var(--amber) 0%, #fde68a 25%, var(--orange) 50%, #fde68a 75%, var(--amber) 100%);
+      background-size: 300% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 4s linear infinite;
+    }
+
+    .float-anim { animation: float 4s ease-in-out infinite; }
+    .cursor { animation: blink 1s step-end infinite; }
+    .spin { animation: spin-slow 12s linear infinite; }
+
+    /* Cards */
+    .layer-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      cursor: default;
+    }
+    .layer-card:hover {
+      transform: translateY(-3px);
+    }
+    .layer-card:hover .card-inner-glow { opacity: 1; }
+
+    .card-inner-glow {
+      position: absolute; inset: 0; border-radius: 14px;
+      opacity: 0; transition: opacity 0.3s;
+      pointer-events: none;
+    }
+
+    /* Code blocks */
+    .code-block {
+      background: var(--code-bg);
+      border: 1px solid #2a220f;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 12px;
+      line-height: 1.7;
+      overflow-x: auto;
+    }
+    .code-block .prompt { color: var(--muted); }
+    .code-block .cmd    { color: var(--amber); }
+    .code-block .flag   { color: var(--orange); }
+    .code-block .arg    { color: #86efac; }
+    .code-block .comment{ color: #4a3e28; }
+
+    /* Pipeline connector */
+    .pipe-line {
+      width: 2px;
+      background: linear-gradient(to bottom, var(--amber), var(--orange));
+      margin: 0 auto;
+      position: relative;
+    }
+    .pipe-line::after {
+      content: '▼';
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--orange);
+      font-size: 10px;
+    }
+
+    /* Layer number badge */
+    .layer-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 72px;
+      font-weight: 900;
+      position: absolute;
+      top: -16px; right: 16px;
+      -webkit-text-stroke: 1px;
+      color: transparent;
+      opacity: 0.06;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    /* Tag */
+    .tag {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 2px 10px; border-radius: 4px;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* Relationship table */
+    .rel-table th { color: var(--amber); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; padding: 6px 12px; border-bottom: 1px solid var(--border); text-align: left; }
+    .rel-table td { padding: 8px 12px; font-size: 12px; border-bottom: 1px solid #2a220f; font-family: 'IBM Plex Mono', monospace; }
+    .rel-table tr:last-child td { border-bottom: none; }
+    .rel-table tr:hover td { background: rgba(245,158,11,0.04); }
+
+    /* RESTful table */
+    .rest-table th { color: var(--orange); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; padding: 6px 12px; border-bottom: 1px solid var(--border); text-align: left; }
+    .rest-table td { padding: 8px 12px; font-size: 12px; border-bottom: 1px solid #2a220f; font-family: 'IBM Plex Mono', monospace; }
+    .rest-table tr:last-child td { border-bottom: none; }
+    .rest-table tr:hover td { background: rgba(251,146,60,0.04); }
+
+    /* Section label */
+    .sec-label {
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--amber);
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* Method badge colors */
+    .m-get    { background: rgba(96,165,250,0.12); border: 1px solid rgba(96,165,250,0.25); color: #60a5fa; }
+    .m-post   { background: rgba(74,222,128,0.12); border: 1px solid rgba(74,222,128,0.25); color: #4ade80; }
+    .m-put    { background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.25); color: #fbbf24; }
+    .m-patch  { background: rgba(251,146,60,0.12); border: 1px solid rgba(251,146,60,0.25); color: #fb923c; }
+    .m-delete { background: rgba(248,113,113,0.12); border: 1px solid rgba(248,113,113,0.25); color: #f87171; }
+
+    /* Design table cell */
+    .dt-cell {
+      padding: 8px 12px;
+      font-size: 12px;
+      border: 1px solid var(--border);
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    .dt-head {
+      background: rgba(245,158,11,0.08);
+      color: var(--amber);
+      font-weight: 600;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* Nav dots */
+    .nav-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      border: 1px solid var(--border);
+      background: transparent;
+      transition: background 0.2s, border-color 0.2s;
+      cursor: pointer;
+    }
+    .nav-dot.active, .nav-dot:hover {
+      background: var(--amber);
+      border-color: var(--amber);
+    }
+
+    /* Gear decoration */
+    .gear-ring {
+      border: 2px dashed rgba(245,158,11,0.15);
+      border-radius: 50%;
+      position: absolute;
+    }
+  </style>
+</head>
+<body>
+<div class="content">
+
+  <!-- ===== HERO ===== -->
+  <section style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 24px;text-align:center;position:relative;overflow:hidden;">
+
+    <!-- Decorative rings -->
+    <div class="gear-ring spin" style="width:500px;height:500px;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+    <div class="gear-ring" style="width:340px;height:340px;top:50%;left:50%;transform:translate(-50%,-50%) rotate(30deg);border-color:rgba(251,146,60,0.1);animation:spin-slow 8s linear infinite reverse;"></div>
+    <div class="absolute inset-0" style="background:radial-gradient(ellipse at center, rgba(245,158,11,0.06) 0%, transparent 65%);"></div>
+
+    <p class="sec-label anim-fade d1 mb-5">Visual Aid · Laravel Backend</p>
+
+    <h1 class="anim-fade d2" style="font-size:clamp(52px,9vw,110px);line-height:0.95;margin-bottom:24px;letter-spacing:-2px;">
+      <span class="shimmer-text">Laravel</span><br/>
+      <span style="color:var(--text);opacity:0.9;">Architecture</span>
+    </h1>
+
+    <p class="anim-fade d3" style="color:var(--muted);max-width:520px;line-height:1.7;font-size:16px;margin-bottom:40px;">
+      A complete blueprint for building a production-grade Laravel API — from designing the database table all the way to the API Resource layer.
+    </p>
+
+    <!-- Artisan terminal snippet -->
+    <div class="anim-fade d4 float-anim" style="background:var(--code-bg);border:1px solid var(--border);border-radius:12px;overflow:hidden;width:100%;max-width:520px;text-align:left;box-shadow:0 24px 60px rgba(0,0,0,0.5);">
+      <div style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:#1a1208;border-bottom:1px solid var(--border);">
+        <span style="width:10px;height:10px;border-radius:50%;background:#f97316;"></span>
+        <span style="width:10px;height:10px;border-radius:50%;background:#f59e0b;"></span>
+        <span style="width:10px;height:10px;border-radius:50%;background:#4ade80;"></span>
+        <span style="margin-left:8px;font-family:'IBM Plex Mono';font-size:11px;color:var(--muted);">artisan — bash</span>
+      </div>
+      <div class="code-block" style="border:none;border-radius:0;font-size:13px;">
+        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:migration</span> <span class="arg">create_class_table</span></p>
+        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:model</span> <span class="arg">Customer</span> <span class="flag">-m</span></p>
+        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:controller</span> <span class="arg">CustomerController</span> <span class="flag">--resource</span></p>
+        <p><span class="prompt">$ </span><span class="cursor" style="color:var(--amber);">▋</span></p>
+      </div>
+    </div>
+
+    <!-- Layer count -->
+    <div class="anim-fade d5" style="display:flex;gap:24px;margin-top:48px;flex-wrap:wrap;justify-content:center;">
+      <div style="text-align:center;">
+        <p style="font-family:'Playfair Display',serif;font-size:36px;color:var(--amber);" class="glow-amber">9</p>
+        <p style="font-size:11px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;">Layers</p>
+      </div>
+      <div style="width:1px;background:var(--border);"></div>
+      <div style="text-align:center;">
+        <p style="font-family:'Playfair Display',serif;font-size:36px;color:var(--orange);" class="glow-orange">7</p>
+        <p style="font-size:11px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;">Artisan Commands</p>
+      </div>
+      <div style="width:1px;background:var(--border);"></div>
+      <div style="text-align:center;">
+        <p style="font-family:'Playfair Display',serif;font-size:36px;color:#86efac;">1</p>
+        <p style="font-size:11px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;">Unified Flow</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PIPELINE OVERVIEW ===== -->
+  <section style="max-width:900px;margin:0 auto;padding:80px 24px;">
+    <p class="sec-label mb-3">00 — The Big Picture</p>
+    <h2 style="font-size:clamp(28px,4vw,44px);margin-bottom:12px;">
+      How the <span style="color:var(--amber)">Layers Connect</span>
+    </h2>
+    <p style="color:var(--muted);margin-bottom:48px;max-width:560px;line-height:1.7;">
+      Every request flows through these layers. Each one has a single responsibility — keeping your code clean, testable, and maintainable.
+    </p>
+
+    <!-- Pipeline visual -->
+    <div style="display:flex;flex-direction:column;gap:0;align-items:stretch;position:relative;">
+
+      <!-- Vertical line behind -->
+      <div style="position:absolute;left:50%;top:24px;bottom:24px;width:2px;background:linear-gradient(to bottom,var(--amber),var(--orange),var(--red));opacity:0.2;transform:translateX(-50%);"></div>
+
+      <!-- Pipeline rows -->
+      <div style="display:grid;grid-template-columns:1fr 60px 1fr;align-items:center;gap:12px;margin-bottom:6px;">
+        <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:12px 16px;text-align:right;">
+          <p style="font-size:11px;color:var(--muted);margin-bottom:2px;">Schema Definition</p>
+          <p style="color:var(--amber);font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;">Design Table</p>
+        </div>
+        <div style="text-align:center;font-size:16px;color:var(--amber);">①</div>
+        <div style="background:rgba(245,158,11,0.04);border:1px solid var(--border);border-radius:10px;padding:12px 16px;">
+          <p style="font-size:11px;color:var(--muted);">Define columns, types, keys</p>
+        </div>
+      </div>
+
+      <div style="height:20px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;">↓</div>
+
+      <div style="display:grid;grid-template-columns:1fr 60px 1fr;align-items:center;gap:12px;margin-bottom:6px;">
+        <div style="background:rgba(251,146,60,0.08);border:1px solid rgba(251,146,60,0.2);border-radius:10px;padding:12px 16px;text-align:right;">
+          <p style="font-size:11px;color:var(--muted);margin-bottom:2px;">Database</p>
+          <p style="color:var(--orange);font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;">Migration + Seeder</p>
+        </div>
+        <div style="text-align:center;font-size:16px;color:var(--orange);">②③</div>
+        <div style="background:rgba(251,146,60,0.04);border:1px solid var(--border);border-radius:10px;padding:12px 16px;">
+          <p style="font-size:11px;color:var(--muted);">Create tables, seed initial data</p>
+        </div>
+      </div>
+
+      <div style="height:20px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;">↓</div>
+
+      <div style="display:grid;grid-template-columns:1fr 60px 1fr;align-items:center;gap:12px;margin-bottom:6px;">
+        <div style="background:rgba(192,132,252,0.08);border:1px solid rgba(192,132,252,0.2);border-radius:10px;padding:12px 16px;text-align:right;">
+          <p style="font-size:11px;color:var(--muted);margin-bottom:2px;">ORM Layer</p>
+          <p style="color:#c084fc;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;">Model</p>
+        </div>
+        <div style="text-align:center;font-size:16px;color:#c084fc;">④</div>
+        <div style="background:rgba(192,132,252,0.04);border:1px solid var(--border);border-radius:10px;padding:12px 16px;">
+          <p style="font-size:11px;color:var(--muted);">Eloquent, relationships, fillable</p>
+        </div>
+      </div>
+
+      <div style="height:20px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;">↓</div>
+
+      <div style="display:grid;grid-template-columns:1fr 60px 1fr;align-items:center;gap:12px;margin-bottom:6px;">
+        <div style="background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:10px;padding:12px 16px;text-align:right;">
+          <p style="font-size:11px;color:var(--muted);margin-bottom:2px;">HTTP Layer</p>
+          <p style="color:#60a5fa;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;">Route + Controller + Request</p>
+        </div>
+        <div style="text-align:center;font-size:16px;color:#60a5fa;">⑤⑥⑦</div>
+        <div style="background:rgba(96,165,250,0.04);border:1px solid var(--border);border-radius:10px;padding:12px 16px;">
+          <p style="font-size:11px;color:var(--muted);">Routing, logic, validation</p>
+        </div>
+      </div>
+
+      <div style="height:20px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;">↓</div>
+
+      <div style="display:grid;grid-template-columns:1fr 60px 1fr;align-items:center;gap:12px;margin-bottom:6px;">
+        <div style="background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.2);border-radius:10px;padding:12px 16px;text-align:right;">
+          <p style="font-size:11px;color:var(--muted);margin-bottom:2px;">Business Logic</p>
+          <p style="color:#4ade80;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;">Service + Repository</p>
+        </div>
+        <div style="text-align:center;font-size:16px;color:#4ade80;">⑧⑨</div>
+        <div style="background:rgba(74,222,128,0.04);border:1px solid var(--border);border-radius:10px;padding:12px 16px;">
+          <p style="font-size:11px;color:var(--muted);">Separation of concerns, data access</p>
+        </div>
+      </div>
+
+      <div style="height:20px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;">↓</div>
+
+      <div style="display:grid;grid-template-columns:1fr 60px 1fr;align-items:center;gap:12px;">
+        <div style="background:rgba(249,115,22,0.08);border:1px solid rgba(249,115,22,0.2);border-radius:10px;padding:12px 16px;text-align:right;">
+          <p style="font-size:11px;color:var(--muted);margin-bottom:2px;">Output Layer</p>
+          <p style="color:#fb923c;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;">API Resource</p>
+        </div>
+        <div style="text-align:center;font-size:16px;color:#fb923c;">⑩</div>
+        <div style="background:rgba(249,115,22,0.04);border:1px solid var(--border);border-radius:10px;padding:12px 16px;">
+          <p style="font-size:11px;color:var(--muted);">Shape the JSON response</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div style="height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);max-width:900px;margin:0 auto;"></div>
+
+  <!-- ===== 01: DESIGN TABLE ===== -->
+  <section style="max-width:900px;margin:0 auto;padding:80px 24px;">
+    <p class="sec-label mb-3">01 — Foundation</p>
+    <h2 style="font-size:clamp(26px,4vw,40px);margin-bottom:12px;">
+      <span style="color:var(--amber)">Design Table</span>
+      <span style="font-size:14px;color:var(--muted);margin-left:12px;font-family:'IBM Plex Mono';font-weight:400;">Before you write any code</span>
+    </h2>
+    <p style="color:var(--muted);margin-bottom:32px;max-width:560px;line-height:1.7;">
+      Always start by designing your database table on paper or a whiteboard. Define every column — its name, data type, constraints, and whether it's indexed or nullable.
+    </p>
+
+    <!-- Sample table design -->
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.3);">
+      <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;background:rgba(245,158,11,0.04);">
+        <span style="color:var(--amber);font-size:18px;">⊞</span>
+        <span style="font-family:'IBM Plex Mono';font-size:13px;color:var(--amber);">customers</span>
+        <span style="margin-left:auto;" class="tag" style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);color:var(--amber);">InnoDB · utf8mb4</span>
+      </div>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;" class="rel-table">
+          <thead>
+            <tr>
+              <th>Column</th>
+              <th>Type</th>
+              <th>Nullable</th>
+              <th>Default</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color:var(--amber);">id</td>
+              <td style="color:#60a5fa;">BIGINT UNSIGNED</td>
+              <td style="color:#4ade80;">NO</td>
+              <td style="color:var(--muted);">AUTO_INCREMENT</td>
+              <td style="color:var(--muted);">Primary Key</td>
+            </tr>
+            <tr>
+              <td style="color:var(--text);">company_id</td>
+              <td style="color:#60a5fa;">BIGINT UNSIGNED</td>
+              <td style="color:#f87171;">YES</td>
+              <td style="color:var(--muted);">NULL</td>
+              <td style="color:var(--muted);">FK → companies.id</td>
+            </tr>
+            <tr>
+              <td style="color:var(--text);">name</td>
+              <td style="color:#60a5fa;">VARCHAR(255)</td>
+              <td style="color:#f87171;">NO</td>
+              <td style="color:var(--muted);">—</td>
+              <td style="color:var(--muted);">Full name</td>
+            </tr>
+            <tr>
+              <td style="color:var(--text);">email</td>
+              <td style="color:#60a5fa;">VARCHAR(255)</td>
+              <td style="color:#f87171;">NO</td>
+              <td style="color:var(--muted);">—</td>
+              <td style="color:var(--muted);">UNIQUE index</td>
+            </tr>
+            <tr>
+              <td style="color:var(--text);">status</td>
+              <td style="color:#60a5fa;">ENUM</td>
+              <td style="color:#f87171;">NO</td>
+              <td style="color:var(--orange);">'active'</td>
+              <td style="color:var(--muted);">active / inactive</td>
+            </tr>
+            <tr>
+              <td style="color:var(--text);">created_at</td>
+              <td style="color:#60a5fa;">TIMESTAMP</td>
+              <td style="color:#4ade80;">YES</td>
+              <td style="color:var(--muted);">NULL</td>
+              <td style="color:var(--muted);">Auto by Laravel</td>
+            </tr>
+            <tr>
+              <td style="color:var(--text);">updated_at</td>
+              <td style="color:#60a5fa;">TIMESTAMP</td>
+              <td style="color:#4ade80;">YES</td>
+              <td style="color:var(--muted);">NULL</td>
+              <td style="color:var(--muted);">Auto by Laravel</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p style="color:var(--muted);font-size:12px;margin-top:12px;font-family:'IBM Plex Mono';">↑ Example: customers table. Design yours first, THEN generate the migration.</p>
+  </section>
+
+  <div style="height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);max-width:900px;margin:0 auto;"></div>
+
+  <!-- ===== 02: MIGRATION ===== -->
+  <section style="max-width:900px;margin:0 auto;padding:80px 24px;">
+    <div style="display:grid;md:grid-cols-2;gap:40px;align-items:start;">
+      <div>
+        <p class="sec-label mb-3">02 — Database</p>
+        <h2 style="font-size:clamp(26px,4vw,40px);margin-bottom:12px;">
+          <span style="color:var(--orange)">Migration</span>
+        </h2>
+        <p style="color:var(--muted);margin-bottom:24px;line-height:1.7;">
+          A migration is like a <strong style="color:var(--text);">version control for your database</strong>. It creates, modifies, or drops tables — and can be rolled back if something goes wrong.
+        </p>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
+          <div style="display:flex;gap:10px;align-items:start;">
+            <span style="color:var(--orange);margin-top:2px;flex-shrink:0;">▸</span>
+            <p style="color:var(--muted);font-size:14px;">Creates a file in <code style="color:var(--amber);">database/migrations/</code></p>
+          </div>
+          <div style="display:flex;gap:10px;align-items:start;">
+            <span style="color:var(--orange);margin-top:2px;flex-shrink:0;">▸</span>
+            <p style="color:var(--muted);font-size:14px;">Run with <code style="color:var(--amber);">php artisan migrate</code></p>
+          </div>
+          <div style="display:flex;gap:10px;align-items:start;">
+            <span style="color:var(--orange);margin-top:2px;flex-shrink:0;">▸</span>
+            <p style="color:var(--muted);font-size:14px;">Rollback with <code style="color:var(--amber);">php artisan migrate:rollback</code></p>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="code-block">
+          <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:migration</span> <span class="arg">create_class_table</span></p>
+          <p class="comment"># → database/migrations/2024_01_01_000000_create_class_table.php</p>
+        </div>
+        <div class="code-block">
+          <p style="color:#4a3e28;">// Inside the migration file:</p>
+          <p><span style="color:#c084fc;">public function</span> <span style="color:var(--amber);">up</span>(): void {</p>
+          <p>&nbsp;&nbsp;Schema::<span style="color:var(--orange);">create</span>(<span style="color:#86efac;">'classes'</span>, function (Blueprint <span style="color:var(--text);">$table</span>) {</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--text);">$table</span>-><span style="color:var(--orange);">id</span>();</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--text);">$table</span>-><span style="color:var(--orange);">string</span>(<span style="color:#86efac;">'name'</span>);</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--text);">$table</span>-><span style="color:var(--orange);">timestamps</span>();</p>
+          <p>&nbsp;&nbsp;});</p>
+          <p>}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div style="height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);max-width:900px;margin:0 auto;"></div>
+
+  <!-- ===== 03: SEEDER ===== -->
+  <section style="max-width:900px;margin:0 auto;padding:80px 24px;">
+    <p class="sec-label mb-3">03 — Database</p>
+    <h2 style="font-size:clamp(26px,4vw,40px);margin-bottom:12px;">
+      <span style="color:var(--orange)">Seeder</span>
+    </h2>
+    <p style="color:var(--muted);margin-bottom:32px;max-width:560px;line-height:1.7;">
+      Seeders populate your database with <strong style="color:var(--text);">initial or test data</strong>. Perfect for creating default admin users, lookup tables, or demo records — things that should exist on every fresh install.
+    </p>
+    <div style="display:grid;gap:12px;max-width:640px;">
+      <div class="code-block">
+        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:seeder</span> <span class="arg">MaintenanceAdminSeeder</span></p>
+        <p class="comment"># → database/seeders/MaintenanceAdminSeeder.php</p>
+      </div>
+      <div class="code-block">
+        <p style="color:#4a3e28;">// Inside the seeder:</p>
+        <p><span style="color:#c084fc;">public function</span> <span style="color:var(--amber);">run</span>(): void {</p>
+        <p>&nbsp;&nbsp;User::<span style="color:var(--orange);">create</span>([</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#86efac;">'name'</span>  => <span style="color:#86efac;">'Maintenance Admin'</span>,</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#86efac;">'email'</span> => <span style="color:#86efac;">'admin@system.com'</span>,</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#86efac;">'role'</span>  => <span style="color:#86efac;">'maintenance'</span>,</p>
+        <p>&nbsp;&nbsp;]);</p>
+        <p>}</p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <span class="tag" style="background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.2);color:#4ade80;">php artisan db:seed</span>
+        <span class="tag" style="background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.2);color:#4ade80;">--class=MaintenanceAdminSeeder</span>
+      </div>
+    </div>
+  </section>
+
+  <div style="height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);max-width:900px;margin:0 auto;"></div>
+
+  <!-- ===== 04: MODEL ===== -->
+  <section style="max-width:900px;margin:0 auto;padding:80px 24px;">
+    <p class="sec-label mb-3">04 — ORM Layer</p>
+    <h2 style="font-size:clamp(26px,4vw,40px);margin-bottom:12px;">
+      <span style="color:#c084fc;">Model</span>
+    </h2>
+    <p style="color:var(--muted);margin-bottom:32px;max-width:560px;line-height:1.7;">
+      The Model is your <strong style="color:var(--text);">Eloquent ORM class</strong> — it represents a database table and lets you interact with rows as PHP objects. You also define <strong style="color:var(--text);">relationships</strong> here.
+    </p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px;">
+      <div class="code-block" style="grid-column:1/-1;">
+        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:model</span> <span class="arg">Customer</span></p>
+        <p class="comment"># Creates: app/Models/Customer.php</p>
+        <br/>
+        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:model</span> <span class="arg">Company</span> <span class="flag">-m</span></p>
+        <p class="comment"># -m flag = also creates the migration file automatically ✓</p>
+      </div>
+    </div>
+
+    <!-- Relationships table -->
+    <h3 style="font-size:16px;color:var(--text);margin-bottom:16px;font-family:'IBM Plex Mono';">// Eloquent Relationships</h3>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;">
+      <table style="width:100%;border-collapse:collapse;" class="rel-table">
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Meaning</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span style="color:#c084fc;">hasOne()</span></td>
+            <td style="color:var(--muted);">One-to-One</td>
+            <td style="color:var(--text);">Customer → Profile</td>
+          </tr>
+          <tr>
+            <td><span style="color:#c084fc;">hasMany()</span></td>
+            <td style="color:var(--muted);">One-to-Many</td>
+            <td style="color:var(--text);">Company → Customers</td>
+          </tr>
+          <tr>
+            <td><span style="color:#c084fc;">belongsTo()</span></td>
+            <td style="color:var(--muted);">Inverse of hasOne/hasMany</td>
+            <td style="color:var(--text);">Customer → Company</td>
+          </tr>
+          <tr>
+            <td><span style="color:#c084fc;">belongsToMany()</span></td>
+            <td style="color:var(--muted);">Many-to-Many (pivot table)</td>
+            <td style="color:var(--text);">User ↔ Role</td>
+          </tr>
+          <tr>
+            <td><span style="color:#c084fc;">hasManyThrough()</span></td>
+            <td style="color:var(--muted);">Through a middle model</td>
+            <td style="color:var(--text);">Country → Posts via Users</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="code-block" style="margin-top:16px;">
+      <p style="color:#4a3e28;">// app/Models/Customer.php</p>
+      <p><span style="color:#c084fc;">class</span> <span style="color:var(--amber);">Customer</span> extends Model {</p>
+      <p>&nbsp;&nbsp;<span style="color:var(--text);">protected</span> $fillable = [<span style="color:#86efac;">'name'</span>, <span style="color:#86efac;">'email'</span>, <span style="color:#86efac;">'company_id'</span>];</p>
+      <br/>
+      <p>&nbsp;&nbsp;<span style="color:#c084fc;">public function</span> <span style="color:var(--amber);">company</span>(): BelongsTo {</p>
+      <p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#c084fc;">return</span> $this-><span style="color:var(--orange);">belongsTo</span>(Company::class);</p>
+      <p>&nbsp;&nbsp;}</p>
+      <p>}</p>
+    </div>
+  </section>
+
+  <div style="height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);max-width:900px;margin:0 auto;"></div>
+
+  <!-- ===== 05: ROUTE ===== -->
+  <section style="max-width:900px;margin:0 auto;padding:80px 24px;">
+    <p class="sec-label mb-3">05 — HTTP Layer</p>
+    <h2 style="font-size:clamp(26px,4vw,40px);margin-bottom:12px;">
+      <span style="color:#60a5fa;">Route</span>
+      <span style="font-size:14px;color:var(--muted);margin-left:12px;font-family:'IBM Plex Mono';font-weight:400;">RESTful API Resources</span>
+    </h2>
+    <p style="color:var(--muted);margin-bottom:32px;max-width:580px;line-height:1.7;">
+      <code style="color:#60a5fa;">Route::apiResource()</code> registers <strong style="color:var(--text);">all 5 RESTful routes</strong> for a resource in a single line — no need to define each method separately.
+    </p>
+
+    <div class="code-block" style="margin-bottom:24px;max-width:640px;">
+      <p style="color:#4a3e28;">// routes/api.php</p>
+      <p>Route::<span style="color:var(--orange);">apiResource</span>(<span style="color:#86efac;">'customers'</span>, CustomerController::class);</p>
+      <br/>
+      <p style="color:#4a3e28;">// Multiple at once:</p>
+      <p>Route::<span style="color:var(--orange);">apiResources</span>([</p>
+      <p>&nbsp;&nbsp;<span style="color:#86efac;">'customers'</span>  => CustomerController::class,</p>
+      <p>&nbsp;&nbsp;<span style="color:#86efac;">'companies'</span>  => CompanyController::class,</p>
+      <p>&nbsp;&nbsp;<span style="color:#86efac;">'policies'</span>   => PasswordPolicyController::class,</p>
+      <p>]);</p>
+    </div>
+
+    <!-- RESTful table -->
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;">
+      <div style="padding:12px 16px;border-bottom:1px solid var(--border);background:rgba(96,165,250,0.04);">
+        <span style="font-family:'IBM Plex Mono';font-size:12px;color:#60a5fa;">apiResource('customers', CustomerController) → generates:</span>
+      </div>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;" class="rest-table">
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>URI</th>
+              <th>Action</th>
+              <th>Route Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tag m-get">GET</span></td>
+              <td>/customers</td>
+              <td style="color:var(--amber);">index</td>
+              <td style="color:var(--muted);">customers.index</td>
+            </tr>
+            <tr>
+              <td><span class="tag m-post">POST</span></td>
+              <td>/customers</td>
+              <td style="color:var(--amber);">store</td>
+              <td style="color:var(--muted);">customers.store</td>
+            </tr>
+            <tr>
+              <td><span class="tag m-get">GET</span></td>
+              <td>/customers/{id}</td>
+              <td style="color:var(--amber);">show</td>
+              <td style="color:var(--muted);">customers.show</td>
+            </tr>
+            <tr>
+              <td><span class="tag m-put">PUT</span></td>
+              <td>/customers/{id}</td>
+              <td style="color:var(--amber);">update</td>
+              <td style="color:var(--muted);">customers.update</td>
+            </tr>
+            <tr>
+              <td><span class="tag m-delete">DELETE</span></td>
+              <td>/customers/{id}</td>
+              <td style="color:var(--amber);">destroy</td>
+              <td style="color:var(--muted);">customers.destroy</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <div style="height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);max-width:900px;margin:0 auto;"></div>
+
+  <!-- ===== 06: CONTROLLER ===== -->
+  <section style="max-width:900px;margin:0 auto;padding:80px 24px;">
+    <p class="sec-label mb-3">06 — HTTP Layer</p>
+    <h2 style="font-size:clamp(26px,4vw,40px);margin-bottom:12px;">
+      <span style="color:#60a5fa;">Controller</span>
+    </h2>
+    <p style="color:var(--muted);margin-bottom:32px;max-width:580px;line-height:1.7;">
+      The controller handles <strong style="color:var(--text);">incoming HTTP requests</strong> and returns a response. The <code style="color:#60a5fa;">--resource</code> flag pre-generates all 5 method stubs automatically.
+    </p>
+    <div style="display:grid;gap:12px;max-width:700px;">
+      <div class="code-block">
+        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:controller</span> <span class="arg">PasswordPolicyController</span> <span class="flag">--resource</span></p>
+        <p class="comment"># → app/Http/Controllers/PasswordPolicyController.php</p>
+      </div>
+      <div class="code-block">
+        <p style="color:#4a3e28;">// Pre-generated method stubs:</p>
+        <p><span style="color:#c084fc;">public function</span> <span style="color:var(--amber);">index</span>()    {} <span style="color:#4a3e28;">// GET /resource</span></p>
+        <p><span style="color:#c084fc;">public function</span> <span style="color:var(--amber);">store</span>()    {} <span style="color:#4a3e28;">// POST /resource</span></p>
+        <p><span style="color:#c084fc;">public function</span> <span style="color:var(--amber);">show</span>()     {} <span style="color:#4a3e28;">// GET /resource/{id}</span></p>
+        <p><span style="color:#c084fc;">public function</span> <span style="color:var(--amber);">update</span>()   {} <span style="color:#4a3e28;">// PUT /resource/{id}</span></p>
+        <p><span style="color:#c084fc;">public function</span> <span style="color:var(--amber);">destroy</span>()  {} <span style="color:#4a3e28;">// DELETE /resource/{id}</span></p>
+      </div>
+      <div style="background:rgba(96,165,250,0.06);border:1px solid rgba(96,165,250,0.2);border-radius:10px;padding:16px;">
+        <p style="font-size:13px;color:#60a5fa;margin-bottom:6px;font-weight:600;">💡 Controller responsibility</p>
+        <p style="font-size:13px;color:var(--muted);line-height:1.6;">The controller should be <strong style="color:var(--text);">thin</strong>. It receives the request, delegates to a <strong style="color:var(--text);">Service</strong> for business logic, and returns a <strong style="color:var(--text);">Resource</strong> response. It does NOT contain business logic itself.</p>
+      </div>
+    </div>
+  </section>
+
+  <div style="height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);max-width:900px;margin:0 auto;"></div>
+
+  <!-- ===== 07: REQUEST ===== -->
+  <section style="max-width:900px;margin:0 auto;padding:80px 24px;">
+    <p class="sec-label mb-3">07 — HTTP Layer</p>
+    <h2 style="font-size:clamp(26px,4vw,40px);margin-bottom:12px;">
+      <span style="color:#60a5fa;">Form Request</span>
+    </h2>
+    <p style="color:var(--muted);margin-bottom:16px;max-width:580px;line-height:1.7;">
+      Use a <strong style="color:var(--text);">Form Request</strong> class when your validation rules are complex — it keeps your controller clean and centralizes authorization + validation logic.
+    </p>
+
+    <div style="display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;">
+      <span class="tag" style="background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.2);color:#f87171;">✗ Simple: inline $request->validate()</span>
+      <span class="tag" style="background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.2);color:#4ade80;">✓ Complex: FormRequest class</span>
+    </div>
+
+    <div style="display:grid;gap:12px;max-width:700px;">
+      <div class="code-block">
+        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:request</span> <span class="arg">CompanyStoreRequest</span></p>
+        <p class="comment"># → app/Http/Requests/CompanyStoreRequest.php</p>
+      </div>
+      <div class="code-block">
+        <p><span style="color:#c084fc;">class</span> <span style="color:var(--amber);">CompanyStoreRequest</span> extends FormRequest {</p>
+        <br/>
+        <p>&nbsp;&nbsp;<span style="color:#c084fc;">public function</span> <span style="color:var(--amber);">authorize</span>(): bool {</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#c084fc;">return</span> <span style="color:#60a5fa;">true</span>; <span style="color:#4a3e28;">// or check auth policy</span></p>
+        <p>&nbsp;&nbsp;}</p>
+        <br/>
+        <p>&nbsp;&nbsp;<span style="color:#c084fc;">public function</span> <span style="color:var(--amber);">rules</span>(): array {</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#c084fc;">return</span> [</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#86efac;">'name'</span>    => [<span style="color:#86efac;">'required'</span>, <span style="color:#86efac;">'string'</span>, <span style="color:#86efac;">'max:255'</span>],</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#86efac;">'email'</span>   => [<span style="color:#86efac;">'required'</span>, <span style="color:#86efac;">'email'</span>, <span style="color:#86efac;">'unique:companies'</span>],</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#86efac;">'tax_id'</span>  => [<span style="color:#86efac;">'nullable'</span>, <span style="color:#86efac;">'string'</span>, Rule::unique(<span style="color:#86efac;">'companies'</span>)],</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;];</p>
+        <p>&nbsp;&nbsp;}</p>
+        <p>}</p>
+      </div>
+    </div>
+  </section>
+
+  <div style="height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);max-width:900px;margin:0 auto;"></div>
+
+  <!-- ===== 08 + 09: SERVICE + REPOSITORY ===== -->
+  <section style="max-width:900px;margin:0 auto;padding:80px 24px;">
+    <p class="sec-label mb-3">08 & 09 — Business Logic</p>
+    <h2 style="font-size:clamp(26px,4vw,40px);margin-bottom:12px;">
+      <span style="color:#4ade80;">Service</span> <span style="color:var(--muted);font-size:0.7em;">&</span> <span style="color:#4ade80;">Repository</span>
+    </h2>
+    <p style="color:var(--muted);margin-bottom:40px;max-width:600px;line-height:1.7;">
+      These two are <strong style="color:var(--text);">not generated by artisan</strong> — you create them manually. They enforce separation of concerns and make your code testable.
+    </p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+
+      <!-- Service -->
+      <div class="layer-card" style="padding:24px;position:relative;overflow:hidden;">
+        <div class="card-inner-glow" style="background:radial-gradient(circle at top right, rgba(74,222,128,0.06), transparent 60%);"></div>
+        <span class="layer-num" style="-webkit-text-stroke-color:var(--green);">S</span>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <div style="width:40px;height:40px;border-radius:8px;background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.2);display:flex;align-items:center;justify-content:center;font-size:18px;">⚙️</div>
+          <div>
+            <p style="font-size:16px;font-weight:700;color:#4ade80;">Service</p>
+            <p style="font-size:11px;color:var(--muted);font-family:'IBM Plex Mono';">app/Services/</p>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px;">
+          Contains your <strong style="color:var(--text);">business logic</strong>. Called by the controller. It orchestrates data operations but doesn't directly query the DB.
+        </p>
+        <div class="code-block" style="font-size:11px;">
+          <p style="color:#4a3e28;">// app/Services/CustomerService.php</p>
+          <p><span style="color:#c084fc;">class</span> <span style="color:var(--amber);">CustomerService</span> {</p>
+          <p>&nbsp;&nbsp;<span style="color:#c084fc;">public function</span> <span style="color:var(--amber);">create</span>(array $data) {</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4a3e28;">// validate, transform, then:</span></p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#c084fc;">return</span> $this->repo-><span style="color:var(--orange);">create</span>($data);</p>
+          <p>&nbsp;&nbsp;}</p>
+          <p>}</p>
+        </div>
+      </div>
+
+      <!-- Repository -->
+      <div class="layer-card" style="padding:24px;position:relative;overflow:hidden;">
+        <div class="card-inner-glow" style="background:radial-gradient(circle at top right, rgba(74,222,128,0.06), transparent 60%);"></div>
+        <span class="layer-num" style="-webkit-text-stroke-color:var(--green);">R</span>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <div style="width:40px;height:40px;border-radius:8px;background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.2);display:flex;align-items:center;justify-content:center;font-size:18px;">🗄️</div>
+          <div>
+            <p style="font-size:16px;font-weight:700;color:#4ade80;">Repository</p>
+            <p style="font-size:11px;color:var(--muted);font-family:'IBM Plex Mono';">app/Repositories/</p>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px;">
+          Handles all <strong style="color:var(--text);">data access</strong> (Eloquent queries). The service calls the repository — swapping DB logic doesn't affect business logic.
+        </p>
+        <div class="code-block" style="font-size:11px;">
+          <p style="color:#4a3e28;">// app/Repositories/CustomerRepository.php</p>
+          <p><span style="color:#c084fc;">class</span> <span style="color:var(--amber);">CustomerRepository</span> {</p>
+          <p>&nbsp;&nbsp;<span style="color:#c084fc;">public function</span> <span style="color:var(--amber);">create</span>(array $data) {</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#c084fc;">return</span> Customer::<span style="color:var(--orange);">create</span>($data);</p>
+          <p>&nbsp;&nbsp;}</p>
+          <p>&nbsp;&nbsp;<span style="color:#c084fc;">public function</span> <span style="color:var(--amber);">findById</span>(int $id) {</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#c084fc;">return</span> Customer::<span style="color:var(--orange);">findOrFail</span>($id);</p>
+          <p>&nbsp;&nbsp;}</p>
+          <p>}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flow arrow between them -->
+    <div style="margin-top:24px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <span style="font-family:'IBM Plex Mono';font-size:12px;color:#60a5fa;">Controller</span>
+      <span style="color:var(--muted);">→</span>
+      <span style="font-family:'IBM Plex Mono';font-size:12px;color:#4ade80;">Service</span>
+      <span style="color:var(--muted);">→</span>
+      <span style="font-family:'IBM Plex Mono';font-size:12px;color:#4ade80;">Repository</span>
+      <span style="color:var(--muted);">→</span>
+      <span style="font-family:'IBM Plex Mono';font-size:12px;color:#c084fc;">Model</span>
+      <span style="color:var(--muted);">→</span>
+      <span style="font-family:'IBM Plex Mono';font-size:12px;color:var(--orange);">Database</span>
+      <span style="margin-left:auto;font-size:12px;color:var(--muted);">Clean, testable, decoupled ✓</span>
+    </div>
+  </section>
+
+  <div style="height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);max-width:900px;margin:0 auto;"></div>
+
+  <!-- ===== 10: RESOURCE ===== -->
+  <section style="max-width:900px;margin:0 auto;padding:80px 24px;">
+    <p class="sec-label mb-3">10 — Output Layer</p>
+    <h2 style="font-size:clamp(26px,4vw,40px);margin-bottom:12px;">
+      <span style="color:var(--orange);">API Resource</span>
+    </h2>
+    <p style="color:var(--muted);margin-bottom:32px;max-width:580px;line-height:1.7;">
+      An API Resource transforms your Eloquent model into a <strong style="color:var(--text);">JSON response</strong>. It lets you control exactly which fields to expose — hiding sensitive data and shaping the output cleanly.
+    </p>
+    <div style="display:grid;gap:12px;max-width:700px;">
+      <div class="code-block">
+        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:resource</span> <span class="arg">PasswordPolicyResource</span></p>
+        <p class="comment"># → app/Http/Resources/PasswordPolicyResource.php</p>
+      </div>
+      <div class="code-block">
+        <p><span style="color:#c084fc;">class</span> <span style="color:var(--amber);">PasswordPolicyResource</span> extends JsonResource {</p>
+        <p>&nbsp;&nbsp;<span style="color:#c084fc;">public function</span> <span style="color:var(--amber);">toArray</span>(Request $request): array {</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#c084fc;">return</span> [</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#86efac;">'id'</span>           => $this->id,</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#86efac;">'min_length'</span>  => $this->min_length,</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#86efac;">'requires_2fa'</span>=> $this->requires_2fa,</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#86efac;">'updated_at'</span>  => $this->updated_at,</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4a3e28;">// 'password' is NOT exposed — intentionally</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;];</p>
+        <p>&nbsp;&nbsp;}</p>
+        <p>}</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="background:rgba(251,146,60,0.06);border:1px solid rgba(251,146,60,0.2);border-radius:10px;padding:14px;">
+          <p style="font-size:12px;color:var(--orange);font-weight:600;margin-bottom:6px;">Single record</p>
+          <code style="font-size:11px;color:var(--text);">return new PasswordPolicyResource($policy);</code>
+        </div>
+        <div style="background:rgba(251,146,60,0.06);border:1px solid rgba(251,146,60,0.2);border-radius:10px;padding:14px;">
+          <p style="font-size:12px;color:var(--orange);font-weight:600;margin-bottom:6px;">Collection</p>
+          <code style="font-size:11px;color:var(--text);">return PasswordPolicyResource::collection($policies);</code>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div style="height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);max-width:900px;margin:0 auto;"></div>
+
+  <!-- ===== CHEATSHEET ===== -->
+  <section style="max-width:900px;margin:0 auto;padding:80px 24px;">
+    <p class="sec-label mb-3">Quick Reference</p>
+    <h2 style="font-size:clamp(26px,4vw,40px);margin-bottom:32px;">
+      All <span style="color:var(--amber);">Artisan Commands</span>
+    </h2>
+
+    <div style="background:var(--code-bg);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.4);">
+      <div style="display:flex;align-items:center;gap:8px;padding:12px 20px;background:#1a1208;border-bottom:1px solid var(--border);">
+        <span style="width:10px;height:10px;border-radius:50%;background:#f97316;"></span>
+        <span style="width:10px;height:10px;border-radius:50%;background:#f59e0b;"></span>
+        <span style="width:10px;height:10px;border-radius:50%;background:#4ade80;"></span>
+        <span style="margin-left:8px;font-family:'IBM Plex Mono';font-size:11px;color:var(--muted);">laravel — artisan cheatsheet</span>
+      </div>
+      <div class="code-block" style="border:none;border-radius:0;padding:24px 28px;font-size:13px;line-height:2.2;">
+        <p><span class="comment"># 01. Design your table first (no artisan needed)</span></p>
+        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:migration</span>  <span class="arg">create_class_table</span></p>
+        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:seeder</span>    <span class="arg">MaintenanceAdminSeeder</span></p>
+        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:model</span>     <span class="arg">Customer</span></p>
+        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:model</span>     <span class="arg">Company</span> <span class="flag">-m</span>       <span class="comment"># -m = with migration</span></p>
+        <p><span class="comment"># 05. Define Route::apiResource() in routes/api.php</span></p>
+        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:controller</span> <span class="arg">PasswordPolicyController</span> <span class="flag">--resource</span></p>
+        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:request</span>    <span class="arg">CompanyStoreRequest</span></p>
+        <p><span class="comment"># 08-09. Create Service & Repository manually (no artisan)</span></p>
+        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:resource</span>   <span class="arg">PasswordPolicyResource</span></p>
+        <br/>
+        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">migrate</span>                            <span class="comment"># Run migrations</span></p>
+        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">db:seed</span>                            <span class="comment"># Run seeders</span></p>
+        <p><span class="prompt">$ </span><span class="cursor" style="color:var(--amber);">▋</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer style="border-top:1px solid var(--border);padding:40px 24px;text-align:center;">
+    <p style="font-family:'IBM Plex Mono';font-size:12px;color:var(--muted);">
+      <span style="color:var(--amber);">Laravel Architecture</span> — Visual Aid
+    </p>
+    <p style="font-family:'IBM Plex Mono';font-size:11px;color:#3a2e1e;margin-top:6px;">
+      Design → Migrate → Model → Route → Controller → Request → Service → Repository → Resource
+    </p>
+  </footer>
+
+</div>
+</body>
+</html>
