@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nuxt.js — Teacher's Guide</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --nuxt:    #00DC82;
+      --nuxt-d:  #009e5e;
+      --nuxt-l:  #e8fff4;
+      --navy:    #0f172a;
+      --slate:   #334155;
+      --muted:   #64748b;
+      --line:    #e2e8f0;
+      --bg:      #f9fafb;
+      --white:   #ffffff;
+      --blue:    #2563eb;
+      --orange:  #ea580c;
+      --yellow:  #ca8a04;
+      --red:     #dc2626;
+      --code-bg: #1e293b;
+      --sidebar: #f1f5f9;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--slate);
+      font-size: 15px;
+      line-height: 1.8;
+      margin: 0;
+    }
+
+    h1, h2, h3, h4 { font-family: 'Lora', serif; color: var(--navy); }
+    code, pre, .mono { font-family: 'Fira Code', monospace; }
+
+    /* ===== LAYOUT ===== */
+    .page-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 32px 80px;
+    }
+
+    /* ===== COVER ===== */
+    .cover {
+      background: var(--navy);
+      color: white;
+      padding: 72px 48px;
+      margin-bottom: 56px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cover::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(0,220,130,0.15) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .cover::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: 20%;
+      width: 400px; height: 200px;
+      background: radial-gradient(circle, rgba(0,220,130,0.07) 0%, transparent 70%);
+    }
+    .cover-inner { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; }
+
+    /* ===== CHAPTER HEADINGS ===== */
+    .chapter-label {
+      font-family: 'Fira Code', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--nuxt-d);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    h2.chapter {
+      font-size: 32px;
+      line-height: 1.2;
+      border-bottom: 2px solid var(--line);
+      padding-bottom: 12px;
+      margin-bottom: 28px;
+    }
+    h2.chapter span.accent { color: var(--nuxt-d); }
+
+    h3.section {
+      font-size: 20px;
+      margin-top: 40px;
+      margin-bottom: 12px;
+    }
+
+    h4.subsection {
+      font-size: 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      margin-top: 28px;
+      margin-bottom: 8px;
+      color: var(--navy);
+    }
+
+    /* ===== TYPOGRAPHY ===== */
+    p { margin-bottom: 14px; }
+
+    .lead {
+      font-size: 17px;
+      color: var(--slate);
+      line-height: 1.85;
+      border-left: 3px solid var(--nuxt);
+      padding-left: 20px;
+      margin-bottom: 32px;
+    }
+
+    strong { color: var(--navy); font-weight: 600; }
+    em { color: var(--nuxt-d); font-style: italic; }
+
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ===== INLINE CODE ===== */
+    code {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 13px;
+      color: var(--orange);
+    }
+
+    /* ===== CODE BLOCK ===== */
+    .code-block {
+      background: var(--code-bg);
+      border-radius: 10px;
+      padding: 0;
+      overflow: hidden;
+      margin: 20px 0;
+      font-size: 12.5px;
+      line-height: 1.85;
+    }
+    .code-header {
+      background: #0f172a;
+      padding: 8px 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid #334155;
+    }
+    .code-header .dot { width: 9px; height: 9px; border-radius: 50%; }
+    .code-header .filename {
+      font-family: 'Fira Code', monospace;
+      font-size: 11px;
+      color: #64748b;
+      margin-left: 8px;
+    }
+    .code-body {
+      padding: 18px 22px;
+      overflow-x: auto;
+      font-family: 'Fira Code', monospace;
+      color: #e2e8f0;
+    }
+    .code-body .kw  { color: #7dd3fc; }
+    .code-body .fn  { color: #86efac; }
+    .code-body .str { color: #fde68a; }
+    .code-body .cmt { color: #475569; font-style: italic; }
+    .code-body .cls { color: #c084fc; }
+    .code-body .typ { color: #fb923c; }
+    .code-body .num { color: #f472b6; }
+    .code-body .tag { color: #86efac; }
+    .code-body .att { color: #fb923c; }
+    .code-body .val { color: #fde68a; }
+    .code-body .var { color: #e2e8f0; }
+
+    /* ===== CALLOUT BOXES ===== */
+    .callout {
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 20px 0;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .callout .icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .callout-body { flex: 1; }
+    .callout-body strong { display: block; margin-bottom: 4px; font-size: 14px; }
+    .callout-body p { margin: 0; font-size: 14px; line-height: 1.7; }
+
+    .callout.green  { background: var(--nuxt-l); border: 1px solid #bbf7d0; }
+    .callout.green strong  { color: var(--nuxt-d); }
+    .callout.blue   { background: #eff6ff; border: 1px solid #bfdbfe; }
+    .callout.blue strong   { color: var(--blue); }
+    .callout.orange { background: #fff7ed; border: 1px solid #fed7aa; }
+    .callout.orange strong { color: var(--orange); }
+    .callout.yellow { background: #fefce8; border: 1px solid #fde68a; }
+    .callout.yellow strong { color: var(--yellow); }
+    .callout.red    { background: #fef2f2; border: 1px solid #fecaca; }
+    .callout.red strong    { color: var(--red); }
+    .callout.slate  { background: #f8fafc; border: 1px solid var(--line); }
+    .callout.slate strong  { color: var(--navy); }
+
+    /* ===== ANALOGY BOX ===== */
+    .analogy {
+      background: #faf5ff;
+      border: 1px solid #e9d5ff;
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+    }
+    .analogy .label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #7c3aed;
+      margin-bottom: 6px;
+      display: block;
+      font-family: 'Fira Code', monospace;
+    }
+    .analogy p { margin: 0; color: #4c1d95; font-size: 14px; line-height: 1.7; }
+
+    /* ===== CONCEPT TABLE ===== */
+    .concept-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13.5px; }
+    .concept-table th {
+      text-align: left; padding: 10px 14px;
+      background: #f1f5f9; border: 1px solid var(--line);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .concept-table td {
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      vertical-align: top;
+      line-height: 1.6;
+    }
+    .concept-table tr:hover td { background: #f8fafc; }
+    .concept-table code { font-size: 12px; }
+
+    /* ===== STEP BOX ===== */
+    .step-list { margin: 20px 0; display: flex; flex-direction: column; gap: 14px; }
+    .step-item {
+      display: flex; gap: 16px; align-items: flex-start;
+    }
+    .step-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--nuxt); color: var(--navy);
+      font-weight: 700; font-size: 13px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .step-body { flex: 1; }
+    .step-body strong { display: block; color: var(--navy); font-size: 15px; }
+    .step-body p { margin: 4px 0 0; font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    /* ===== Q&A SECTION ===== */
+    .qa { margin: 20px 0; }
+    .qa-item { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; margin-bottom: 10px; }
+    .qa-q {
+      background: #f8fafc; padding: 12px 18px;
+      font-weight: 600; font-size: 14px; color: var(--navy);
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .qa-q::before { content: 'Q'; color: var(--nuxt-d); font-family: 'Lora',serif; font-style: italic; flex-shrink: 0; }
+    .qa-a {
+      padding: 12px 18px 12px 46px;
+      font-size: 14px; line-height: 1.7; color: var(--slate);
+    }
+
+    /* ===== CHAPTER DIVIDER ===== */
+    .chapter-div {
+      display: flex; align-items: center; gap: 16px;
+      margin: 64px 0 40px;
+    }
+    .chapter-div .num {
+      font-family: 'Lora', serif; font-size: 48px; font-weight: 700;
+      color: var(--nuxt); line-height: 1; flex-shrink: 0;
+    }
+    .chapter-div .line { flex: 1; height: 1px; background: var(--line); }
+
+    /* ===== MINI BADGE ===== */
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 2px 9px; border-radius: 100px;
+      font-size: 11px; font-weight: 600;
+      font-family: 'Fira Code', monospace;
+      letter-spacing: 0.03em;
+    }
+    .badge.green  { background: var(--nuxt-l); color: var(--nuxt-d); border: 1px solid #bbf7d0; }
+    .badge.blue   { background: #eff6ff; color: var(--blue); border: 1px solid #bfdbfe; }
+    .badge.orange { background: #fff7ed; color: var(--orange); border: 1px solid #fed7aa; }
+    .badge.red    { background: #fef2f2; color: var(--red); border: 1px solid #fecaca; }
+    .badge.slate  { background: #f1f5f9; color: var(--slate); border: 1px solid var(--line); }
+
+    /* ===== SUMMARY CARD ===== */
+    .summary-card {
+      background: var(--navy);
+      color: white;
+      border-radius: 14px;
+      padding: 28px 32px;
+      margin: 32px 0;
+    }
+    .summary-card h4 { color: var(--nuxt); font-family: 'Fira Code'; font-size: 12px; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 14px; }
+    .summary-card ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .summary-card li { display: flex; gap: 10px; font-size: 14px; color: #cbd5e1; line-height: 1.5; }
+    .summary-card li::before { content: '▸'; color: var(--nuxt); flex-shrink: 0; }
+
+    /* ===== TOC ===== */
+    .toc { background: var(--sidebar); border: 1px solid var(--line); border-radius: 12px; padding: 24px 28px; margin-bottom: 48px; }
+    .toc h3 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); font-family: 'DM Sans'; margin-bottom: 14px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { font-size: 14px; margin-bottom: 6px; color: var(--slate); }
+    .toc li a { color: var(--slate); }
+    .toc li a:hover { color: var(--nuxt-d); }
+    .toc .toc-sub { padding-left: 16px; margin-top: 4px; list-style: disc; }
+    .toc .toc-sub li { margin-bottom: 2px; font-size: 13px; color: var(--muted); }
+
+    /* Print */
+    @media print {
+      body { background: white; }
+      .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .callout, .analogy, .summary-card { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== COVER ===== -->
+<div class="cover">
+  <div class="cover-inner">
+    <p style="font-family:'Fira Code',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#00DC82;margin-bottom:16px;">Teacher's Explanation Guide</p>
+    <h1 style="font-family:'Lora',serif;font-size:clamp(42px,6vw,68px);font-weight:700;line-height:1.1;margin-bottom:20px;color:white;">
+      Building with<br/>
+      <span style="color:#00DC82;font-style:italic;">Nuxt.js</span>
+    </h1>
+    <p style="font-size:16px;color:#94a3b8;max-width:520px;line-height:1.8;margin-bottom:32px;">
+      A complete teaching guide covering Components, Layouts, and the API Service layer — written in plain English with analogies, explanations, and code walkthroughs.
+    </p>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;">
+      <div style="background:rgba(0,220,130,0.12);border:1px solid rgba(0,220,130,0.25);border-radius:8px;padding:10px 18px;">
+        <p style="font-size:12px;color:#94a3b8;margin:0 0 2px;">Topic 01</p>
+        <p style="color:white;font-weight:600;margin:0;font-size:14px;">🧩 Components</p>
+      </div>
+      <div style="background:rgba(0,220,130,0.12);border:1px solid rgba(0,220,130,0.25);border-radius:8px;padding:10px 18px;">
+        <p style="font-size:12px;color:#94a3b8;margin:0 0 2px;">Topic 02</p>
+        <p style="color:white;font-weight:600;margin:0;font-size:14px;">🗂️ Layouts</p>
+      </div>
+      <div style="background:rgba(0,220,130,0.12);border:1px solid rgba(0,220,130,0.25);border-radius:8px;padding:10px 18px;">
+        <p style="font-size:12px;color:#94a3b8;margin:0 0 2px;">Topic 03</p>
+        <p style="color:white;font-weight:600;margin:0;font-size:14px;">🌐 API Services</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- ===== TABLE OF CONTENTS ===== -->
+  <div class="toc">
+    <h3>Table of Contents</h3>
+    <ol>
+      <li><a href="#overview">What is Nuxt.js? — Overview</a></li>
+      <li>
+        <a href="#components">Chapter 1: Components</a>
+        <ul class="toc-sub">
+          <li>What is a component?</li>
+          <li>Creating a component in Nuxt</li>
+          <li>Auto-import &amp; naming convention</li>
+          <li>Props — sending data IN</li>
+          <li>Emits — sending events OUT</li>
+          <li>Slots — flexible content</li>
+          <li>Common questions</li>
+        </ul>
+      </li>
+      <li>
+        <a href="#layouts">Chapter 2: Layouts</a>
+        <ul class="toc-sub">
+          <li>What is a layout?</li>
+          <li>Creating layouts</li>
+          <li>Applying a layout to a page</li>
+          <li>The &lt;slot /&gt; explained</li>
+          <li>When to use which layout</li>
+        </ul>
+      </li>
+      <li>
+        <a href="#services">Chapter 3: API Services</a>
+        <ul class="toc-sub">
+          <li>What is a service?</li>
+          <li>Understanding BaseService</li>
+          <li>How $fetch works</li>
+          <li>useRuntimeConfig — environment variables</li>
+          <li>GET vs POST — how params are sent</li>
+          <li>Error handling — the switch block</li>
+          <li>Extending BaseService — feature services</li>
+          <li>Using a service in a component</li>
+        </ul>
+      </li>
+      <li><a href="#summary">Final Summary &amp; Teaching Tips</a></li>
+    </ol>
+  </div>
+
+  <!-- ===== OVERVIEW ===== -->
+  <section id="overview">
+    <span class="chapter-label">Introduction</span>
+    <h2 class="chapter">What is <span class="accent">Nuxt.js</span>?</h2>
+
+    <p class="lead">Nuxt is a <strong>full-stack framework built on top of Vue.js</strong>. Think of Vue as the engine, and Nuxt as the fully assembled car — it comes with the routing, the folder structure, the SSR support, and the tooling all pre-configured.</p>
+
+    <p>When you build a web application with plain Vue, you have to manually set up routing, decide how to structure your files, configure how data is fetched on the server vs. the client, and wire everything together. Nuxt makes these decisions for you with <strong>sensible, opinionated defaults</strong> — so your team can focus on building features instead of boilerplate.</p>
+
+    <div class="analogy">
+      <span class="label">🏗️ Analogy for students</span>
+      <p>Vue is like buying all the raw lumber and nails to build a house. Nuxt is like buying a prefabricated house kit — the walls, roof, and foundation are already cut and labeled. You still build the house, but you're not starting from raw materials.</p>
+    </div>
+
+    <h4 class="subsection">Why do we use Nuxt in this project?</h4>
+    <p>We use Nuxt because it gives us three things out of the box that our Laravel API backend needs:</p>
+    <ol style="margin:0 0 14px 20px;padding:0;">
+      <li style="margin-bottom:6px;"><strong>File-based routing</strong> — pages are just files inside the <code>pages/</code> folder. No manual routing config.</li>
+      <li style="margin-bottom:6px;"><strong>Auto-imports</strong> — components and composables are automatically available everywhere. No import statements needed.</li>
+      <li style="margin-bottom:6px;"><strong>Universal $fetch</strong> — a built-in HTTP client that works on both the server and client side seamlessly.</li>
+    </ol>
+  </section>
+
+  <!-- ===== CHAPTER 1: COMPONENTS ===== -->
+  <div class="chapter-div" id="components">
+    <div class="num">01</div>
+    <div class="line"></div>
+    <div style="font-family:'Lora',serif;font-size:20px;font-weight:700;color:var(--navy);white-space:nowrap;">Components</div>
+  </div>
+
+  <span class="chapter-label">Chapter 1</span>
+  <h2 class="chapter">Components — <span class="accent">Reusable UI Blocks</span></h2>
+
+  <p class="lead">A component is a <strong>self-contained piece of UI</strong> — its own HTML structure, its own logic, and its own style — that can be used anywhere in your app, as many times as you need.</p>
+
+  <h3 class="section">What is a Component?</h3>
+
+  <p>Imagine you're building a website and you need a "card" — a box with a title, description, and a button — in ten different places. Without components, you'd copy and paste that HTML ten times. If you ever need to change the design, you'd have to update ten different files.</p>
+
+  <p>With components, you write that card once in its own file, and then use <code>&lt;MyCard /&gt;</code> wherever you need it. Update the component once, and every place it's used updates automatically.</p>
+
+  <div class="analogy">
+    <span class="label">🍪 Analogy for students</span>
+    <p>A component is like a <strong>cookie cutter</strong>. You design the shape once, and you can stamp it out as many times as you want — each cookie (instance) is separate, but they all come from the same mold. You can even give each cookie different toppings (props).</p>
+  </div>
+
+  <h3 class="section">Creating a Component in Nuxt</h3>
+
+  <p>In Nuxt, you create a component by adding a <code>.vue</code> file inside the <code>components/</code> folder. That's it. No registration, no import statements needed elsewhere — Nuxt handles that automatically.</p>
+
+  <p>Every component file has three parts:</p>
+
+  <div class="callout green">
+    <div class="icon">🧩</div>
+    <div class="callout-body">
+      <strong>The Three Sections of a .vue File</strong>
+      <p><code>&lt;template&gt;</code> — the HTML structure (what the user sees) <br/>
+         <code>&lt;script setup&gt;</code> — the JavaScript logic (how it behaves) <br/>
+         <code>&lt;style&gt;</code> — the CSS styling (optional, scoped to this component)</p>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="dot" style="background:#ef4444;"></div>
+      <div class="dot" style="background:#f59e0b;"></div>
+      <div class="dot" style="background:#22c55e;"></div>
+      <span class="filename">components/ui/BaseCard.vue — a complete example</span>
+    </div>
+    <div class="code-body">
+<p><span class="cmt">&lt;!-- ① TEMPLATE: what the user sees --&gt;</span></p>
+<p><span class="tag">&lt;template&gt;</span></p>
+<p>&nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="att">class</span>=<span class="val">"card"</span><span class="tag">&gt;</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;h3&gt;</span>{{ title }}<span class="tag">&lt;/h3&gt;</span>  <span class="cmt">&lt;!-- "title" comes from props --&gt;</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;p&gt;</span>{{ description }}<span class="tag">&lt;/p&gt;</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;slot /&gt;</span>          <span class="cmt">&lt;!-- whatever is placed between &lt;BaseCard&gt;...&lt;/BaseCard&gt; appears here --&gt;</span></p>
+<p>&nbsp;&nbsp;<span class="tag">&lt;/div&gt;</span></p>
+<p><span class="tag">&lt;/template&gt;</span></p>
+<br/>
+<p><span class="cmt">&lt;!-- ② SCRIPT: the logic --&gt;</span></p>
+<p><span class="tag">&lt;script</span> <span class="att">setup</span> <span class="att">lang</span>=<span class="val">"ts"</span><span class="tag">&gt;</span></p>
+<p><span class="cmt">// defineProps: declare what data this component accepts from its parent</span></p>
+<p><span class="kw">const</span> <span class="var">props</span> = <span class="fn">defineProps</span><span class="kw">&lt;{</span></p>
+<p>&nbsp;&nbsp;<span class="var">title</span>: <span class="typ">string</span>        <span class="cmt">// required — parent MUST pass this</span></p>
+<p>&nbsp;&nbsp;<span class="var">description</span>?: <span class="typ">string</span>  <span class="cmt">// optional — the ? means "not required"</span></p>
+<p><span class="kw">}&gt;</span>()</p>
+<p><span class="tag">&lt;/script&gt;</span></p>
+    </div>
+  </div>
+
+  <h3 class="section">Auto-Import &amp; Naming Convention</h3>
+
+  <p>This is one of Nuxt's most powerful features. <strong>You never need to write an import statement for your components.</strong> Nuxt scans the <code>components/</code> folder automatically and makes every component globally available.</p>
+
+  <p>The component name is derived from its file path:</p>
+
+  <table class="concept-table">
+    <thead>
+      <tr>
+        <th>File Location</th>
+        <th>Used in template as</th>
+        <th>Why?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>components/AppHeader.vue</code></td>
+        <td><code>&lt;AppHeader /&gt;</code></td>
+        <td>Root-level, name as-is</td>
+      </tr>
+      <tr>
+        <td><code>components/ui/BaseButton.vue</code></td>
+        <td><code>&lt;UiBaseButton /&gt;</code></td>
+        <td>Folder name becomes prefix</td>
+      </tr>
+      <tr>
+        <td><code>components/forms/SearchInput.vue</code></td>
+        <td><code>&lt;FormsSearchInput /&gt;</code></td>
+        <td>Folder name becomes prefix</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout yellow">
+    <div class="icon">💡</div>
+    <div class="callout-body">
+      <strong>Teaching Tip — Why the prefix?</strong>
+      <p>The folder prefix prevents naming collisions. If you have <code>ui/Button.vue</code> and <code>forms/Button.vue</code>, they become <code>&lt;UiButton /&gt;</code> and <code>&lt;FormsButton /&gt;</code> — no conflict.</p>
+    </div>
+  </div>
+
+  <h3 class="section">Props — Sending Data INTO a Component</h3>
+
+  <p><strong>Props are how a parent component passes information to a child component.</strong> Think of props as the parameters of a function — when you call the function (use the component), you pass values in.</p>
+
+  <p>You define what props a component accepts using <code>defineProps&lt;T&gt;()</code>:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="dot" style="background:#ef4444;"></div>
+      <div class="dot" style="background:#f59e0b;"></div>
+      <div class="dot" style="background:#22c55e;"></div>
+      <span class="filename">Props — definition &amp; usage</span>
+    </div>
+    <div class="code-body">
+<p><span class="cmt">// In the component (BaseButton.vue) — DEFINING props:</span></p>
+<p><span class="kw">const</span> <span class="var">props</span> = <span class="fn">defineProps</span><span class="kw">&lt;{</span></p>
+<p>&nbsp;&nbsp;<span class="var">label</span>:    <span class="typ">string</span>               <span class="cmt">// required string</span></p>
+<p>&nbsp;&nbsp;<span class="var">disabled</span>?: <span class="typ">boolean</span>            <span class="cmt">// optional boolean (? = optional)</span></p>
+<p>&nbsp;&nbsp;<span class="var">variant</span>:  <span class="typ">'primary'</span> | <span class="typ">'ghost'</span>  <span class="cmt">// must be one of these two values</span></p>
+<p><span class="kw">}&gt;</span>()</p>
+<br/>
+<p><span class="cmt">// In a page or parent component — USING the component:</span></p>
+<p><span class="tag">&lt;BaseButton</span></p>
+<p>&nbsp;&nbsp;<span class="att">label</span>=<span class="val">"Save Changes"</span>    <span class="cmt">&lt;!-- passing a static string --&gt;</span></p>
+<p>&nbsp;&nbsp;<span class="att">:disabled</span>=<span class="val">"isLoading"</span>    <span class="cmt">&lt;!-- : means it's dynamic (a variable) --&gt;</span></p>
+<p>&nbsp;&nbsp;<span class="att">variant</span>=<span class="val">"primary"</span></p>
+<p><span class="tag">/&gt;</span></p>
+    </div>
+  </div>
+
+  <div class="callout blue">
+    <div class="icon">📌</div>
+    <div class="callout-body">
+      <strong>Static vs Dynamic Props</strong>
+      <p>Without a colon (<code>label="text"</code>) — the value is a plain string.<br/>
+         With a colon (<code>:disabled="isLoading"</code>) — the value is JavaScript (a variable, expression, or computed).<br/>
+         This is called <strong>v-bind</strong>, and the colon is its shorthand.</p>
+    </div>
+  </div>
+
+  <h3 class="section">Emits — Sending Events OUT of a Component</h3>
+
+  <p>Props go <em>into</em> a component. Emits go <em>out</em>. When something happens inside a component (user clicks a button, submits a form), the component <strong>emits an event</strong> that the parent can listen to and respond to.</p>
+
+  <div class="analogy">
+    <span class="label">🔔 Analogy for students</span>
+    <p>Think of a doorbell. The button (child component) doesn't know what will happen when pressed — it just rings (emits). The house owner (parent) decides what to do when they hear the ring. The child only does one thing: announce something happened.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="dot" style="background:#ef4444;"></div>
+      <div class="dot" style="background:#f59e0b;"></div>
+      <div class="dot" style="background:#22c55e;"></div>
+      <span class="filename">Emits — definition &amp; usage</span>
+    </div>
+    <div class="code-body">
+<p><span class="cmt">// In the component — DEFINING emits:</span></p>
+<p><span class="kw">const</span> <span class="var">emit</span> = <span class="fn">defineEmits</span>([<span class="str">'submit'</span>, <span class="str">'cancel'</span>])</p>
+<br/>
+<p><span class="cmt">// Inside a function, FIRE the event:</span></p>
+<p><span class="kw">const</span> <span class="fn">handleClick</span> = () => {</p>
+<p>&nbsp;&nbsp;<span class="fn">emit</span>(<span class="str">'submit'</span>, formData)  <span class="cmt">// 'submit' is event name, formData is the payload</span></p>
+<p>}</p>
+<br/>
+<p><span class="cmt">// In the PARENT — LISTENING for the event:</span></p>
+<p><span class="tag">&lt;LoginForm</span> <span class="att">@submit</span>=<span class="val">"handleFormSubmit"</span> <span class="tag">/&gt;</span></p>
+<p><span class="cmt">//            ^ @submit is short for v-on:submit</span></p>
+<p><span class="cmt">//            ^ handleFormSubmit is a function in the parent that receives formData</span></p>
+    </div>
+  </div>
+
+  <h3 class="section">Slots — Flexible Content Inside a Component</h3>
+
+  <p>Sometimes you want a component to be a <em>container</em> — it provides the shell (border, padding, header) but lets the parent decide what goes inside. That's what <code>&lt;slot /&gt;</code> is for.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="dot" style="background:#ef4444;"></div>
+      <div class="dot" style="background:#f59e0b;"></div>
+      <div class="dot" style="background:#22c55e;"></div>
+      <span class="filename">Slots — definition &amp; usage</span>
+    </div>
+    <div class="code-body">
+<p><span class="cmt">// BaseModal.vue — defines a slot:</span></p>
+<p><span class="tag">&lt;template&gt;</span></p>
+<p>&nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="att">class</span>=<span class="val">"modal-backdrop"</span><span class="tag">&gt;</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="att">class</span>=<span class="val">"modal-box"</span><span class="tag">&gt;</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;slot /&gt;</span>  <span class="cmt">&lt;!-- parent content goes here --&gt;</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;/div&gt;</span></p>
+<p>&nbsp;&nbsp;<span class="tag">&lt;/div&gt;</span></p>
+<p><span class="tag">&lt;/template&gt;</span></p>
+<br/>
+<p><span class="cmt">// Parent page — uses BaseModal and puts content in the slot:</span></p>
+<p><span class="tag">&lt;BaseModal&gt;</span></p>
+<p>&nbsp;&nbsp;<span class="tag">&lt;h2&gt;</span>Confirm Delete<span class="tag">&lt;/h2&gt;</span></p>
+<p>&nbsp;&nbsp;<span class="tag">&lt;p&gt;</span>Are you sure? This cannot be undone.<span class="tag">&lt;/p&gt;</span></p>
+<p>&nbsp;&nbsp;<span class="tag">&lt;BaseButton</span> <span class="att">label</span>=<span class="val">"Delete"</span> <span class="att">variant</span>=<span class="val">"danger"</span> <span class="tag">/&gt;</span></p>
+<p><span class="tag">&lt;/BaseModal&gt;</span></p>
+    </div>
+  </div>
+
+  <h3 class="section">Common Student Questions — Components</h3>
+  <div class="qa">
+    <div class="qa-item">
+      <div class="qa-q">Do I need to import a component before using it?</div>
+      <div class="qa-a">No! Nuxt automatically imports everything from your <code>components/</code> folder. This is one of Nuxt's biggest conveniences. Just create the file and use it.</div>
+    </div>
+    <div class="qa-item">
+      <div class="qa-q">When should I create a new component?</div>
+      <div class="qa-a">A good rule of thumb: if the same UI appears more than once, or if a piece of UI has its own logical purpose (a card, a modal, a form field), make it a component. Also extract it when a page file gets too long — split it into smaller components.</div>
+    </div>
+    <div class="qa-item">
+      <div class="qa-q">What's the difference between props and data (ref)?</div>
+      <div class="qa-a"><code>ref()</code> or <code>reactive()</code> is data the component owns internally — it manages it itself. Props are data that comes from the outside — from the parent. A component should never modify its own props directly.</div>
+    </div>
+  </div>
+
+  <div class="summary-card">
+    <h4>Chapter 1 Summary — Components</h4>
+    <ul>
+      <li>A component is a reusable, self-contained piece of UI in a <code>.vue</code> file.</li>
+      <li>Nuxt auto-imports everything from <code>components/</code> — no manual imports needed.</li>
+      <li>Folders create naming prefixes: <code>ui/Card.vue</code> → <code>&lt;UiCard /&gt;</code></li>
+      <li>Use <code>defineProps&lt;T&gt;()</code> to accept data from the parent.</li>
+      <li>Use <code>defineEmits()</code> to send events back to the parent.</li>
+      <li>Use <code>&lt;slot /&gt;</code> when a component should accept flexible inner content.</li>
+    </ul>
+  </div>
+
+  <!-- ===== CHAPTER 2: LAYOUTS ===== -->
+  <div class="chapter-div" id="layouts">
+    <div class="num">02</div>
+    <div class="line"></div>
+    <div style="font-family:'Lora',serif;font-size:20px;font-weight:700;color:var(--navy);white-space:nowrap;">Layouts</div>
+  </div>
+
+  <span class="chapter-label">Chapter 2</span>
+  <h2 class="chapter">Layouts — <span class="accent">Page Wrappers</span></h2>
+
+  <p class="lead">A layout is a <strong>reusable shell that wraps around your pages</strong>. It contains the things that stay constant across multiple pages — like a navigation bar, a sidebar, or a footer — so you don't repeat them everywhere.</p>
+
+  <h3 class="section">What is a Layout?</h3>
+
+  <p>Without layouts, every page in your app would have to include its own <code>&lt;AppHeader /&gt;</code> and <code>&lt;AppFooter /&gt;</code> at the top and bottom. If you ever changed the header, you'd have to update every single page.</p>
+
+  <div class="analogy">
+    <span class="label">🏠 Analogy for students</span>
+    <p>Think of a layout as the <strong>walls, roof, and foundation of a room</strong>. Every room in a hotel has the same structure — four walls, a ceiling, a door. But the content inside each room is different. The "default layout" is the room structure; the page is the furniture inside.</p>
+  </div>
+
+  <h3 class="section">Creating Layouts</h3>
+
+  <p>Layouts live in the <code>layouts/</code> folder. The file name becomes the layout name. Nuxt automatically applies <code>layouts/default.vue</code> to every page that doesn't specify a different layout.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="dot" style="background:#ef4444;"></div>
+      <div class="dot" style="background:#f59e0b;"></div>
+      <div class="dot" style="background:#22c55e;"></div>
+      <span class="filename">layouts/default.vue — the base layout</span>
+    </div>
+    <div class="code-body">
+<p><span class="tag">&lt;template&gt;</span></p>
+<p>&nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="att">class</span>=<span class="val">"app-wrapper"</span><span class="tag">&gt;</span></p>
+<br/>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">&lt;!-- This appears on EVERY page that uses this layout --&gt;</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;AppHeader /&gt;</span></p>
+<br/>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">&lt;!-- This is where the page content renders --&gt;</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;main&gt;</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;slot /&gt;</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;/main&gt;</span></p>
+<br/>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">&lt;!-- Also on every page --&gt;</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;AppFooter /&gt;</span></p>
+<br/>
+<p>&nbsp;&nbsp;<span class="tag">&lt;/div&gt;</span></p>
+<p><span class="tag">&lt;/template&gt;</span></p>
+    </div>
+  </div>
+
+  <div class="callout green">
+    <div class="icon">🔑</div>
+    <div class="callout-body">
+      <strong>The Key to Layouts: &lt;slot /&gt;</strong>
+      <p>The <code>&lt;slot /&gt;</code> inside a layout is where the page content appears. When Nuxt renders a page, it injects the entire page template into the <code>&lt;slot /&gt;</code> of its layout. Everything outside the slot — the header, footer, sidebar — stays fixed.</p>
+    </div>
+  </div>
+
+  <h3 class="section">Different Layouts for Different Pages</h3>
+
+  <p>Not every page needs the same shell. Your login page probably doesn't need the main navigation. Your admin dashboard might have a sidebar. Nuxt lets you define multiple layouts and assign them per page.</p>
+
+  <table class="concept-table">
+    <thead>
+      <tr>
+        <th>Layout File</th>
+        <th>Contains</th>
+        <th>Used For</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>layouts/default.vue</code></td>
+        <td>Header + Footer</td>
+        <td>All public pages (home, about, etc.)</td>
+      </tr>
+      <tr>
+        <td><code>layouts/dashboard.vue</code></td>
+        <td>Header + Sidebar + Footer</td>
+        <td>Authenticated admin pages</td>
+      </tr>
+      <tr>
+        <td><code>layouts/blank.vue</code></td>
+        <td>Nothing — just &lt;slot /&gt;</td>
+        <td>Login, register, 404 pages</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class="section">Applying a Layout to a Page</h3>
+
+  <p>Use <code>definePageMeta()</code> inside the page's <code>&lt;script setup&gt;</code> to tell Nuxt which layout to use. This is the cleanest, recommended approach.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="dot" style="background:#ef4444;"></div>
+      <div class="dot" style="background:#f59e0b;"></div>
+      <div class="dot" style="background:#22c55e;"></div>
+      <span class="filename">pages/dashboard/index.vue — specifying a layout</span>
+    </div>
+    <div class="code-body">
+<p><span class="tag">&lt;template&gt;</span></p>
+<p>&nbsp;&nbsp;<span class="tag">&lt;div&gt;</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;h1&gt;</span>Dashboard<span class="tag">&lt;/h1&gt;</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;p&gt;</span>Welcome back!<span class="tag">&lt;/p&gt;</span></p>
+<p>&nbsp;&nbsp;<span class="tag">&lt;/div&gt;</span></p>
+<p><span class="tag">&lt;/template&gt;</span></p>
+<br/>
+<p><span class="tag">&lt;script</span> <span class="att">setup</span> <span class="att">lang</span>=<span class="val">"ts"</span><span class="tag">&gt;</span></p>
+<p><span class="cmt">// This tells Nuxt: "wrap this page in layouts/dashboard.vue"</span></p>
+<p><span class="fn">definePageMeta</span>({</p>
+<p>&nbsp;&nbsp;<span class="var">layout</span>: <span class="str">'dashboard'</span>,  <span class="cmt">// matches the filename: layouts/dashboard.vue</span></p>
+<p>})</p>
+<p><span class="tag">&lt;/script&gt;</span></p>
+<br/>
+<p><span class="cmt">// If you don't specify a layout, Nuxt uses 'default' automatically</span></p>
+    </div>
+  </div>
+
+  <div class="callout orange">
+    <div class="icon">⚠️</div>
+    <div class="callout-body">
+      <strong>Important: definePageMeta must be in &lt;script setup&gt;</strong>
+      <p><code>definePageMeta()</code> is a compile-time macro — it's processed by Nuxt before the app runs. It must be at the top level of <code>&lt;script setup&gt;</code>, not inside a function or conditional block.</p>
+    </div>
+  </div>
+
+  <h3 class="section">Common Student Questions — Layouts</h3>
+  <div class="qa">
+    <div class="qa-item">
+      <div class="qa-q">What happens if I don't specify a layout?</div>
+      <div class="qa-a">Nuxt automatically uses <code>layouts/default.vue</code>. If that file doesn't exist, Nuxt just renders the page without any wrapper.</div>
+    </div>
+    <div class="qa-item">
+      <div class="qa-q">Can a layout use components?</div>
+      <div class="qa-a">Absolutely. A layout is just a special component. It can use <code>&lt;AppHeader /&gt;</code>, <code>&lt;SidebarNav /&gt;</code>, or anything else — they're all auto-imported.</div>
+    </div>
+    <div class="qa-item">
+      <div class="qa-q">What's the difference between a layout and a component?</div>
+      <div class="qa-a">Conceptually, a layout is a special type of component that wraps entire pages. The key difference is that pages are assigned to layouts — layouts are not used directly in templates with <code>&lt;TagName /&gt;</code> syntax. Also, layouts use the <code>&lt;slot /&gt;</code> to render the page that's inside them.</div>
+    </div>
+  </div>
+
+  <div class="summary-card">
+    <h4>Chapter 2 Summary — Layouts</h4>
+    <ul>
+      <li>Layouts are reusable page shells containing nav, footer, sidebar, etc.</li>
+      <li>They live in the <code>layouts/</code> folder — filename = layout name.</li>
+      <li><code>layouts/default.vue</code> is applied automatically to all pages.</li>
+      <li>The <code>&lt;slot /&gt;</code> inside a layout is where the page content renders.</li>
+      <li>Override the layout per-page using <code>definePageMeta({ layout: 'name' })</code>.</li>
+      <li>Use <code>blank.vue</code> for pages that need no shell (login, error pages).</li>
+    </ul>
+  </div>
+
+  <!-- ===== CHAPTER 3: API SERVICES ===== -->
+  <div class="chapter-div" id="services">
+    <div class="num">03</div>
+    <div class="line"></div>
+    <div style="font-family:'Lora',serif;font-size:20px;font-weight:700;color:var(--navy);white-space:nowrap;">API Services</div>
+  </div>
+
+  <span class="chapter-label">Chapter 3</span>
+  <h2 class="chapter">API Services — <span class="accent">Talking to the Backend</span></h2>
+
+  <p class="lead">An API service is a <strong>dedicated class responsible for all communication with a backend API</strong>. Instead of writing raw fetch calls scattered across your components, you centralize all HTTP requests in one place.</p>
+
+  <h3 class="section">Why Use a Service Layer?</h3>
+
+  <p>Imagine you're making five different components that all need to fetch customers from your Laravel API. Without a service layer, each component would have its own <code>$fetch</code> call, its own error handling, and its own URL string. If the URL ever changes — or the error handling logic needs updating — you'd have to find and fix all five places.</p>
+
+  <div class="analogy">
+    <span class="label">📞 Analogy for students</span>
+    <p>Think of the API service as a <strong>receptionist at a company</strong>. No matter which employee (component) needs to contact an external company (backend), they don't call directly — they go through the receptionist. The receptionist knows the correct number, speaks the right language, and knows what to do when there's no answer (error handling). Everyone benefits from this single point of contact.</p>
+  </div>
+
+  <h3 class="section">Understanding BaseService</h3>
+
+  <p>In our Nuxt project, all services extend a <code>BaseService</code> class. This class has one method — <code>request()</code> — that handles the mechanics of every single HTTP call. Let's walk through it piece by piece.</p>
+
+  <h4 class="subsection">① useRuntimeConfig — Where Does the URL Come From?</h4>
+
+  <p>We never hardcode the API URL in our code. That's because the URL is different depending on the environment — development uses <code>localhost</code>, production uses the real server. <code>useRuntimeConfig()</code> reads the URL from the environment variables.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="dot" style="background:#ef4444;"></div>
+      <div class="dot" style="background:#f59e0b;"></div>
+      <div class="dot" style="background:#22c55e;"></div>
+      <span class="filename">nuxt.config.ts + .env — environment variable setup</span>
+    </div>
+    <div class="code-body">
+<p><span class="cmt">// nuxt.config.ts — tells Nuxt about your env vars</span></p>
+<p><span class="kw">export default</span> <span class="fn">defineNuxtConfig</span>({</p>
+<p>&nbsp;&nbsp;<span class="var">runtimeConfig</span>: {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="var">public</span>: {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="var">apiBaseURL</span>: <span class="str">''</span>  <span class="cmt">// default empty — filled by env var</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+<p>&nbsp;&nbsp;}</p>
+<p>})</p>
+<br/>
+<p><span class="cmt">// .env file — your actual values (never commit this to git)</span></p>
+<p><span class="cmt">// NUXT_PUBLIC_API_BASE_URL=http://localhost:8000/api   ← development</span></p>
+<p><span class="cmt">// NUXT_PUBLIC_API_BASE_URL=https://api.myapp.com/api   ← production</span></p>
+<br/>
+<p><span class="cmt">// In BaseService — reading the value:</span></p>
+<p><span class="kw">const</span> <span class="var">runtimeConfig</span> = <span class="fn">useRuntimeConfig</span>()</p>
+<p><span class="var">config</span>.<span class="var">baseURL</span> = runtimeConfig.public.<span class="var">apiBaseURL</span></p>
+<p><span class="cmt">// Result: baseURL = "http://localhost:8000/api"</span></p>
+    </div>
+  </div>
+
+  <div class="callout blue">
+    <div class="icon">🔐</div>
+    <div class="callout-body">
+      <strong>public vs private runtimeConfig</strong>
+      <p>Values under <code>runtimeConfig.public</code> are <strong>exposed to the browser</strong>. This is safe for your API base URL. If you have a secret key (like a payment gateway secret), put it directly under <code>runtimeConfig</code> (not under <code>public</code>) — it will only be available server-side.</p>
+    </div>
+  </div>
+
+  <h4 class="subsection">② $fetch — Nuxt's HTTP Client</h4>
+
+  <p><code>$fetch</code> is Nuxt's built-in HTTP function. It's a wrapper around the browser's <code>fetch</code> API that works on both the server (SSR) and the client — so your API calls behave consistently regardless of where they run.</p>
+
+  <p>It also automatically parses JSON responses, so you get a JavaScript object back without having to call <code>.json()</code> yourself. And you can pass TypeScript generics (<code>$fetch&lt;Customer&gt;</code>) so TypeScript knows the shape of the response.</p>
+
+  <h4 class="subsection">③ GET vs POST — How Params Are Sent</h4>
+
+  <p>This is a critical distinction. <strong>HTTP has rules about how data is sent</strong>, and BaseService respects them:</p>
+
+  <table class="concept-table">
+    <thead>
+      <tr>
+        <th>HTTP Method</th>
+        <th>How params are sent</th>
+        <th>Example URL Result</th>
+        <th>Use Case</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge green">GET</span></td>
+        <td>As <strong>query parameters</strong> appended to the URL</td>
+        <td><code>/customers?page=1&amp;search=john</code></td>
+        <td>Reading / fetching data</td>
+      </tr>
+      <tr>
+        <td><span class="badge orange">POST / PUT</span></td>
+        <td>As <strong>request body</strong> (JSON)</td>
+        <td><code>/customers</code> (data is hidden in body)</td>
+        <td>Creating or updating data</td>
+      </tr>
+      <tr>
+        <td><span class="badge slate">DELETE</span></td>
+        <td>No body needed — ID is in the URL path</td>
+        <td><code>/customers/42</code></td>
+        <td>Deleting a record</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="dot" style="background:#ef4444;"></div>
+      <div class="dot" style="background:#f59e0b;"></div>
+      <div class="dot" style="background:#22c55e;"></div>
+      <span class="filename">BaseService.ts — the GET vs POST branching logic explained</span>
+    </div>
+    <div class="code-body">
+<p><span class="cmt">// BaseService checks the method and places params in the right place:</span></p>
+<p><span class="kw">if</span> (<span class="var">method</span>.<span class="fn">toUpperCase</span>() === <span class="str">'GET'</span>) {</p>
+<p>&nbsp;&nbsp;<span class="var">config</span>.<span class="var">params</span> = <span class="var">params</span>  <span class="cmt">// → becomes ?key=value in the URL</span></p>
+<p>} <span class="kw">else</span> {</p>
+<p>&nbsp;&nbsp;<span class="var">config</span>.<span class="var">body</span> = <span class="var">params</span>    <span class="cmt">// → becomes JSON body of the request</span></p>
+<p>}</p>
+<br/>
+<p><span class="cmt">// Example: GET with filter params</span></p>
+<p><span class="kw">this</span>.<span class="fn">request</span>(<span class="str">'/customers'</span>, <span class="str">'GET'</span>, { <span class="var">search</span>: <span class="str">'john'</span>, <span class="var">page</span>: <span class="num">1</span> })</p>
+<p><span class="cmt">// → GET /customers?search=john&page=1</span></p>
+<br/>
+<p><span class="cmt">// Example: POST with body data</span></p>
+<p><span class="kw">this</span>.<span class="fn">request</span>(<span class="str">'/customers'</span>, <span class="str">'POST'</span>, { <span class="var">name</span>: <span class="str">'Jane Doe'</span>, <span class="var">email</span>: <span class="str">'jane@example.com'</span> })</p>
+<p><span class="cmt">// → POST /customers  (with JSON body)</span></p>
+    </div>
+  </div>
+
+  <h4 class="subsection">④ Error Handling — The Switch Block</h4>
+
+  <p>When an API call fails, the server responds with an <strong>HTTP status code</strong> that tells us what went wrong. BaseService catches every error and converts it into a descriptive JavaScript <code>Error</code> — so the component doesn't have to deal with raw HTTP details.</p>
+
+  <p>Here's what each status code means in plain English:</p>
+
+  <table class="concept-table">
+    <thead>
+      <tr>
+        <th>Status Code</th>
+        <th>What it means</th>
+        <th>Who caused it</th>
+        <th>Typical UI response</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge orange">400 Bad Request</span></td>
+        <td>The request was malformed or had invalid data</td>
+        <td>Frontend (us)</td>
+        <td>Show a form error message</td>
+      </tr>
+      <tr>
+        <td><span class="badge orange">404 Not Found</span></td>
+        <td>The requested resource doesn't exist</td>
+        <td>Frontend (us)</td>
+        <td>Show "not found" message or redirect</td>
+      </tr>
+      <tr>
+        <td><span class="badge orange">422 Unprocessable</span></td>
+        <td>Validation rules failed on the server (Laravel)</td>
+        <td>Frontend (us)</td>
+        <td>Show specific field validation errors</td>
+      </tr>
+      <tr>
+        <td><span class="badge orange">429 Too Many Requests</span></td>
+        <td>Rate limit hit — too many requests too fast</td>
+        <td>Frontend (us)</td>
+        <td>Show "please wait" notice</td>
+      </tr>
+      <tr>
+        <td><span class="badge red">500 Server Error</span></td>
+        <td>Something crashed on the backend</td>
+        <td>Backend (not us)</td>
+        <td>Show "something went wrong, contact admin"</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout yellow">
+    <div class="icon">💡</div>
+    <div class="callout-body">
+      <strong>Teaching Tip — 4xx vs 5xx</strong>
+      <p><strong>4xx errors</strong> are the client's fault (our frontend sent something wrong or asked for something that doesn't exist). <strong>5xx errors</strong> are the server's fault (the backend crashed). This distinction helps developers know where to look when debugging.</p>
+    </div>
+  </div>
+
+  <h3 class="section">Extending BaseService — Creating Feature Services</h3>
+
+  <p>The <code>BaseService</code> is never used directly by components. Instead, you create a <strong>feature service</strong> that extends it — like <code>CustomerService</code>. The feature service provides named, readable methods for each API action.</p>
+
+  <div class="step-list">
+    <div class="step-item">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <strong>Import and extend BaseService</strong>
+        <p>Your new service class extends <code>BaseService</code>, which means it automatically inherits the <code>request()</code> method.</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <strong>Define the TypeScript interface for your data</strong>
+        <p>Describe the shape of the data your API returns. TypeScript uses this to validate your code at compile time.</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <strong>Add a method for each API action</strong>
+        <p>One method per action — <code>getAll()</code>, <code>getById()</code>, <code>create()</code>, <code>update()</code>, <code>remove()</code>.</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <strong>Export a singleton instance</strong>
+        <p><code>export default new CustomerService()</code> — so the whole app shares one instance.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="dot" style="background:#ef4444;"></div>
+      <div class="dot" style="background:#f59e0b;"></div>
+      <div class="dot" style="background:#22c55e;"></div>
+      <span class="filename">services/CustomerService.ts — a complete feature service</span>
+    </div>
+    <div class="code-body">
+<p><span class="kw">import</span> { <span class="cls">BaseService</span> } <span class="kw">from</span> <span class="str">'./BaseService'</span></p>
+<br/>
+<p><span class="cmt">// Step 2: Define the shape of a Customer object</span></p>
+<p><span class="kw">export interface</span> <span class="cls">Customer</span> {</p>
+<p>&nbsp;&nbsp;<span class="var">id</span>:    <span class="typ">number</span></p>
+<p>&nbsp;&nbsp;<span class="var">name</span>:  <span class="typ">string</span></p>
+<p>&nbsp;&nbsp;<span class="var">email</span>: <span class="typ">string</span></p>
+<p>}</p>
+<br/>
+<p><span class="cmt">// Step 1: Extend BaseService</span></p>
+<p><span class="kw">export class</span> <span class="cls">CustomerService</span> <span class="kw">extends</span> <span class="cls">BaseService</span> {</p>
+<br/>
+<p>&nbsp;&nbsp;<span class="cmt">// Step 3: One method per API action</span></p>
+<p>&nbsp;&nbsp;<span class="fn">getAll</span>() {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">// GET /customers — no extra params needed</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return this</span>.<span class="fn">request</span><span class="kw">&lt;</span><span class="cls">Customer</span>[]<span class="kw">&gt;</span>(<span class="str">'/customers'</span>, <span class="str">'GET'</span>)</p>
+<p>&nbsp;&nbsp;}</p>
+<br/>
+<p>&nbsp;&nbsp;<span class="fn">getById</span>(<span class="var">id</span>: <span class="typ">number</span>) {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">// GET /customers/42</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return this</span>.<span class="fn">request</span><span class="kw">&lt;</span><span class="cls">Customer</span><span class="kw">&gt;</span>(<span class="str">`/customers/${</span><span class="var">id</span><span class="str">}`</span>, <span class="str">'GET'</span>)</p>
+<p>&nbsp;&nbsp;}</p>
+<br/>
+<p>&nbsp;&nbsp;<span class="fn">create</span>(<span class="var">data</span>: <span class="typ">Partial</span><span class="kw">&lt;</span><span class="cls">Customer</span><span class="kw">&gt;</span>) {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">// POST /customers — data goes in request body</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return this</span>.<span class="fn">request</span><span class="kw">&lt;</span><span class="cls">Customer</span><span class="kw">&gt;</span>(<span class="str">'/customers'</span>, <span class="str">'POST'</span>, <span class="var">data</span>)</p>
+<p>&nbsp;&nbsp;}</p>
+<br/>
+<p>&nbsp;&nbsp;<span class="fn">update</span>(<span class="var">id</span>: <span class="typ">number</span>, <span class="var">data</span>: <span class="typ">Partial</span><span class="kw">&lt;</span><span class="cls">Customer</span><span class="kw">&gt;</span>) {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">// PUT /customers/42 — data in body</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return this</span>.<span class="fn">request</span><span class="kw">&lt;</span><span class="cls">Customer</span><span class="kw">&gt;</span>(<span class="str">`/customers/${</span><span class="var">id</span><span class="str">}`</span>, <span class="str">'PUT'</span>, <span class="var">data</span>)</p>
+<p>&nbsp;&nbsp;}</p>
+<br/>
+<p>&nbsp;&nbsp;<span class="fn">remove</span>(<span class="var">id</span>: <span class="typ">number</span>) {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">// DELETE /customers/42 — no body needed</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return this</span>.<span class="fn">request</span><span class="kw">&lt;</span><span class="typ">void</span><span class="kw">&gt;</span>(<span class="str">`/customers/${</span><span class="var">id</span><span class="str">}`</span>, <span class="str">'DELETE'</span>)</p>
+<p>&nbsp;&nbsp;}</p>
+<p>}</p>
+<br/>
+<p><span class="cmt">// Step 4: Export one shared instance</span></p>
+<p><span class="kw">export default new</span> <span class="cls">CustomerService</span>()</p>
+    </div>
+  </div>
+
+  <h3 class="section">Using a Service in a Component or Page</h3>
+
+  <p>Once your service is set up, using it inside a page or component is simple and predictable. The pattern is always the same: set a loading state, call the service, handle success, catch errors.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="dot" style="background:#ef4444;"></div>
+      <div class="dot" style="background:#f59e0b;"></div>
+      <div class="dot" style="background:#22c55e;"></div>
+      <span class="filename">pages/customers/index.vue — fetching data with a service</span>
+    </div>
+    <div class="code-body">
+<p><span class="tag">&lt;script</span> <span class="att">setup</span> <span class="att">lang</span>=<span class="val">"ts"</span><span class="tag">&gt;</span></p>
+<p><span class="kw">import</span> <span class="var">customerService</span> <span class="kw">from</span> <span class="str">'~/services/CustomerService'</span></p>
+<p><span class="kw">import type</span> { <span class="cls">Customer</span> } <span class="kw">from</span> <span class="str">'~/services/CustomerService'</span></p>
+<br/>
+<p><span class="cmt">// Reactive state</span></p>
+<p><span class="kw">const</span> <span class="var">customers</span> = <span class="fn">ref</span><span class="kw">&lt;</span><span class="cls">Customer</span>[]<span class="kw">&gt;</span>([])   <span class="cmt">// the list, starts empty</span></p>
+<p><span class="kw">const</span> <span class="var">loading</span>   = <span class="fn">ref</span>(<span class="kw">false</span>)             <span class="cmt">// show a spinner while fetching</span></p>
+<p><span class="kw">const</span> <span class="var">error</span>     = <span class="fn">ref</span><span class="kw">&lt;</span><span class="typ">string</span> | <span class="kw">null</span><span class="kw">&gt;</span>(<span class="kw">null</span>) <span class="cmt">// store error message if it fails</span></p>
+<br/>
+<p><span class="kw">const</span> <span class="fn">fetchCustomers</span> = <span class="kw">async</span> () => {</p>
+<p>&nbsp;&nbsp;loading.value = <span class="kw">true</span>   <span class="cmt">// show spinner</span></p>
+<p>&nbsp;&nbsp;error.value   = <span class="kw">null</span>   <span class="cmt">// clear any previous error</span></p>
+<br/>
+<p>&nbsp;&nbsp;<span class="kw">try</span> {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;customers.value = <span class="kw">await</span> customerService.<span class="fn">getAll</span>()</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">// If we reach here, it succeeded ✅</span></p>
+<p>&nbsp;&nbsp;} <span class="kw">catch</span> (<span class="var">e</span>: <span class="typ">any</span>) {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;error.value = e.message <span class="cmt">// the message from BaseService's throw ❌</span></p>
+<p>&nbsp;&nbsp;} <span class="kw">finally</span> {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;loading.value = <span class="kw">false</span>  <span class="cmt">// always hide spinner, success or fail</span></p>
+<p>&nbsp;&nbsp;}</p>
+<p>}</p>
+<br/>
+<p><span class="cmt">// Run when the page/component mounts</span></p>
+<p><span class="fn">onMounted</span>(<span class="fn">fetchCustomers</span>)</p>
+<p><span class="tag">&lt;/script&gt;</span></p>
+<br/>
+<p><span class="tag">&lt;template&gt;</span></p>
+<p>&nbsp;&nbsp;<span class="tag">&lt;div&gt;</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;p</span> <span class="att">v-if</span>=<span class="val">"loading"</span><span class="tag">&gt;</span>Loading...<span class="tag">&lt;/p&gt;</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;p</span> <span class="att">v-else-if</span>=<span class="val">"error"</span> <span class="att">class</span>=<span class="val">"error"</span><span class="tag">&gt;</span>{{ error }}<span class="tag">&lt;/p&gt;</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;ul</span> <span class="att">v-else</span><span class="tag">&gt;</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;li</span> <span class="att">v-for</span>=<span class="val">"customer in customers"</span> <span class="att">:key</span>=<span class="val">"customer.id"</span><span class="tag">&gt;</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ customer.name }}</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;/li&gt;</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;/ul&gt;</span></p>
+<p>&nbsp;&nbsp;<span class="tag">&lt;/div&gt;</span></p>
+<p><span class="tag">&lt;/template&gt;</span></p>
+    </div>
+  </div>
+
+  <div class="callout green">
+    <div class="icon">✅</div>
+    <div class="callout-body">
+      <strong>The try / catch / finally pattern — always use this</strong>
+      <p>
+        <code>try</code> — run the risky code (the API call).<br/>
+        <code>catch</code> — handle the failure if it throws (store the error message).<br/>
+        <code>finally</code> — this runs regardless of success or failure — perfect for hiding a loading spinner.
+      </p>
+    </div>
+  </div>
+
+  <h3 class="section">Tracing a Full Request — Step by Step</h3>
+
+  <p>Let's trace exactly what happens when a user opens the customers page and the data loads:</p>
+
+  <div class="step-list">
+    <div class="step-item">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <strong>Page mounts → onMounted fires</strong>
+        <p><code>fetchCustomers()</code> is called. <code>loading.value</code> becomes <code>true</code>. A spinner appears in the UI.</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <strong>customerService.getAll() is called</strong>
+        <p>This calls <code>this.request&lt;Customer[]&gt;('/customers', 'GET')</code> inside <code>CustomerService</code>.</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <strong>BaseService builds the config</strong>
+        <p>Gets <code>apiBaseURL</code> from <code>useRuntimeConfig()</code>. Method is GET, so params go into <code>config.params</code> (none in this case).</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <strong>$fetch sends the request</strong>
+        <p><code>GET https://api.myapp.com/api/customers</code> with <code>Accept: application/json</code> header.</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <strong>Laravel responds with 200 OK</strong>
+        <p>The JSON array of customers comes back. <code>$fetch</code> parses it. <code>request()</code> returns it typed as <code>Customer[]</code>.</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <strong>Page receives the data</strong>
+        <p><code>customers.value</code> is updated. <code>loading.value</code> becomes <code>false</code>. The list renders in the template.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="section">Common Student Questions — Services</h3>
+  <div class="qa">
+    <div class="qa-item">
+      <div class="qa-q">Why can't I just use $fetch directly in my component?</div>
+      <div class="qa-a">You technically can — but if you do it in 10 components, you'll have 10 copies of error handling, 10 different URL strings, and no single place to update them. The service pattern centralizes all of that. It also makes testing much easier — you can mock the service in tests without touching HTTP at all.</div>
+    </div>
+    <div class="qa-item">
+      <div class="qa-q">What does "extends" mean in class CustomerService extends BaseService?</div>
+      <div class="qa-a">Inheritance. <code>CustomerService</code> gets all the methods of <code>BaseService</code> for free — including <code>request()</code>. You only write the parts that are specific to customers. This is a core principle of object-oriented programming: don't repeat yourself.</div>
+    </div>
+    <div class="qa-item">
+      <div class="qa-q">What is Partial&lt;Customer&gt;?</div>
+      <div class="qa-a">It's a TypeScript utility type that makes every property in <code>Customer</code> optional. This is useful for update requests — you might only be changing the <code>name</code>, not the <code>email</code>. <code>Partial&lt;Customer&gt;</code> allows passing just <code>{ name: 'New Name' }</code> without TypeScript complaining about missing fields.</div>
+    </div>
+    <div class="qa-item">
+      <div class="qa-q">What does export default new CustomerService() mean?</div>
+      <div class="qa-a">This creates one instance of <code>CustomerService</code> when the file is first imported, and exports that single instance. Every component that imports it gets the same object — this is the Singleton pattern. It saves memory and avoids creating unnecessary duplicate objects.</div>
+    </div>
+  </div>
+
+  <div class="summary-card">
+    <h4>Chapter 3 Summary — API Services</h4>
+    <ul>
+      <li>A service centralizes all API calls — components never call <code>$fetch</code> directly.</li>
+      <li><code>BaseService.request()</code> handles config, baseURL, and error handling for every call.</li>
+      <li><code>useRuntimeConfig()</code> reads the API base URL from environment variables — never hardcode URLs.</li>
+      <li>GET → params become query string; POST/PUT → params become JSON body.</li>
+      <li>Errors are caught and converted to readable <code>Error</code> objects based on HTTP status codes.</li>
+      <li>Feature services (e.g. <code>CustomerService</code>) extend <code>BaseService</code> and add named methods per resource.</li>
+      <li>Components use <code>try/catch/finally</code> to manage loading, data, and error states.</li>
+    </ul>
+  </div>
+
+  <!-- ===== FINAL SUMMARY ===== -->
+  <div class="chapter-div" id="summary">
+    <div class="num" style="font-size:32px;color:var(--nuxt);">✓</div>
+    <div class="line"></div>
+    <div style="font-family:'Lora',serif;font-size:20px;font-weight:700;color:var(--navy);white-space:nowrap;">Final Summary</div>
+  </div>
+
+  <span class="chapter-label">Wrap-up</span>
+  <h2 class="chapter">How It All <span class="accent">Fits Together</span></h2>
+
+  <p>Let's zoom out and see how all three topics work together in a real feature — say, a "Customers" page with a table and a "Create Customer" form.</p>
+
+  <div class="callout slate">
+    <div class="icon">🗺️</div>
+    <div class="callout-body">
+      <strong>The Full Picture</strong>
+      <p>
+        <strong>Layout</strong> (<code>dashboard.vue</code>) provides the shell — header, sidebar, footer.<br/>
+        <strong>Page</strong> (<code>pages/customers/index.vue</code>) sits inside the layout's <code>&lt;slot /&gt;</code>.<br/>
+        <strong>Components</strong> (<code>CustomersTable.vue</code>, <code>CreateCustomerModal.vue</code>) are assembled inside the page.<br/>
+        <strong>Service</strong> (<code>CustomerService</code>) is called by the page to fetch and mutate data from the Laravel API.
+      </p>
+    </div>
+  </div>
+
+  <h3 class="section">Teaching Tips for the Classroom</h3>
+
+  <div class="step-list">
+    <div class="step-item">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <strong>Start with Components — they're the building blocks</strong>
+        <p>Have students build a simple <code>BaseCard.vue</code> with a prop and use it on a page. Once they see auto-import working, they'll immediately grasp the power of the Nuxt pattern.</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <strong>Demonstrate Layouts with a live before/after</strong>
+        <p>Show the page without a layout (just raw content), then wrap it in <code>default.vue</code> and show how the header/footer appear instantly. This makes the concept click visually.</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <strong>Walk through BaseService with network tab open</strong>
+        <p>Open the browser DevTools Network tab and call a service method. Show students the actual HTTP request — the URL, the method, the headers — so they can connect the code to the real network call.</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <strong>Simulate errors on purpose</strong>
+        <p>Kill the backend server and have students observe the error catching — the <code>500</code> error appearing in the component's error state. Then restore it. Students learn more from seeing errors than from perfect demos.</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <strong>The mental model: one job per layer</strong>
+        <p>Component = what the user sees. Layout = the page shell. Service = talking to the backend. Each layer does exactly one job. If a student's component is doing HTTP calls and also managing form state and also rendering a table — it needs to be split up.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer style="background:var(--navy);color:#64748b;text-align:center;padding:32px 24px;margin-top:0;">
+  <p style="font-family:'Fira Code',monospace;font-size:12px;margin-bottom:4px;">
+    <span style="color:#00DC82;">Nuxt.js</span> — Teacher's Explanation Guide
+  </p>
+  <p style="font-family:'Fira Code',monospace;font-size:11px;">
+    Components · Layouts · API Services · BaseService
+  </p>
+</footer>
+
+</body>
+</html>
