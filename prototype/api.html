@@ -301,7 +301,7 @@
       <div class="code-block" style="border:none;border-radius:0;font-size:13px;">
         <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:migration</span> <span class="arg">create_class_table</span></p>
         <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:model</span> <span class="arg">Customer</span> <span class="flag">-m</span></p>
-        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:controller</span> <span class="arg">CustomerController</span> <span class="flag">--resource</span></p>
+        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:controller</span> <span class="arg">CustomerController</span> <span class="flag">--api</span></p>
         <p><span class="prompt">$ </span><span class="cursor" style="color:var(--amber);">▋</span></p>
       </div>
     </div>
@@ -749,11 +749,11 @@
       <span style="color:#60a5fa;">Controller</span>
     </h2>
     <p style="color:var(--muted);margin-bottom:32px;max-width:580px;line-height:1.7;">
-      The controller handles <strong style="color:var(--text);">incoming HTTP requests</strong> and returns a response. The <code style="color:#60a5fa;">--resource</code> flag pre-generates all 5 method stubs automatically.
+      The controller handles <strong style="color:var(--text);">incoming HTTP requests</strong> and returns a response. The <code style="color:#60a5fa;">--api</code> flag pre-generates all 5 method stubs automatically.
     </p>
     <div style="display:grid;gap:12px;max-width:700px;">
       <div class="code-block">
-        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:controller</span> <span class="arg">PasswordPolicyController</span> <span class="flag">--resource</span></p>
+        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:controller</span> <span class="arg">PasswordPolicyController</span> <span class="flag">--api</span></p>
         <p class="comment"># → app/Http/Controllers/PasswordPolicyController.php</p>
       </div>
       <div class="code-block">
@@ -959,7 +959,7 @@
         <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:model</span>     <span class="arg">Customer</span></p>
         <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:model</span>     <span class="arg">Company</span> <span class="flag">-m</span>       <span class="comment"># -m = with migration</span></p>
         <p><span class="comment"># 05. Define Route::apiResource() in routes/api.php</span></p>
-        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:controller</span> <span class="arg">PasswordPolicyController</span> <span class="flag">--resource</span></p>
+        <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:controller</span> <span class="arg">PasswordPolicyController</span> <span class="flag">--api</span></p>
         <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:request</span>    <span class="arg">CompanyStoreRequest</span></p>
         <p><span class="comment"># 08-09. Create Service & Repository manually (no artisan)</span></p>
         <p><span class="prompt">$ </span><span class="cmd">php artisan</span> <span class="flag">make:resource</span>   <span class="arg">PasswordPolicyResource</span></p>
