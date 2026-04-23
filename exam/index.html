@@ -467,21 +467,14 @@
 
       <div class="meta">
         <div class="meta-box">
-          <div class="meta-label">Source</div>
-          <div><code>/exam/web-exam.json</code></div>
-        </div>
-        <div class="meta-box">
-          <div class="meta-label">Time Limit</div>
-          <div id="timeLimit">-</div>
-        </div>
-        <div class="meta-box">
-          <div class="meta-label">Passing Score</div>
-          <div id="passingScore">-</div>
-        </div>
-        <div class="meta-box">
           <div class="meta-label">Main Questions</div>
           <div id="questionCount">-</div>
         </div>
+      </div>
+
+      <div style="margin-top: 16px;">
+        <label style="font-weight:600; font-size:14px; display:block; margin-bottom:6px;">Your Name <span style="color:#b91c1c;">*</span></label>
+        <input id="studentName" type="text" placeholder="Enter your full name" style="max-width:360px;" />
       </div>
 
       <div class="progress-wrap">
@@ -530,9 +523,8 @@
 
     const examTitleEl = document.getElementById("examTitle");
     const examDescriptionEl = document.getElementById("examDescription");
-    const timeLimitEl = document.getElementById("timeLimit");
-    const passingScoreEl = document.getElementById("passingScore");
     const questionCountEl = document.getElementById("questionCount");
+    const studentNameEl = document.getElementById("studentName");
     const progressFillEl = document.getElementById("progressFill");
     const progressTextEl = document.getElementById("progressText");
     const statusEl = document.getElementById("status");
@@ -552,6 +544,54 @@
     let currentPage = 1;
     let totalPages = 1;
     let answers = {};
+    let shuffledChoicesMap = {};  // stable shuffled choices per question id
+    let studentName = "";
+
+    // ── Firebase setup ──────────────────────────────────────────────────────
+    const FB_CONFIG = {
+      apiKey: "AIzaSyA8saNig0Zm3iQ-OEkcT2SCgUMjIBGQPC0",
+      authDomain: "sti-web-devs.firebaseapp.com",
+      databaseURL: "https://sti-web-devs-default-rtdb.asia-southeast1.firebasedatabase.app/",
+      projectId: "sti-web-devs",
+      storageBucket: "sti-web-devs.firebasestorage.app",
+      messagingSenderId: "563707672578",
+      appId: "1:563707672578:web:249bfbccbfb59653394f1b"
+    };
+
+    async function firebasePush(path, data) {
+      try {
+        const url = `${FB_CONFIG.databaseURL}${path}.json`;
+        await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+      } catch (e) {
+        console.warn("Firebase backup failed:", e);
+      }
+    }
+
+    function getLocalStorageKey() {
+      return examData ? `exam_answers__${examData.id}` : "exam_answers__default";
+    }
+
+    function persistAnswers() {
+      try {
+        localStorage.setItem(getLocalStorageKey(), JSON.stringify(answers));
+      } catch (e) { /* quota or private mode */ }
+    }
+
+    function loadPersistedAnswers() {
+      try {
+        const raw = localStorage.getItem(getLocalStorageKey());
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === "object") {
+            answers = parsed;
+          }
+        }
+      } catch (e) { /* ignore */ }
+    }
 
     function setStatus(message, type = "") {
       statusEl.textContent = message;
@@ -603,8 +643,6 @@
 
       examTitleEl.textContent = exam.title || "Untitled Exam";
       examDescriptionEl.textContent = exam.description || "";
-      timeLimitEl.textContent = exam.timeLimitMinutes ? `${exam.timeLimitMinutes} minutes` : "No limit";
-      passingScoreEl.textContent = exam.passingScore != null ? `${exam.passingScore}%` : "-";
       questionCountEl.textContent = Array.isArray(exam.questions) ? String(exam.questions.length) : "0";
 
       let questions = Array.isArray(exam.questions) ? [...exam.questions] : [];
@@ -612,8 +650,26 @@
         questions = shuffleArray(questions);
       }
 
+      // Build stable shuffled choices for every question (and sub-items)
+      shuffledChoicesMap = {};
+      questions.forEach(q => {
+        if (exam.shuffleChoices && q.choices && q.choices.length) {
+          shuffledChoicesMap[q.id] = shuffleArray(q.choices);
+        }
+        if (q.subItems) {
+          q.subItems.forEach(sub => {
+            const key = `${q.id}__${sub.id}`;
+            if (exam.shuffleChoices && sub.choices && sub.choices.length) {
+              shuffledChoicesMap[key] = shuffleArray(sub.choices);
+            }
+          });
+        }
+      });
+
       renderedQuestions = questions;
       totalPages = Math.max(1, Math.ceil(renderedQuestions.length / QUESTIONS_PER_PAGE));
+
+      loadPersistedAnswers();
 
       renderPage();
       renderNavigator();
@@ -739,10 +795,7 @@
       const wrap = document.createElement("div");
       wrap.className = "option-list";
 
-      let choices = [...(question.choices || [])];
-      if (examData?.shuffleChoices) {
-        choices = shuffleArray(choices);
-      }
+      const choices = shuffledChoicesMap[question.id] || [...(question.choices || [])];
 
       choices.forEach(choice => {
         const item = document.createElement("div");
@@ -763,10 +816,7 @@
       const wrap = document.createElement("div");
       wrap.className = "option-list";
 
-      let choices = [...(question.choices || [])];
-      if (examData?.shuffleChoices) {
-        choices = shuffleArray(choices);
-      }
+      const choices = shuffledChoicesMap[question.id] || [...(question.choices || [])];
 
       choices.forEach(choice => {
         const item = document.createElement("div");
@@ -921,7 +971,8 @@
           id: `${question.id}__${subItem.id}`,
           topic: question.topic,
           difficulty: question.difficulty,
-          points: 1
+          points: 1,
+          choices: shuffledChoicesMap[`${question.id}__${subItem.id}`] || subItem.choices
         };
 
         block.appendChild(renderQuestionInput(normalizedSub));
@@ -947,6 +998,7 @@
         answers[question.id] = captureQuestionAnswer(question);
       });
 
+      persistAnswers();
       updateProgress();
       renderNavigator();
     }
@@ -1437,16 +1489,22 @@
         feedbackEl.innerHTML = `
           <div><strong>${result.correct ? "Correct" : "Not correct"}</strong></div>
           <div><strong>Your answer:</strong> ${escapeHtml(result.studentAnswer)}</div>
-          <div><strong>Expected:</strong> ${escapeHtml(getCorrectAnswerText(question))}</div>
           <div><strong>Score:</strong> ${result.earned} / ${result.max}</div>
           ${explanation}
         `;
       });
     }
 
-    function submitExam() {
+    async function submitExam() {
       if (!examData) {
         setStatus("Exam is not loaded yet.", "bad");
+        return;
+      }
+
+      studentName = studentNameEl.value.trim();
+      if (!studentName) {
+        studentNameEl.focus();
+        setStatus("Please enter your name before submitting.", "bad");
         return;
       }
 
@@ -1466,10 +1524,33 @@
       const percentage = totalMax > 0 ? Math.round((totalEarned / totalMax) * 10000) / 100 : 0;
       const passed = examData.passingScore != null ? percentage >= examData.passingScore : null;
 
+      // ── Firebase backup ──────────────────────────────────────────────────
+      const submission = {
+        name: studentName,
+        examId: examData.id,
+        examTitle: examData.title,
+        submittedAt: new Date().toISOString(),
+        totalEarned,
+        totalMax,
+        percentage,
+        passed: passed ?? null,
+        correctCount,
+        totalQuestions: renderedQuestions.length,
+        answers
+      };
+      await firebasePush(`/submissions/${examData.id}`, submission);
+
+      // Clear localStorage after successful submit
+      try { localStorage.removeItem(getLocalStorageKey()); } catch (e) {}
+
       resultsEl.classList.remove("hidden");
       resultsEl.innerHTML = `
         <h2>Exam Results</h2>
         <div class="result-summary">
+          <div class="result-item">
+            <div class="meta-label">Student</div>
+            <div><strong>${escapeHtml(studentName)}</strong></div>
+          </div>
           <div class="result-item">
             <div class="meta-label">Total Score</div>
             <div><strong>${totalEarned} / ${totalMax}</strong></div>
@@ -1482,18 +1563,12 @@
             <div class="meta-label">Fully Correct Items</div>
             <div><strong>${correctCount} / ${renderedQuestions.length}</strong></div>
           </div>
-          <div class="result-item">
-            <div class="meta-label">Result</div>
-            <div><strong>${passed == null ? "No passing score set" : (passed ? "PASSED" : "FAILED")}</strong></div>
-          </div>
         </div>
       `;
 
       setStatus(
-        passed == null
-          ? `Submitted. Final score: ${percentage}%.`
-          : `Submitted. Final score: ${percentage}% — ${passed ? "PASSED" : "FAILED"}.`,
-        passed == null ? "good" : (passed ? "good" : "bad")
+        `Submitted. Final score: ${percentage}%. Answers saved.`,
+        "good"
       );
 
       renderPage();
@@ -1503,6 +1578,7 @@
 
     function resetAnswers() {
       answers = {};
+      try { localStorage.removeItem(getLocalStorageKey()); } catch (e) {}
       resultsEl.classList.add("hidden");
       resultsEl.innerHTML = "";
       renderPage();
@@ -1541,8 +1617,6 @@
         resultsEl.classList.add("hidden");
         examTitleEl.textContent = "Unable to load exam";
         examDescriptionEl.textContent = "Check the JSON path and structure.";
-        timeLimitEl.textContent = "-";
-        passingScoreEl.textContent = "-";
         questionCountEl.textContent = "-";
         progressFillEl.style.width = "0%";
         progressTextEl.textContent = "Progress: -";
