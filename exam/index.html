@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Submission</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 520px;
+      margin: 40px auto;
+      padding: 20px;
+      line-height: 1.5;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+    }
+
+    p.note {
+      margin-top: 0;
+      color: #555;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    #status {
+      margin-top: 16px;
+      font-weight: 600;
+    }
+
+    .success {
+      color: green;
+    }
+
+    .error {
+      color: #b00020;
+    }
+  </style>
+</head>
+<body>
+  <h1>Quiz Submission</h1>
+  <p class="note">One submission only per student name per quiz list.</p>
+
+  <div class="field">
+    <label for="listId">Class Selection</label>
+    <select id="listId">
+      <option value="it601_quiz1">IT601</option>
+      <option value="it602_quiz1">IT602</option>
+      <option value="cs_quiz1">CS</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="lastName">Last name</label>
+    <input id="lastName" type="text" autocomplete="family-name" />
+  </div>
+
+  <div class="field">
+    <label for="firstName">First name</label>
+    <input id="firstName" type="text" autocomplete="given-name" />
+  </div>
+
+  <button id="submitBtn">Submit</button>
+
+  <div id="status"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+    import { getDatabase, ref, runTransaction } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyA8saNig0Zm3iQ-OEkcT2SCgUMjIBGQPC0",
+      authDomain: "sti-web-devs.firebaseapp.com",
+      databaseURL: "https://sti-web-devs-default-rtdb.asia-southeast1.firebasedatabase.app/",
+      projectId: "sti-web-devs",
+      storageBucket: "sti-web-devs.firebasestorage.app",
+      messagingSenderId: "563707672578",
+      appId: "1:563707672578:web:249bfbccbfb59653394f1b",
+      measurementId: "G-QZ8KYMN3EG"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const listIdEl = document.getElementById("listId");
+    const lastNameEl = document.getElementById("lastName");
+    const firstNameEl = document.getElementById("firstName");
+    const submitBtn = document.getElementById("submitBtn");
+    const statusEl = document.getElementById("status");
+
+    function setStatus(message, type = "") {
+      statusEl.textContent = message;
+      statusEl.className = type;
+    }
+
+    function normalizeNamePart(value) {
+      return value
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "_")
+        .replace(/[^a-z0-9_]/g, "");
+    }
+
+    function makeStudentKey(lastName, firstName) {
+      return `${normalizeNamePart(lastName)}_${normalizeNamePart(firstName)}`;
+    }
+
+    submitBtn.addEventListener("click", async () => {
+      const listId = listIdEl.value.trim();
+      const lastName = lastNameEl.value.trim();
+      const firstName = firstNameEl.value.trim();
+
+      if (!listId || !lastName || !firstName) {
+        setStatus("Please complete all fields.", "error");
+        return;
+      }
+
+      const studentKey = makeStudentKey(lastName, firstName);
+
+      if (!studentKey || studentKey === "_") {
+        setStatus("Invalid name entered.", "error");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      setStatus("Submitting...");
+
+      try {
+        const responseRef = ref(db, `lists/${listId}/responses/${studentKey}`);
+
+        const result = await runTransaction(responseRef, (currentData) => {
+          if (currentData !== null) {
+            return;
+          }
+
+          return {
+            firstName,
+            lastName,
+            submittedAt: Date.now()
+          };
+        });
+
+        if (!result.committed) {
+          setStatus("This name has already submitted for this quiz.", "error");
+          submitBtn.disabled = false;
+          return;
+        }
+
+        setStatus("Submission recorded successfully.", "success");
+        firstNameEl.value = "";
+        lastNameEl.value = "";
+      } catch (error) {
+        console.error(error);
+        setStatus("Submission failed. Check your Firebase config and rules.", "error");
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
