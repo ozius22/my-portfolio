@@ -116,13 +116,25 @@
     function normalizeNamePart(value) {
       return value
         .trim()
+        .normalize("NFKD")
+        .replace(/[̀-ͯ]/g, "")
         .toLowerCase()
+        .replace(/['.-]/g, "")
         .replace(/\s+/g, "_")
-        .replace(/[^a-z0-9_]/g, "");
+        .replace(/[^a-z0-9_]/g, "")
+        .replace(/_+/g, "_")
+        .replace(/^_+|_+$/g, "");
     }
 
     function makeStudentKey(lastName, firstName) {
-      return `${normalizeNamePart(lastName)}_${normalizeNamePart(firstName)}`;
+      const normalizedLastName = normalizeNamePart(lastName);
+      const normalizedFirstName = normalizeNamePart(firstName);
+
+      if (!normalizedLastName || !normalizedFirstName) {
+        return "";
+      }
+
+      return `${normalizedLastName}_${normalizedFirstName}`;
     }
 
     submitBtn.addEventListener("click", async () => {
@@ -135,12 +147,15 @@
         return;
       }
 
-      const studentKey = makeStudentKey(lastName, firstName);
+      const normalizedLastName = normalizeNamePart(lastName);
+      const normalizedFirstName = normalizeNamePart(firstName);
 
-      if (!studentKey || studentKey === "_") {
+      if (!normalizedLastName || !normalizedFirstName) {
         setStatus("Invalid name entered.", "error");
         return;
       }
+
+      const studentKey = `${normalizedLastName}_${normalizedFirstName}`;
 
       submitBtn.disabled = true;
       setStatus("Submitting...");
