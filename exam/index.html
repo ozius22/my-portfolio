@@ -31,12 +31,6 @@
       </div>
 
       <div id="status" class="status"></div>
-
-      <div class="navigator" id="navigatorWrap">
-        <strong>Question Navigator</strong>
-        <div class="small-note">Green means answered. Blue means current page.</div>
-        <div class="navigator-grid" id="navigatorGrid"></div>
-      </div>
     </div>
 
     <div class="card page-shell">
@@ -76,7 +70,6 @@
     const nextBtn = document.getElementById("nextBtn");
     const pageIndicatorEl = document.getElementById("pageIndicator");
     const pageHeaderEl = document.getElementById("pageHeader");
-    const navigatorGridEl = document.getElementById("navigatorGrid");
 
     let examData = null;
     let renderedQuestions = [];
@@ -209,7 +202,6 @@
       loadPersistedAnswers();
 
       renderPage();
-      renderNavigator();
       updateProgress();
       setStatus("Exam loaded successfully.", "good");
     }
@@ -537,7 +529,6 @@
 
       persistAnswers();
       updateProgress();
-      renderNavigator();
     }
 
     function captureQuestionAnswer(question) {
@@ -775,34 +766,6 @@
 
       progressFillEl.style.width = `${percent}%`;
       progressTextEl.textContent = `Progress: ${answeredCount} of ${total} main questions answered (${percent}%)`;
-    }
-
-    function renderNavigator() {
-      navigatorGridEl.innerHTML = "";
-
-      renderedQuestions.forEach((question, index) => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "nav-item";
-        btn.textContent = index + 1;
-
-        const qPage = Math.floor(index / QUESTIONS_PER_PAGE) + 1;
-        if (qPage === currentPage) {
-          btn.classList.add("current");
-        }
-        if (isQuestionAnswered(question.id)) {
-          btn.classList.add("answered");
-        }
-
-        btn.addEventListener("click", () => {
-          saveCurrentPageAnswers();
-          currentPage = qPage;
-          renderPage();
-          renderNavigator();
-        });
-
-        navigatorGridEl.appendChild(btn);
-      });
     }
 
     function arraysEqualNormalized(a, b) {
@@ -1077,7 +1040,6 @@
       };
       await firebasePush(`/submissions/${examData.id}`, submission);
 
-      // Clear localStorage after successful submit
       try { localStorage.removeItem(getLocalStorageKey()); } catch (e) {}
 
       resultsEl.classList.remove("hidden");
@@ -1119,7 +1081,6 @@
       resultsEl.classList.add("hidden");
       resultsEl.innerHTML = "";
       renderPage();
-      renderNavigator();
       updateProgress();
       setStatus("All answers were reset.", "warn");
     }
@@ -1128,7 +1089,6 @@
       saveCurrentPageAnswers();
       currentPage = Math.max(1, Math.min(page, totalPages));
       renderPage();
-      renderNavigator();
     }
 
     async function loadExam() {
@@ -1157,7 +1117,6 @@
         progressFillEl.style.width = "0%";
         progressTextEl.textContent = "Progress: -";
         pageHeaderEl.innerHTML = "";
-        navigatorGridEl.innerHTML = "";
         pageIndicatorEl.textContent = "Page - of -";
         setStatus(error.message || "Failed to load exam.", "bad");
       }
