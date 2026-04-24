@@ -1,8 +1,6 @@
     const EXAM_JSON_PATH = "/exam/web-exam.json";
     const QUESTIONS_PER_PAGE = 1;
 
-    const examTitleEl = document.getElementById("examTitle");
-    const examDescriptionEl = document.getElementById("examDescription");
     const studentNameEl = document.getElementById("studentName");
     const progressFillEl = document.getElementById("progressFill");
     const progressTextEl = document.getElementById("progressText");
@@ -117,9 +115,6 @@
       answers = {};
       currentPage = 1;
 
-      examTitleEl.textContent = exam.title || "Untitled Exam";
-      examDescriptionEl.textContent = exam.description || "";
-
       let questions = Array.isArray(exam.questions) ? [...exam.questions] : [];
       if (exam.shuffleQuestions) {
         questions = shuffleArray(questions);
@@ -147,7 +142,7 @@
 
       renderPage();
       updateProgress();
-      setStatus("Exam loaded successfully.", "good");
+    //   setStatus("Exam loaded successfully.", "good");
     }
 
     function renderPage() {
@@ -1038,7 +1033,7 @@
     }
 
     async function loadExam() {
-      setStatus("Loading exam JSON...", "warn");
+    //   setStatus("Loading exam JSON...", "warn");
 
       try {
         const response = await fetch(EXAM_JSON_PATH, { cache: "no-store" });
@@ -1059,7 +1054,6 @@
         examFormEl.innerHTML = "";
         resultsEl.classList.add("hidden");
         examTitleEl.textContent = "Unable to load exam";
-        examDescriptionEl.textContent = "Check the JSON path and structure.";
         progressFillEl.style.width = "0%";
         progressTextEl.textContent = "Progress: -";
         pageHeaderEl.innerHTML = "";
