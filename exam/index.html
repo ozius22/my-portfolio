@@ -25,7 +25,6 @@
       </div>
 
       <div class="toolbar">
-        <button class="btn-primary" id="loadBtn" type="button">Reload Exam</button>
         <button class="btn-secondary" id="submitBtn" type="button">Submit Exam</button>
         <button class="btn-danger" id="resetBtn" type="button">Reset Answers</button>
       </div>
@@ -63,7 +62,6 @@
     const statusEl = document.getElementById("status");
     const examFormEl = document.getElementById("examForm");
     const resultsEl = document.getElementById("results");
-    const loadBtn = document.getElementById("loadBtn");
     const submitBtn = document.getElementById("submitBtn");
     const resetBtn = document.getElementById("resetBtn");
     const prevBtn = document.getElementById("prevBtn");
@@ -1122,7 +1120,6 @@
       }
     }
 
-    loadBtn.addEventListener("click", loadExam);
     submitBtn.addEventListener("click", submitExam);
     resetBtn.addEventListener("click", resetAnswers);
     prevBtn.addEventListener("click", () => goToPage(currentPage - 1));
