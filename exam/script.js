@@ -1,13 +1,16 @@
-    const EXAM_JSON_PATH = "/exam/web-exam.json";
+const EXAM_JSON_PATH = "/exam/web-exam.json";
     const QUESTIONS_PER_PAGE = 1;
 
-    const studentNameEl = document.getElementById("studentName");
+    const firstNameEl = document.getElementById("firstName");
+    const lastNameEl  = document.getElementById("lastName");
     const progressFillEl = document.getElementById("progressFill");
     const progressTextEl = document.getElementById("progressText");
     const statusEl = document.getElementById("status");
     const examFormEl = document.getElementById("examForm");
     const resultsEl = document.getElementById("results");
+    const submitViewEl = document.getElementById("submitView");
     const submitBtn = document.getElementById("submitBtn");
+    const backToExamBtn = document.getElementById("backToExamBtn");
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
     const pageIndicatorEl = document.getElementById("pageIndicator");
@@ -150,7 +153,7 @@
       pageHeaderEl.innerHTML = "";
 
       if (!examData || !renderedQuestions.length) {
-        pageHeaderEl.innerHTML = "<h2 class='page-title'>No questions available</h2>";
+        pageHeaderEl.innerHTML = "<h2 class='text-xl font-bold mb-1.5 mt-0'>No questions available</h2>";
         return;
       }
 
@@ -163,8 +166,8 @@
       const sectionTitles = sectionsInPage.map(id => sectionsMap[id]?.title || id);
 
       pageHeaderEl.innerHTML = `
-        <h2 class="page-title">Page ${currentPage} of ${totalPages}</h2>
-        <p class="page-subtitle">
+        <h2 class="text-xl font-bold mb-1.5 mt-0">Page ${currentPage} of ${totalPages}</h2>
+        <p class="text-gray-500 mb-0 mt-0">
           Questions ${startIndex + 1} to ${endIndex} of ${renderedQuestions.length}
           ${sectionTitles.length ? " • Sections: " + escapeHtml(sectionTitles.join(", ")) : ""}
         </p>
@@ -176,9 +179,13 @@
 
       pageIndicatorEl.textContent = `Page ${currentPage} of ${totalPages}`;
       prevBtn.disabled = currentPage === 1;
-      nextBtn.disabled = currentPage === totalPages;
 
-      submitBtn.classList.toggle("hidden", currentPage !== totalPages);
+      const isLastPage = currentPage === totalPages;
+      nextBtn.textContent  = isLastPage ? "Finish" : "Next";
+      nextBtn.disabled     = false;
+      nextBtn.className    = isLastPage
+        ? "bg-blue-600 text-white font-semibold text-[15px] px-4 py-3 rounded-[10px] hover:bg-blue-700 disabled:opacity-55 disabled:cursor-not-allowed"
+        : "bg-gray-200 text-gray-900 font-semibold text-[15px] px-4 py-3 rounded-[10px] hover:bg-gray-300 disabled:opacity-55 disabled:cursor-not-allowed";
 
       restorePageAnswers();
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -186,25 +193,25 @@
 
     function renderQuestionCard(question, displayNumber) {
       const card = document.createElement("div");
-      card.className = "question-card";
+      card.className = "p-[18px] mb-4 border border-gray-200 rounded-[10px]";
       card.dataset.questionId = question.id;
 
       const top = document.createElement("div");
-      top.className = "question-top";
+      top.className = "flex flex-wrap justify-between gap-2 mb-2.5";
 
       const left = document.createElement("div");
       const title = document.createElement("div");
-      title.className = "question-text";
+      title.className = "text-[17px] font-bold mb-3.5 mt-0";
       title.textContent = `${displayNumber}. ${question.question}`;
       left.appendChild(title);
 
       const right = document.createElement("div");
-      right.className = "pill-wrap";
+      right.className = "flex flex-wrap gap-2";
       right.innerHTML = `
-        <span class="pill">${escapeHtml(question.type)}</span>
-        <span class="pill">${escapeHtml(question.topic || "General")}</span>
-        <span class="pill">${escapeHtml(question.difficulty || "mixed")}</span>
-        <span class="pill">${escapeHtml((question.points ?? 1) + " pt" + ((question.points ?? 1) > 1 ? "s" : ""))}</span>
+        <span class="inline-block px-2.5 py-1 rounded-full text-xs border border-gray-300 bg-gray-50 text-gray-700">${escapeHtml(question.type)}</span>
+        <span class="inline-block px-2.5 py-1 rounded-full text-xs border border-gray-300 bg-gray-50 text-gray-700">${escapeHtml(question.topic || "General")}</span>
+        <span class="inline-block px-2.5 py-1 rounded-full text-xs border border-gray-300 bg-gray-50 text-gray-700">${escapeHtml(question.difficulty || "mixed")}</span>
+        <span class="inline-block px-2.5 py-1 rounded-full text-xs border border-gray-300 bg-gray-50 text-gray-700">${escapeHtml((question.points ?? 1) + " pt" + ((question.points ?? 1) > 1 ? "s" : ""))}</span>
       `;
 
       top.appendChild(left);
@@ -213,7 +220,7 @@
 
       if (question.snippet) {
         const pre = document.createElement("pre");
-        pre.className = "snippet";
+        pre.className = "bg-gray-900 text-gray-100 rounded-xl p-3.5 overflow-x-auto whitespace-pre-wrap my-2.5 font-mono text-sm";
         pre.textContent = question.snippet;
         card.appendChild(pre);
       }
@@ -221,13 +228,13 @@
       card.appendChild(renderQuestionInput(question));
 
       const feedback = document.createElement("div");
-      feedback.className = "feedback hidden";
+      feedback.className = "feedback hidden mt-3 p-3 rounded-[10px] text-sm";
       feedback.id = `feedback-${question.id}`;
       card.appendChild(feedback);
 
       if (question.explanation) {
         const note = document.createElement("div");
-        note.className = "small-note";
+        note.className = "text-gray-500 text-[13px] mt-2";
         note.textContent = "Explanation will appear after submission.";
         card.appendChild(note);
       }
@@ -263,16 +270,16 @@
 
     function renderSingleChoice(question) {
       const wrap = document.createElement("div");
-      wrap.className = "option-list";
+      wrap.className = "grid gap-2.5";
 
       const choices = shuffledChoicesMap[question.id] || [...(question.choices || [])];
 
       choices.forEach(choice => {
         const item = document.createElement("div");
-        item.className = "option-item";
+        item.className = "border border-gray-200 rounded-[10px] p-3 bg-[#fbfdff]";
         item.innerHTML = `
-          <label>
-            <input type="radio" name="${escapeHtml(question.id)}" value="${escapeHtml(choice)}">
+          <label class="flex gap-2.5 items-start cursor-pointer w-full">
+            <input type="radio" name="${escapeHtml(question.id)}" value="${escapeHtml(choice)}" class="mt-0.5">
             <span>${escapeHtml(choice)}</span>
           </label>
         `;
@@ -284,16 +291,16 @@
 
     function renderMultipleSelect(question) {
       const wrap = document.createElement("div");
-      wrap.className = "option-list";
+      wrap.className = "grid gap-2.5";
 
       const choices = shuffledChoicesMap[question.id] || [...(question.choices || [])];
 
       choices.forEach(choice => {
         const item = document.createElement("div");
-        item.className = "option-item";
+        item.className = "border border-gray-200 rounded-[10px] p-3 bg-[#fbfdff]";
         item.innerHTML = `
-          <label>
-            <input type="checkbox" name="${escapeHtml(question.id)}" value="${escapeHtml(choice)}">
+          <label class="flex gap-2.5 items-start cursor-pointer w-full">
+            <input type="checkbox" name="${escapeHtml(question.id)}" value="${escapeHtml(choice)}" class="mt-0.5">
             <span>${escapeHtml(choice)}</span>
           </label>
         `;
@@ -305,21 +312,23 @@
 
     function renderMatching(question) {
       const wrap = document.createElement("div");
-      wrap.className = "pair-grid";
+      wrap.className = "grid gap-3";
 
       const rightItems = [...(question.rightItems || [])];
 
       (question.leftItems || []).forEach((leftItem, index) => {
         const row = document.createElement("div");
-        row.className = "pair-row";
+        row.className = "grid gap-3 items-center" ;
+        row.style.gridTemplateColumns = "1fr 1.2fr";
 
         const label = document.createElement("div");
-        label.className = "pair-left";
+        label.className = "font-semibold";
         label.textContent = leftItem;
 
         const select = document.createElement("select");
         select.name = `${question.id}__${index}`;
         select.dataset.leftItem = leftItem;
+        select.className = "w-full px-3 py-[11px] border border-gray-300 rounded-[10px] text-[15px] bg-white";
         select.innerHTML = `<option value="">Select match</option>` +
           rightItems.map(item => `<option value="${escapeHtml(item)}">${escapeHtml(item)}</option>`).join("");
 
@@ -333,14 +342,16 @@
 
     function renderOrdering(question) {
       const wrap = document.createElement("div");
-      wrap.className = "ordering-list";
+      wrap.className = "grid gap-2.5";
 
       (question.items || []).forEach((item, index) => {
         const row = document.createElement("div");
-        row.className = "ordering-item";
+        row.className = "grid gap-3 items-center border border-gray-200 rounded-[10px] p-3 bg-[#fbfdff]";
+        row.style.gridTemplateColumns = "1fr 120px";
         row.innerHTML = `
           <div>${escapeHtml(item)}</div>
-          <select name="${escapeHtml(question.id)}__${index}" data-order-item="${escapeHtml(item)}">
+          <select name="${escapeHtml(question.id)}__${index}" data-order-item="${escapeHtml(item)}"
+            class="w-full px-3 py-[11px] border border-gray-300 rounded-[10px] text-[15px] bg-white">
             <option value="">Position</option>
             ${(question.items || []).map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
           </select>
@@ -353,14 +364,16 @@
 
     function renderCategorization(question) {
       const wrap = document.createElement("div");
-      wrap.className = "category-grid";
+      wrap.className = "grid gap-3";
 
       (question.items || []).forEach((item, index) => {
         const row = document.createElement("div");
-        row.className = "category-item";
+        row.className = "border border-gray-200 rounded-[10px] p-3 bg-[#fbfdff] grid gap-3 items-center";
+        row.style.gridTemplateColumns = "1fr 180px";
         row.innerHTML = `
           <div>${escapeHtml(item)}</div>
-          <select name="${escapeHtml(question.id)}__${index}" data-category-item="${escapeHtml(item)}">
+          <select name="${escapeHtml(question.id)}__${index}" data-category-item="${escapeHtml(item)}"
+            class="w-full px-3 py-[11px] border border-gray-300 rounded-[10px] text-[15px] bg-white">
             <option value="">Select category</option>
             ${(question.categories || []).map(cat => `<option value="${escapeHtml(cat)}">${escapeHtml(cat)}</option>`).join("")}
           </select>
@@ -384,6 +397,7 @@
       input.type = "text";
       input.name = question.id;
       input.placeholder = "Type your answer here";
+      input.className = "w-full px-3 py-[11px] border border-gray-300 rounded-[10px] text-[15px] bg-white";
       wrap.appendChild(input);
 
       return wrap;
@@ -391,21 +405,25 @@
 
     function renderBuildRequest(question) {
       const wrap = document.createElement("div");
-      wrap.className = "build-grid";
+      wrap.className = "grid gap-3";
 
       (question.fields || []).forEach(field => {
         const row = document.createElement("div");
-        row.className = "build-row";
+        row.className = "grid gap-3 items-center";
+        row.style.gridTemplateColumns = "1fr 1.2fr";
 
         const label = document.createElement("label");
+        label.className = "font-semibold text-[15px]";
         label.textContent = field.label || field.name || "Field";
 
         let control;
         if (field.type === "textarea") {
           control = document.createElement("textarea");
+          control.className = "w-full px-3 py-[11px] border border-gray-300 rounded-[10px] text-[15px] bg-white min-h-[92px] resize-y";
         } else {
           control = document.createElement("input");
           control.type = "text";
+          control.className = "w-full px-3 py-[11px] border border-gray-300 rounded-[10px] text-[15px] bg-white";
         }
 
         control.name = `${question.id}__${field.name}`;
@@ -421,18 +439,18 @@
 
     function renderCaseStudy(question) {
       const wrap = document.createElement("div");
-      wrap.className = "case-study";
+      wrap.className = "border border-dashed border-gray-300 rounded-xl p-3.5 bg-[#fcfcfd]";
 
       const subWrap = document.createElement("div");
-      subWrap.className = "subitems-grid";
+      subWrap.className = "grid gap-3";
 
       (question.subItems || []).forEach((subItem, idx) => {
         const block = document.createElement("div");
-        block.className = "question-card";
+        block.className = "p-[18px]";
         block.style.marginBottom = "0";
 
         const title = document.createElement("div");
-        title.className = "question-text";
+        title.className = "text-[17px] font-bold mb-3.5 mt-0";
         title.textContent = `${String.fromCharCode(97 + idx)}. ${subItem.question}`;
         block.appendChild(title);
 
@@ -702,11 +720,29 @@
 
     function updateProgress() {
       const answeredCount = renderedQuestions.filter(q => isQuestionAnswered(q.id)).length;
-      const total = renderedQuestions.length || 1;
+      const total   = renderedQuestions.length || 1;
       const percent = Math.round((answeredCount / total) * 100);
 
-      progressFillEl.style.width = `${percent}%`;
-      progressTextEl.textContent = `Progress: ${answeredCount} of ${total} main questions answered (${percent}%)`;
+      if (progressFillEl) progressFillEl.style.width = `${percent}%`;
+      if (progressTextEl) progressTextEl.textContent  = `${percent}% complete`;
+
+      const fractionEl = document.getElementById("progressFraction");
+      if (fractionEl) fractionEl.textContent = `${answeredCount} / ${total}`;
+
+      // rebuild side step list
+      const pages = Array.from({ length: totalPages }, (_, i) => {
+        const start = i * QUESTIONS_PER_PAGE;
+        const end   = Math.min(start + QUESTIONS_PER_PAGE, renderedQuestions.length);
+        return { title: `Q${start + 1}${end > start + 1 ? "–" + end : ""}`, questionCount: end - start };
+      });
+      const answeredPageSet = new Set(
+        pages.map((_, i) => {
+          const start = i * QUESTIONS_PER_PAGE;
+          const end   = Math.min(start + QUESTIONS_PER_PAGE, renderedQuestions.length);
+          return renderedQuestions.slice(start, end).every(q => isQuestionAnswered(q.id)) ? i : -1;
+        }).filter(i => i !== -1)
+      );
+      renderSideSteps(pages, currentPage - 1, answeredPageSet);
     }
 
     function arraysEqualNormalized(a, b) {
@@ -936,15 +972,32 @@
       });
     }
 
+    const pageShellEl = document.getElementById("pageShell");
+
+    function showSubmitView() {
+      saveCurrentPageAnswers();
+      pageShellEl.classList.add("hidden");
+      submitViewEl.classList.remove("hidden");
+      submitViewEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      document.getElementById("firstName")?.focus();
+    }
+
+    function hideSubmitView() {
+      submitViewEl.classList.add("hidden");
+      pageShellEl.classList.remove("hidden");
+    }
+
     async function submitExam() {
       if (!examData) {
         setStatus("Exam is not loaded yet.", "bad");
         return;
       }
 
-      studentName = studentNameEl.value.trim();
+      const firstName = firstNameEl ? firstNameEl.value.trim() : "";
+      const lastName  = lastNameEl  ? lastNameEl.value.trim()  : "";
+      studentName = [firstName, lastName].filter(Boolean).join(" ");
       if (!studentName) {
-        studentNameEl.focus();
+        if (firstNameEl) firstNameEl.focus();
         setStatus("Please enter your name before submitting.", "bad");
         return;
       }
@@ -985,22 +1038,22 @@
 
       resultsEl.classList.remove("hidden");
       resultsEl.innerHTML = `
-        <h2>Exam Results</h2>
-        <div class="result-summary">
-          <div class="result-item">
-            <div class="meta-label">Student</div>
+        <h2 class="text-xl font-bold mt-0 mb-3">Exam Results</h2>
+        <div class="grid gap-3" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr))">
+          <div class="border border-gray-200 rounded-xl p-3.5 bg-gray-50">
+            <div class="text-sm text-gray-500 mb-1">Student</div>
             <div><strong>${escapeHtml(studentName)}</strong></div>
           </div>
-          <div class="result-item">
-            <div class="meta-label">Total Score</div>
+          <div class="border border-gray-200 rounded-xl p-3.5 bg-gray-50">
+            <div class="text-sm text-gray-500 mb-1">Total Score</div>
             <div><strong>${totalEarned} / ${totalMax}</strong></div>
           </div>
-          <div class="result-item">
-            <div class="meta-label">Percentage</div>
+          <div class="border border-gray-200 rounded-xl p-3.5 bg-gray-50">
+            <div class="text-sm text-gray-500 mb-1">Percentage</div>
             <div><strong>${percentage}%</strong></div>
           </div>
-          <div class="result-item">
-            <div class="meta-label">Fully Correct Items</div>
+          <div class="border border-gray-200 rounded-xl p-3.5 bg-gray-50">
+            <div class="text-sm text-gray-500 mb-1">Fully Correct Items</div>
             <div><strong>${correctCount} / ${renderedQuestions.length}</strong></div>
           </div>
         </div>
@@ -1011,6 +1064,9 @@
         "good"
       );
 
+      // Show the exam + feedback, hide the submit view
+      submitViewEl.classList.add("hidden");
+      pageShellEl.classList.remove("hidden");
       renderPage();
       showAllFeedback();
       resultsEl.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -1053,7 +1109,7 @@
         console.error(error);
         examFormEl.innerHTML = "";
         resultsEl.classList.add("hidden");
-        examTitleEl.textContent = "Unable to load exam";
+        pageHeaderEl.innerHTML = "<h2 class='text-xl font-bold mb-1.5 mt-0'>Unable to load exam</h2>";
         progressFillEl.style.width = "0%";
         progressTextEl.textContent = "Progress: -";
         pageHeaderEl.innerHTML = "";
@@ -1062,8 +1118,39 @@
       }
     }
 
+    function renderSideSteps(pages, currentIndex, answeredSet) {
+        const ol = document.getElementById('sideSteps');
+        ol.innerHTML = pages.map((page, i) => {
+            const isAnswered = answeredSet.has(i);
+            const isCurrent  = i === currentIndex;
+            return `
+            <li class="side-step ${isCurrent ? 'current' : ''} ${isAnswered ? 'answered' : ''} flex items-start gap-2.5 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors relative z-10"
+                style="padding: 5px 6px"
+                onclick="goToPage(${i + 1})">
+                <div class="side-step-dot shrink-0 w-7 h-7 rounded-full border-2 border-gray-300 bg-white flex items-center justify-center text-[11px] font-bold text-gray-500 relative z-10">
+                  <span class="dot-num">${i + 1}</span>
+                  <svg class="dot-check w-3.5 h-3.5" viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="2.2">
+                    <polyline points="2,7 6,11 12,3"/>
+                  </svg>
+                </div>
+                <div class="side-step-info flex flex-col gap-0.5 pt-1 min-w-0">
+                  <span class="side-step-title text-xs font-semibold text-gray-800 truncate max-w-[120px]">${page.title ?? 'Page ' + (i+1)}</span>
+                  <span class="side-step-meta text-[11px] text-gray-500">${page.questionCount ?? ''} Qs</span>
+                </div>
+            </li>`;
+        }).join('');
+    }
+
+
     submitBtn.addEventListener("click", submitExam);
+    backToExamBtn.addEventListener("click", hideSubmitView);
     prevBtn.addEventListener("click", () => goToPage(currentPage - 1));
-    nextBtn.addEventListener("click", () => goToPage(currentPage + 1));
+    nextBtn.addEventListener("click", () => {
+      if (currentPage === totalPages) {
+        showSubmitView();
+      } else {
+        goToPage(currentPage + 1);
+      }
+    });
 
     loadExam();
