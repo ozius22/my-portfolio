@@ -31,7 +31,10 @@ const db = getFirestore(initializeApp(firebaseConfig));
     }
   }
 
-  const month = new Date().toISOString().slice(0, 7);
+  const isLocal =
+    ["localhost", "127.0.0.1"].includes(location.hostname) ||
+    /^192\.168\./.test(location.hostname);
+  const month = new Date().toISOString().slice(0, 7) + (isLocal ? "-dev" : "");
 
   try {
     await setDoc(
