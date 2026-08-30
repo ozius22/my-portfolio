@@ -1,5 +1,4 @@
 // ---------- DOM Element References ----------
-const loader = document.querySelector("#loader-container");
 const greeting = document.querySelector("#greeting");
 const header = document.querySelector("#header");
 const pangalan = document.querySelector("#pangalan");
@@ -42,32 +41,16 @@ const tooltips = document.querySelectorAll(".tooltip");
 // Track current active navigation item
 let currentActive = null;
 
-// ---------- Loader Handling ----------
-window.addEventListener("load", () => {
-  // Fade out loader immediately
-  if (loader) {
-    loader.style.transition = "opacity 0.5s ease";
-    loader.style.opacity = "0";
-    
-    // Remove from DOM after fade finishes
-    setTimeout(() => {
-      loader.remove();
-      onLoaderRemoved(); 
-    }, 500); 
-  } else {
-    onLoaderRemoved();
-  }
-});
+// ---------- Intro Sequence ----------
+runIntro();
 
-function onLoaderRemoved() {
+function runIntro() {
   const isLargeScreen = window.matchMedia("(min-width: 1800px)").matches;
 
-  // window.scrollTo(0, 0);
-
   if (isLargeScreen) {
-    greeting.classList.add("fade-in");       
-    trianglesLight.classList.add("fade-in"); 
-    
+    greeting.classList.add("fade-in");
+    trianglesLight.classList.add("fade-in");
+
     setTimeout(() => pangalan.classList.add("fade-in"), 1300);
     setTimeout(() => cta.classList.add("fade-in"), 2000);
     setTimeout(() => header.classList.remove("hidden-main-menu"), 3300);
