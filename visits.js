@@ -19,6 +19,11 @@ const firebaseConfig = {
 const db = getFirestore(initializeApp(firebaseConfig));
 
 (async function recordVisit() {
+  const isLocal =
+    ["localhost", "127.0.0.1"].includes(location.hostname) ||
+    /^192\.168\./.test(location.hostname);
+  if (isLocal) return;
+
   if (sessionStorage.getItem("counted")) return;
 
   let source = "direct";
@@ -49,10 +54,7 @@ const db = getFirestore(initializeApp(firebaseConfig));
 
   const now = new Date();
   const local = new Date(now.getTime() + 8 * 3600 * 1000);
-  const isLocal =
-    ["localhost", "127.0.0.1"].includes(location.hostname) ||
-    /^192\.168\./.test(location.hostname);
-  const month = local.toISOString().slice(0, 7) + (isLocal ? "-dev" : "");
+  const month = local.toISOString().slice(0, 7);
   const day = local.toISOString().slice(0, 10);
 
   try {
