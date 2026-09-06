@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stats</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./main.css" />
+  </head>
+
+  <body class="bg-white">
+    <div class="container mx-auto px-6 py-16 max-w-4xl">
+      <h1 class="text-3xl text-gray-800 font-bold mb-12">Visits</h1>
+      <div id="output" class="text-gray-600">Loading...</div>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+      } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCzARg2JN-JBqoCfqsspzjIUaST2IwDKYk",
+        authDomain: "luis-portfolio-f74d1.firebaseapp.com",
+        projectId: "luis-portfolio-f74d1",
+        storageBucket: "luis-portfolio-f74d1.firebasestorage.app",
+        messagingSenderId: "400457420291",
+        appId: "1:400457420291:web:4d19da0998f2af5de88836",
+      };
+
+      const db = getFirestore(initializeApp(firebaseConfig));
+      const output = document.getElementById("output");
+
+      function table(title, map) {
+        const rows = Object.entries(map || {}).sort((a, b) => b[1] - a[1]);
+        if (!rows.length) return "";
+        return `
+          <div class="mb-8">
+            <h3 class="text-gray-600 font-medium mb-3">${title}</h3>
+            <table class="w-full text-sm">
+              ${rows
+                .map(
+                  ([k, v]) => `
+                <tr class="border-b border-gray-200">
+                  <td class="py-2 text-gray-600">${k}</td>
+                  <td class="py-2 text-right text-gray-800 font-medium">${v}</td>
+                </tr>`
+                )
+                .join("")}
+            </table>
+          </div>`;
+      }
+
+      try {
+        const snap = await getDocs(collection(db, "stats"));
+        const months = snap.docs
+          .filter((d) => !d.id.endsWith("-dev"))
+          .sort((a, b) => b.id.localeCompare(a.id));
+
+        if (!months.length) {
+          output.textContent = "No data yet.";
+        } else {
+          output.innerHTML = months
+            .map((m) => {
+              const d = m.data();
+              const days = Object.entries(d.days || {}).sort((a, b) =>
+                a[0].localeCompare(b[0])
+              );
+              return `
+                <section class="mb-16">
+                  <div class="flex justify-between items-baseline mb-8 pb-3 border-b border-gray-400">
+                    <h2 class="text-2xl text-gray-800 font-semibold">${m.id}</h2>
+                    <span class="text-2xl text-gray-800 font-bold">${d.total || 0}</span>
+                  </div>
+                  ${table("By day", Object.fromEntries(days))}
+                  ${table("Referrers", d.referrers)}
+                  ${table("Countries", d.countries)}
+                  ${table("Cities", d.cities)}
+                </section>`;
+            })
+            .join("");
+        }
+      } catch (e) {
+        output.textContent = "Could not load stats.";
+        console.error(e);
+      }
+    </script>
+  </body>
+</html>
