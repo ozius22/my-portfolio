@@ -370,3 +370,60 @@ h4.dark-mode {
     0 4px 6px -2px rgba(0, 0, 0, 0.05),
     0 0 0 1px rgba(0,0,0,0.05);  */
 }
+
+/* ---------- pricing page ---------- */
+.price-card {
+  border: 1px solid #e5e7eb; /* gray-200 */
+  transition: box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out,
+    border-color 0.3s ease-in-out;
+}
+
+.price-card:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.price-card.featured {
+  border-color: #1f2937; /* gray-800 */
+}
+
+.price-card.dark-mode {
+  background-color: #111827; /* gray-900 */
+  border-color: #374151; /* gray-700 */
+}
+
+.price-card.dark-mode:hover {
+  box-shadow: 0 20px 30px -5px rgba(255, 255, 255, 0.15),
+    0 8px 12px -6px rgba(255, 255, 255, 0.1);
+}
+
+.price-card.featured.dark-mode {
+  border-color: #c8cfd1;
+}
+
+.price-card.dark-mode li {
+  color: #9ca2ae;
+}
+
+p.price-amount.dark-mode {
+  color: #c8cfd1;
+}
+
+.price-badge {
+  background-color: #1f2937; /* gray-800 */
+  color: #e5e7eb; /* gray-200 */
+}
+
+.price-badge.dark-mode {
+  background-color: #c8cfd1;
+  color: #111827; /* gray-900 */
+}
+
+.pill.dark-mode {
+  color: #c8cfd1;
+  border-color: #464d58;
+}
+
+.step-number.dark-mode {
+  color: #464d58;
+}

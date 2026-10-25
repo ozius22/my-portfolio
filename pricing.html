@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pricing | Luis Suizo</title>
+    <meta
+      name="description"
+      content="Website and web app pricing by Luis Suizo, full-stack web developer in Davao City. Business websites from ₱7,000. Free consultation."
+    />
+    <link rel="icon" href="./assets/favicon1.ico" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./main.css" />
+    <script type="module" src="./visits.js"></script>
+  </head>
+
+  <body class="bg-white">
+    <!-- ================= HEADER ================= -->
+    <header
+      id="header"
+      class="fixed w-full bg-white z-50 h-20 md:h-24 md:h-auto"
+    >
+      <div class="container mx-auto relative flex justify-center">
+        <a href="index.html">
+          <img
+            src="./assets/logo-header.svg"
+            alt="Logo"
+            class="h-12 w-auto hidden md:block absolute left-4 top-4"
+            id="logo-light"
+        /></a>
+        <a href="index.html">
+          <img
+            src="./assets/logo-header-dark.png"
+            alt="Logo"
+            class="h-12 w-auto hidden absolute left-4 top-4"
+            id="logo-dark"
+        /></a>
+
+        <nav class="text-sm hidden md:flex relative nav-container">
+          <p class="py-8 px-8">
+            <a href="index.html#home" class="text-gray-600 nav-link">HOME</a>
+          </p>
+          <p class="py-8 px-8">
+            <a href="index.html#about" class="text-gray-600 nav-link">ABOUT</a>
+          </p>
+          <p class="py-8 px-8">
+            <a href="index.html#projects" class="text-gray-600 nav-link"
+              >PROJECTS</a
+            >
+          </p>
+          <p class="py-8 px-8">
+            <a href="pricing.html" class="text-gray-600 nav-link active"
+              >PRICING</a
+            >
+          </p>
+          <p class="py-8 px-8">
+            <a href="index.html#contact" class="text-gray-600 nav-link"
+              >CONTACT</a
+            >
+          </p>
+          <div class="traveling-underline"></div>
+
+          <button id="switch-dark" class="hidden md:block">
+            <img
+              src="./assets/switch-on.svg"
+              alt="button"
+              class="h-8 w-auto absolute -right-16 top-6"
+            />
+          </button>
+
+          <button id="switch-light" class="hidden">
+            <img
+              src="./assets/switch-off.svg"
+              alt="button"
+              class="h-8 w-auto absolute -right-16 top-6"
+            />
+          </button>
+        </nav>
+
+        <button id="open-menu" class="md:hidden absolute right-8 top-8">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 256 256"
+            class="h-8 w-auto text-gray-400"
+          >
+            <rect width="256" height="256" fill="none" />
+            <polyline
+              points="200 208 120 128 200 48"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="16"
+            />
+            <polyline
+              points="120 208 40 128 120 48"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="16"
+            />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ================= MOBILE MENU ================= -->
+    <div
+      id="menu"
+      class="md:hidden fixed z-50 bg-white w-full h-full top-0 left-0 transition-transform duration-300 ease-in-out hidden-menu"
+    >
+      <button id="close-menu" class="absolute right-8 top-8 text-gray-400">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 256 256"
+          class="h-8 w-auto text-gray-400"
+        >
+          <rect width="256" height="256" fill="none" />
+          <polyline
+            points="56 48 136 128 56 208"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          />
+          <polyline
+            points="136 48 216 128 136 208"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          />
+        </svg>
+      </button>
+
+      <nav class="flex flex-col mt-16 text-3xl font-medium">
+        <a
+          href="index.html#home"
+          class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300 tracking-wider"
+          >HOME</a
+        >
+        <a
+          href="index.html#about"
+          class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300 tracking-wider"
+          >ABOUT</a
+        >
+        <a
+          href="index.html#projects"
+          class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300 tracking-wider"
+          >PROJECTS</a
+        >
+        <a
+          href="pricing.html"
+          class="mobile-nav-link active-section text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300 tracking-wider"
+          >PRICING</a
+        >
+        <a
+          href="index.html#contact"
+          class="mobile-nav-link text-gray-600 py-8 px-8 border-b border-gray-200 transition-all duration-300 tracking-wider"
+          >CONTACT</a
+        >
+
+        <div class="mt-8 flex ml-8">
+          <a
+            href="https://www.linkedin.com/in/luis-suizo-4b3247130/"
+            target="_blank"
+            ><img
+              class="h-12 w-auto mr-12"
+              id="linkedIn"
+              src="./assets/LinkedIn - Negative.svg"
+              alt="linkedin"
+          /></a>
+          <a
+            href="https://www.linkedin.com/in/luis-suizo-4b3247130/"
+            target="_blank"
+            ><img
+              class="h-12 w-auto hidden mr-12"
+              id="linkedIn1"
+              src="./assets/linkedin.svg"
+              alt="linkedin"
+          /></a>
+
+          <a href="https://github.com/ozius22" target="_blank"
+            ><img
+              class="h-12 w-auto mr-12"
+              id="git"
+              src="./assets/Github - Negative.svg"
+              alt="git"
+          /></a>
+          <a href="https://github.com/ozius22" target="_blank"
+            ><img
+              class="h-12 w-auto mr-12 hidden"
+              id="git1"
+              src="./assets/github.svg"
+              alt="git"
+          /></a>
+
+          <a href="https://www.instagram.com/__ozius__/" target="_blank"
+            ><img
+              class="h-12 w-auto mr-12"
+              id="insta"
+              src="./assets/Instagram - Negative.svg"
+              alt="instagram"
+          /></a>
+          <a href="https://www.instagram.com/__ozius__/" target="_blank"
+            ><img
+              class="h-12 w-auto mr-12 hidden"
+              id="insta1"
+              src="./assets/instagram.svg"
+              alt="instagram"
+          /></a>
+        </div>
+      </nav>
+    </div>
+
+    <!-- ================= INTRO ================= -->
+    <section id="pricing-intro" class="pt-36 md:pt-44 pb-12">
+      <div class="container mx-auto px-6 text-center">
+        <div class="pb-10">
+          <span
+            class="pill inline-block text-xl font-semibold tracking-wider text-gray-800 border rounded-full border-gray-400 px-4 py-2"
+            >Pricing</span
+          >
+        </div>
+        <h2
+          class="text-gray-800 font-semibold text-3xl md:text-5xl mb-6 leading-tight"
+        >
+          Simple, upfront starting prices
+        </h2>
+        <p
+          class="text-gray-600 leading-relaxed tracking-wide max-w-2xl mx-auto"
+        >
+          Every project starts with a free consultation. After a quick call I
+          send you a fixed quote based on what you actually need, so there are
+          no surprises later.
+        </p>
+      </div>
+    </section>
+
+    <!-- ================= PACKAGES ================= -->
+    <!-- EDIT ME: these packages and prices are placeholders. Change the names,
+         "from" prices and bullet points to match your real offers. -->
+    <section id="packages" class="pb-24">
+      <div class="container mx-auto px-6">
+        <div class="grid gap-8 lg:grid-cols-3 items-stretch">
+          <!-- Card 1 -->
+          <div class="price-card bg-white p-8 flex flex-col">
+            <div class="flex items-center mb-6">
+              <img
+                src="./assets/client.svg"
+                alt="landing page"
+                class="w-8 mr-4"
+                id="frontend"
+              />
+              <img
+                src="./assets/client1.svg"
+                alt="landing page"
+                class="w-8 mr-4 hidden"
+                id="frontend1"
+              />
+              <h3 class="text-gray-600 font-medium text-lg">Landing Page</h3>
+            </div>
+            <p class="text-gray-600 text-sm tracking-wide">Starting at</p>
+            <p class="price-amount text-gray-800 text-4xl font-bold mb-2">
+              ₱5,000
+            </p>
+            <p class="text-gray-600 text-sm leading-relaxed tracking-wide mb-8">
+              One focused page for a product, event or small shop.
+            </p>
+            <ul class="space-y-3 text-gray-600 text-sm tracking-wide mb-10">
+              <li class="flex items-start">
+                <svg class="w-5 h-5 mr-3 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Single page, mobile friendly
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 mr-3 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Contact form or Messenger button
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 mr-3 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Fast loading and basic SEO
+              </li>
+            </ul>
+            <a
+              href="#book"
+              class="cta-dark mt-auto text-center bg-gray-800 text-gray-200 transition duration-300 text-xs font-medium tracking-widest border border-transparent px-6 py-3 hover:bg-white hover:text-gray-800 hover:border hover:border-gray-800 md:text-sm"
+              >GET STARTED</a
+            >
+          </div>
+
+          <!-- Card 2 (featured) -->
+          <div class="price-card featured bg-white p-8 flex flex-col relative">
+            <span
+              class="price-badge absolute -top-3 left-8 text-xs font-medium tracking-widest px-3 py-1"
+              >MOST POPULAR</span
+            >
+            <div class="flex items-center mb-6">
+              <img
+                src="./assets/others.svg"
+                alt="business website"
+                class="w-8 mr-4"
+                id="others"
+              />
+              <img
+                src="./assets/others1.svg"
+                alt="business website"
+                class="w-8 mr-4 hidden"
+                id="others1"
+              />
+              <h3 class="text-gray-600 font-medium text-lg">
+                Business Website
+              </h3>
+            </div>
+            <p class="text-gray-600 text-sm tracking-wide">Starting at</p>
+            <p class="price-amount text-gray-800 text-4xl font-bold mb-2">
+              ₱7,000
+            </p>
+            <p class="text-gray-600 text-sm leading-relaxed tracking-wide mb-8">
+              A complete site that makes your business look credible online.
+            </p>
+            <ul class="space-y-3 text-gray-600 text-sm tracking-wide mb-10">
+              <li class="flex items-start">
+                <svg class="w-5 h-5 mr-3 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Up to 5 pages (Home, About, Services, Gallery, Contact)
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 mr-3 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Responsive design from a Figma mockup
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 mr-3 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Contact form, Google Maps, Messenger link
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 mr-3 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                SEO setup and help going live
+              </li>
+            </ul>
+            <a
+              href="#book"
+              class="cta-dark mt-auto text-center bg-gray-800 text-gray-200 transition duration-300 text-xs font-medium tracking-widest border border-transparent px-6 py-3 hover:bg-white hover:text-gray-800 hover:border hover:border-gray-800 md:text-sm"
+              >GET STARTED</a
+            >
+          </div>
+
+          <!-- Card 3 -->
+          <div class="price-card bg-white p-8 flex flex-col">
+            <div class="flex items-center mb-6">
+              <img
+                src="./assets/backend.svg"
+                alt="web app"
+                class="w-8 mr-4"
+                id="backend"
+              />
+              <img
+                src="./assets/backend1.svg"
+                alt="web app"
+                class="w-8 hidden mr-4"
+                id="backend1"
+              />
+              <h3 class="text-gray-600 font-medium text-lg">
+                Web App &amp; Custom System
+              </h3>
+            </div>
+            <p class="text-gray-600 text-sm tracking-wide">Starting at</p>
+            <p class="price-amount text-gray-800 text-4xl font-bold mb-2">
+              ₱30,000
+            </p>
+            <p class="text-gray-600 text-sm leading-relaxed tracking-wide mb-8">
+              Booking, inventory, records or dashboards built around how you
+              work.
+            </p>
+            <ul class="space-y-3 text-gray-600 text-sm tracking-wide mb-10">
+              <li class="flex items-start">
+                <svg class="w-5 h-5 mr-3 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                System analysis and a written scope first
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 mr-3 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Laravel or Python backend with a database
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 mr-3 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                User logins and an admin dashboard
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 mr-3 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Documentation your team can build on
+              </li>
+            </ul>
+            <a
+              href="#book"
+              class="cta-dark mt-auto text-center bg-gray-800 text-gray-200 transition duration-300 text-xs font-medium tracking-widest border border-transparent px-6 py-3 hover:bg-white hover:text-gray-800 hover:border hover:border-gray-800 md:text-sm"
+              >GET STARTED</a
+            >
+          </div>
+        </div>
+
+        <p class="text-gray-600 text-sm tracking-wide text-center mt-10">
+          Prices are starting points. Your final quote depends on the scope we
+          agree on during the free consultation.
+        </p>
+      </div>
+    </section>
+
+    <!-- ================= HOW IT WORKS ================= -->
+    <section id="process" class="pb-24">
+      <div class="container mx-auto px-6">
+        <h2
+          class="text-3xl text-gray-800 font-bold text-center md:text-left mb-12"
+        >
+          How it works
+        </h2>
+        <div class="lg:flex lg:space-x-12">
+          <div class="lg:flex-1">
+            <h4 class="step-number text-5xl font-bold text-gray-200 mb-4">01</h4>
+            <h3 class="text-gray-600 font-medium text-lg mb-3">
+              Free 30-minute call
+            </h3>
+            <p class="text-gray-600 leading-relaxed tracking-wide">
+              Tell me about your business and what you want the site to do. No
+              commitment.
+            </p>
+          </div>
+          <div class="mt-12 lg:mt-0 lg:flex-1">
+            <h4 class="step-number text-5xl font-bold text-gray-200 mb-4">02</h4>
+            <h3 class="text-gray-600 font-medium text-lg mb-3">Fixed quote</h3>
+            <p class="text-gray-600 leading-relaxed tracking-wide">
+              You get a clear scope, price and timeline in writing before any
+              work starts.
+            </p>
+          </div>
+          <div class="mt-12 lg:mt-0 lg:flex-1">
+            <h4 class="step-number text-5xl font-bold text-gray-200 mb-4">03</h4>
+            <h3 class="text-gray-600 font-medium text-lg mb-3">
+              Build and launch
+            </h3>
+            <p class="text-gray-600 leading-relaxed tracking-wide">
+              I design, build and put it online, with check-ins along the way
+              so you see progress.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= BOOK A CALL ================= -->
+    <section
+      id="book"
+      class="flex flex-col justify-center relative pt-12 pb-32"
+    >
+      <div class="container mx-auto px-6 text-center z-10">
+        <h2 class="text-3xl md:text-5xl text-gray-800 font-semibold mb-6">
+          Let's talk about your project
+        </h2>
+        <p
+          class="text-gray-600 leading-relaxed tracking-wide max-w-xl mx-auto mb-12"
+        >
+          Pick a time that works for you, or send me a message. Either way the
+          first conversation is free.
+        </p>
+
+        <div
+          class="flex flex-col sm:flex-row justify-center items-stretch sm:items-center gap-4 max-w-md sm:max-w-none mx-auto"
+        >
+          <!-- Google Calendar appointment schedule (Free 30-min call) -->
+          <a
+            id="book-call"
+            href="https://calendar.app.google/3rmikBJ1wEZcsSyp7"
+            target="_blank"
+            rel="noopener"
+            class="cta-dark inline-flex items-center justify-center bg-gray-800 text-gray-200 transition duration-300 text-xs font-medium tracking-widest border border-transparent px-6 py-4 hover:bg-white hover:text-gray-800 hover:border hover:border-gray-800 md:px-10 md:text-sm"
+          >
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            BOOK A FREE 30-MIN CALL
+          </a>
+
+          <!-- Messenger chat link (m.me/ + Facebook username) -->
+          <a
+            id="cta-light"
+            href="https://m.me/luisgorospesuizo"
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center justify-center bg-white text-gray-800 transition duration-300 text-xs font-medium tracking-widest border border-gray-800 px-6 py-4 hover:bg-gray-800 hover:text-gray-200 hover:border-transparent md:px-10 md:text-sm"
+          >
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4-.83L3 20l1.4-3.72A7.47 7.47 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+            MESSAGE ME ON MESSENGER
+          </a>
+        </div>
+
+        <p class="text-gray-600 text-sm tracking-wide mt-8">
+          Prefer email?
+          <a href="mailto:Lsuizo72@gmail.com" class="underline"
+            >Lsuizo72@gmail.com</a
+          >
+        </p>
+      </div>
+
+      <svg
+        class="hidden lg:block lg:absolute inset-0 w-full h-full z-0 pointer-events-none"
+        viewBox="0 0 1440 800"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g class="opacity-100" stroke="#9CA3AF" stroke-width="1">
+          <line x1="85%" y1="100%" x2="100%" y2="85%" />
+          <line x1="80%" y1="100%" x2="95%" y2="85%" />
+          <line x1="75%" y1="100%" x2="90%" y2="85%" />
+        </g>
+      </svg>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-gray-900">
+      <div class="py-12 px-6 container mx-auto text-gray-400">
+        <div class="mb-12">
+          <p>Lsuizo72@gmail.com</p>
+          <p>+63 9566401574</p>
+        </div>
+
+        <div class="flex mb-12">
+          <div class="md:flex md:space-x-24">
+            <div class="mb-12 md:mb-0">
+              <h4 class="font-semibold mb-2">A Creative Developer</h4>
+              <p>Based in Davao City,</p>
+              <p>Philippines</p>
+              <a href="./assets/Suizo - CV.pdf" download target="_blank"
+                ><p class="mt-8 flex items-center gap-2">
+                  Download my CV<svg
+                    class="w-5 h-5 text-gray-400"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    ></path>
+                  </svg></p
+              ></a>
+            </div>
+
+            <div class="flex flex-col items-start space-y-4 mb-12 md:mb-0">
+              <h4 class="font-semibold">Follow Me</h4>
+              <a href="https://github.com/ozius22" target="_blank"
+                ><img src="./assets/github.svg" alt="git"
+              /></a>
+              <a
+                href="https://www.linkedin.com/in/luis-suizo-4b3247130/"
+                target="_blank"
+                ><img src="./assets/linkedin.svg" alt="linkedin"
+              /></a>
+              <a href="https://www.instagram.com/__ozius__/" target="_blank"
+                ><img src="./assets/instagram.svg" alt="instagram"
+              /></a>
+            </div>
+
+            <img class="h-48" src="./assets/logo-footer.svg" alt="logo" />
+          </div>
+        </div>
+
+        <div class="border-b border-gray-400 my-8"></div>
+
+        <div class="lg:flex justify-between tracking-wider">
+          <p>© 2025 Luis Suizo. All Rights Reserved.</p>
+          <p>
+            PORTFOLIO | Crafting Experiences |
+            <span class="font-semibold" id="year-span">2023 - </span>
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ================= PAGE SCRIPT ================= -->
+    <!-- Small standalone script for this page (script.js is built for the
+         home page only). Handles the mobile menu, nav underline and dark mode. -->
+    <script>
+      (function () {
+        const header = document.getElementById("header");
+        const menu = document.getElementById("menu");
+        const navContainer = document.querySelector(".nav-container");
+        const navLinks = document.querySelectorAll(".nav-link");
+        const underline = document.querySelector(".traveling-underline");
+        const currentActive = document.querySelector(".nav-link.active");
+        const darkMode = document.getElementById("switch-dark");
+        const lightMode = document.getElementById("switch-light");
+        const logoLight = document.getElementById("logo-light");
+        const logoDark = document.getElementById("logo-dark");
+
+        // ----- Nav underline (sits under PRICING, follows hover) -----
+        function positionUnderline(el) {
+          if (!el || !underline) return;
+          const rect = el.getBoundingClientRect();
+          const parentRect = navContainer.getBoundingClientRect();
+          const width = rect.width * 1.2;
+          underline.style.width = width + "px";
+          underline.style.left =
+            rect.left - parentRect.left + (rect.width - width) / 2 + "px";
+          underline.style.opacity = "1";
+        }
+
+        navLinks.forEach((link) => {
+          link.addEventListener("mouseenter", () => positionUnderline(link));
+          link.addEventListener("mouseleave", () =>
+            positionUnderline(currentActive)
+          );
+        });
+        window.addEventListener("resize", () =>
+          positionUnderline(currentActive)
+        );
+        // wait for the font so the width is right
+        (document.fonts ? document.fonts.ready : Promise.resolve()).then(() =>
+          positionUnderline(currentActive)
+        );
+
+        // ----- Mobile menu -----
+        function setMenu(open) {
+          menu.classList.toggle("hidden-menu", !open);
+          document.body.style.overflow = open ? "hidden" : "";
+        }
+        document
+          .getElementById("open-menu")
+          .addEventListener("click", () => setMenu(true));
+        document
+          .getElementById("close-menu")
+          .addEventListener("click", () => setMenu(false));
+        window.addEventListener("resize", () => {
+          if (window.innerWidth > 768) setMenu(false);
+        });
+
+        // ----- Smooth scroll for same-page links (#book) -----
+        document.querySelectorAll('a[href^="#"]').forEach((a) => {
+          a.addEventListener("click", (e) => {
+            const target = document.querySelector(a.getAttribute("href"));
+            if (!target) return;
+            e.preventDefault();
+            target.scrollIntoView({ behavior: "smooth" });
+          });
+        });
+
+        // ----- Dark mode (shared with the home page via localStorage) -----
+        function setDarkMode(enabled) {
+          const els = [
+            header,
+            menu,
+            document.body,
+            ...navLinks,
+            ...document.querySelectorAll(".mobile-nav-link"),
+            ...document.querySelectorAll("main p, section p, section h2, section h3, section h4"),
+            ...document.querySelectorAll(".cta-dark, #cta-light"),
+            ...document.querySelectorAll(".price-card, .price-badge, .pill"),
+            ...document.querySelectorAll(
+              "#backend, #backend1, #frontend, #frontend1, #others, #others1"
+            ),
+            ...document.querySelectorAll(
+              "#linkedIn, #linkedIn1, #git, #git1, #insta, #insta1"
+            ),
+          ];
+          els.forEach((el) => el && el.classList.toggle("dark-mode", enabled));
+
+          darkMode.classList.toggle("md:block", !enabled);
+          lightMode.classList.toggle("md:block", enabled);
+          logoLight.classList.toggle("md:block", !enabled);
+          logoDark.classList.toggle("md:block", enabled);
+
+          try {
+            localStorage.setItem("theme", enabled ? "dark" : "light");
+          } catch (e) {}
+        }
+
+        darkMode.addEventListener("click", () => setDarkMode(true));
+        lightMode.addEventListener("click", () => setDarkMode(false));
+
+        try {
+          if (localStorage.getItem("theme") === "dark") setDarkMode(true);
+        } catch (e) {}
+
+        // ----- Footer year -----
+        document.getElementById("year-span").textContent +=
+          new Date().getFullYear();
+      })();
+    </script>
+  </body>
+</html>

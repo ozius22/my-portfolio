@@ -249,6 +249,11 @@ function setDarkMode(enabled) {
     if (el) el.classList.toggle("dark-mode");
   });
 
+  // Remember the choice so pricing.html opens in the same mode
+  try {
+    localStorage.setItem("theme", enabled ? "dark" : "light");
+  } catch (e) {}
+
   // Switch visibility based on mode
   if (enabled) {
     darkMode.classList.remove("md:block");
@@ -301,9 +306,12 @@ openMenu.addEventListener("click", () => toggleMenu(true));
 
 mobileLinks.forEach((navLink) => {
   navLink.addEventListener("click", function (e) {
+    const targetId = this.getAttribute("href");
+    // Only same-page links (#about, #contact...) scroll. Links to other pages
+    // (pricing.html) and social links open normally.
+    if (!targetId || !targetId.startsWith("#")) return;
     e.preventDefault();
     toggleMenu(false);
-    const targetId = this.getAttribute("href");
     const targetElement = document.querySelector(targetId);
     if (targetElement) {
       setTimeout(() => {
@@ -342,6 +350,11 @@ internalLinks.forEach((anchor) => {
 document.querySelectorAll(".animate-on-scroll").forEach((el) => {
   scrollObserver.observe(el);
 });
+
+// Re-apply dark mode if it was turned on earlier (here or on pricing.html)
+try {
+  if (localStorage.getItem("theme") === "dark") setDarkMode(true);
+} catch (e) {}
 
 // Initial checks
 setTimeout(checkSectionInView, 500);
